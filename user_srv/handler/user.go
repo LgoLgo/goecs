@@ -18,7 +18,9 @@ import (
 	"E-commerce-system/user_srv/proto/gen"
 )
 
-type UserServer struct{}
+type UserServer struct {
+	proto.UnimplementedUserServer
+}
 
 func ModelToResponse(user model.User) proto.UserInfoResponse {
 	userInfoRsp := proto.UserInfoResponse{

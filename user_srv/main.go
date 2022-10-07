@@ -1,1 +1,31 @@
-package user_srv
+package main
+
+import (
+	"E-commerce-system/user_srv/handler"
+	proto "E-commerce-system/user_srv/proto/gen"
+	"flag"
+	"fmt"
+	"google.golang.org/grpc"
+	"net"
+)
+
+func main() {
+	IP := flag.String("ip", "0.0.0.0", "ip地址")
+	Port := flag.Int("port", 50051, "端口号")
+
+	flag.Parse()
+
+	server := grpc.NewServer()
+	proto.RegisterUserServer(server, &handler.UserServer{})
+	lis, err := net.Listen("tcp", fmt.Sprintf("%s:%d", *IP, *Port))
+	if err != nil {
+		panic("failed to listen:" + err.Error())
+	}
+
+	go func() {
+		err = server.Serve(lis)
+		if err != nil {
+			panic("failed to start grpc:" + err.Error())
+		}
+	}()
+}

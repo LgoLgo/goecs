@@ -22,10 +22,8 @@ func main() {
 		panic("failed to listen:" + err.Error())
 	}
 
-	go func() {
-		err = server.Serve(lis)
-		if err != nil {
-			panic("failed to start grpc:" + err.Error())
-		}
-	}()
+	err = server.Serve(lis)
+	if err != nil {
+		panic("failed to start grpc:" + err.Error())
+	}
 }

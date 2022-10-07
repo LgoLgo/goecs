@@ -46,12 +46,10 @@ func main() {
 
 	for i := 0; i < 10; i++ {
 		user := model.User{
-			NickName: fmt.Sprintf("bobby%d", i),
+			NickName: fmt.Sprintf("user%d", i),
 			Mobile:   fmt.Sprintf("1878222222%d", i),
 			Password: newPassword,
 		}
 		db.Save(&user)
 	}
-
-	_ = db.AutoMigrate(&model.User{}) //此处应该有sql语句
 }

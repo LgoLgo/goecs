@@ -1,7 +1,7 @@
 package global
 
 import (
-	"E-commerce-system/user_srv/config"
+	"E-commerce-system/srvs/user_srv/config"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"

@@ -1,7 +1,9 @@
 package handler
 
 import (
-	"E-commerce-system/user_srv/global"
+	"E-commerce-system/srvs/user_srv/global"
+	"E-commerce-system/srvs/user_srv/model"
+	"E-commerce-system/srvs/user_srv/proto/gen"
 	"context"
 	"crypto/sha512"
 	"fmt"
@@ -13,9 +15,6 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"gorm.io/gorm"
-
-	"E-commerce-system/user_srv/model"
-	"E-commerce-system/user_srv/proto/gen"
 )
 
 type UserServer struct {

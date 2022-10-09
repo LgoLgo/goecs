@@ -1,8 +1,8 @@
 package main
 
 import (
-	"E-commerce-system/user_srv/handler"
-	proto "E-commerce-system/user_srv/proto/gen"
+	"E-commerce-system/srvs/user_srv/handler"
+	"E-commerce-system/srvs/user_srv/proto/gen"
 	"flag"
 	"fmt"
 	"google.golang.org/grpc"

@@ -1,13 +1,12 @@
 package main
 
 import (
+	"E-commerce-system/srvs/user_srv/proto/gen"
 	"context"
 	"google.golang.org/grpc/credentials/insecure"
 	"testing"
 
 	"google.golang.org/grpc"
-
-	"E-commerce-system/user_srv/proto/gen"
 )
 
 var userClient proto.UserClient

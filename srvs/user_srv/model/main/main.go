@@ -1,6 +1,7 @@
 package main
 
 import (
+	"E-commerce-system/srvs/user_srv/model"
 	"crypto/sha512"
 	"fmt"
 	"log"
@@ -12,8 +13,6 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
-
-	"E-commerce-system/user_srv/model"
 )
 
 func main() {

@@ -1,9 +1,11 @@
 package api
 
 import (
+	"E-commerce-system/apis/user-web/global/response"
 	"context"
 	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/utils"
@@ -71,5 +73,16 @@ func GetUserList(ctx context.Context, c *app.RequestContext) {
 		return
 	}
 
-	zap.S().Debug("get user list")
+	result := make([]interface{}, 0)
+	for _, value := range rsp.Data {
+		user := response.UserResponse{
+			Id:       value.Id,
+			NickName: value.NickName,
+			Birthday: response.JsonTime(time.Unix(int64(value.BirthDay), 0)),
+			Gender:   value.Gender,
+			Mobile:   value.Mobile,
+		}
+		result = append(result, user)
+	}
+	c.JSON(http.StatusOK, result)
 }

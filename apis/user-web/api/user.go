@@ -1,6 +1,7 @@
 package api
 
 import (
+	"E-commerce-system/apis/user-web/global"
 	"E-commerce-system/apis/user-web/global/response"
 	"context"
 	"fmt"
@@ -50,11 +51,8 @@ func HandleGRPCErrorToHTTP(err error, c *app.RequestContext) {
 }
 
 func GetUserList(ctx context.Context, c *app.RequestContext) {
-	ip := "127.0.0.1"
-	port := 50051
-
-	// 拨号连接用户 gRPC 服务
-	userConn, err := grpc.Dial(fmt.Sprintf("%s:%d", ip, port), grpc.WithTransportCredentials(insecure.NewCredentials()))
+	userConn, err := grpc.Dial(fmt.Sprintf("%s:%d", global.ServerConfig.UserSrvInfo.Host, global.ServerConfig.UserSrvInfo.Port),
+		grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		zap.S().Errorw("[GetUserList] connected error",
 			"msg", err.Error(),

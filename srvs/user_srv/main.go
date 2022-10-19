@@ -10,8 +10,8 @@ import (
 )
 
 func main() {
-	IP := flag.String("ip", "0.0.0.0", "ip地址")
-	Port := flag.Int("port", 50051, "端口号")
+	IP := flag.String("ip", "0.0.0.0", "address")
+	Port := flag.Int("port", 50051, "post")
 
 	flag.Parse()
 

@@ -10,6 +10,7 @@ func main() {
 	// 初始化 logger
 	initialize.InitLogger()
 
+	// 初始化配置
 	initialize.InitConfig()
 
 	// 初始化 routers

@@ -1,12 +1,12 @@
 package api
 
 import (
-	"E-commerce-system/apis/user-web/global"
-	"E-commerce-system/apis/user-web/global/response"
+	"E-commerce-system/apis/user-web/forms"
 	"context"
 	"fmt"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/cloudwego/hertz/pkg/app"
@@ -17,8 +17,18 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/status"
 
+	"E-commerce-system/apis/user-web/global"
+	"E-commerce-system/apis/user-web/global/response"
 	proto "E-commerce-system/apis/user-web/proto/gen"
 )
+
+func removeTopStruct(fileds map[string]string) map[string]string {
+	rsp := map[string]string{}
+	for field, err := range fileds {
+		rsp[field[strings.Index(field, ".")+1:]] = err
+	}
+	return rsp
+}
 
 func HandleGRPCErrorToHTTP(err error, c *app.RequestContext) {
 	// 将 gRPC 的 code 转换成 HTTP 的状态码
@@ -49,6 +59,13 @@ func HandleGRPCErrorToHTTP(err error, c *app.RequestContext) {
 			return
 		}
 	}
+}
+
+func HandleValidatorError(c *app.RequestContext, err error) {
+	c.JSON(http.StatusOK, utils.H{
+		"msg": err.Error(),
+	})
+	return
 }
 
 func GetUserList(ctx context.Context, c *app.RequestContext) {
@@ -88,4 +105,12 @@ func GetUserList(ctx context.Context, c *app.RequestContext) {
 		result = append(result, user)
 	}
 	c.JSON(http.StatusOK, result)
+}
+
+func PassWordLogin(ctx context.Context, c *app.RequestContext) {
+	// 表单验证
+	passwordLoginForm := forms.PassWordLoginForm{}
+	if err := c.BindAndValidate(&passwordLoginForm); err != nil {
+		HandleValidatorError(c, err)
+	}
 }

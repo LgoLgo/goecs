@@ -6,6 +6,7 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/cloudwego/hertz/pkg/app"
@@ -61,9 +62,13 @@ func GetUserList(ctx context.Context, c *app.RequestContext) {
 	// 调用接口
 	userSrcClient := proto.NewUserClient(userConn)
 
+	pn := c.DefaultQuery("pn", "0")
+	pnInt, _ := strconv.Atoi(pn)
+	pSize := c.DefaultQuery("psize", "10")
+	pSizeInt, _ := strconv.Atoi(pSize)
 	rsp, err := userSrcClient.GetUserList(ctx, &proto.PageInfo{
-		Pn:    0,
-		PSize: 0,
+		Pn:    uint32(pnInt),
+		PSize: uint32(pSizeInt),
 	})
 	if err != nil {
 		zap.S().Errorw("[GetUserList] query user list error.")

@@ -69,13 +69,13 @@ func GetUserList(ctx context.Context, c *app.RequestContext) {
 		)
 	}
 	// 调用接口
-	userSrcClient := proto.NewUserClient(userConn)
+	userSrvClient := proto.NewUserClient(userConn)
 
 	pn := c.DefaultQuery("pn", "0")
 	pnInt, _ := strconv.Atoi(pn)
 	pSize := c.DefaultQuery("psize", "10")
 	pSizeInt, _ := strconv.Atoi(pSize)
-	rsp, err := userSrcClient.GetUserList(ctx, &proto.PageInfo{
+	rsp, err := userSrvClient.GetUserList(ctx, &proto.PageInfo{
 		Pn:    uint32(pnInt),
 		PSize: uint32(pSizeInt),
 	})
@@ -106,4 +106,54 @@ func PassWordLogin(ctx context.Context, c *app.RequestContext) {
 	if err := c.BindAndValidate(&passwordLoginForm); err != nil {
 		HandleValidatorError(c, err)
 	}
+
+	userConn, err := grpc.Dial(fmt.Sprintf("%s:%d", global.ServerConfig.UserSrvInfo.Host, global.ServerConfig.UserSrvInfo.Port),
+		grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		zap.S().Errorw("[GetUserList] connected error",
+			"msg", err.Error(),
+		)
+	}
+	// 调用接口
+	userSrvClient := proto.NewUserClient(userConn)
+
+	// 登录的逻辑
+	if rsp, err := userSrvClient.GetUserByMobile(ctx, &proto.MobileRequest{
+		Mobile: passwordLoginForm.Mobile,
+	}); err != nil {
+		if e, ok := status.FromError(err); ok {
+			switch e.Code() {
+			case codes.NotFound:
+				c.JSON(http.StatusBadRequest, map[string]string{
+					"mobile": "用户不存在",
+				})
+			default:
+				c.JSON(http.StatusInternalServerError, map[string]string{
+					"mobile": "登录失败",
+				})
+			}
+			return
+		}
+	} else {
+		// 仅查询到用户
+		if passRsp, err := userSrvClient.CheckPassWord(ctx, &proto.PasswordCheckInfo{
+			Password:          passwordLoginForm.PassWord,
+			EncryptedPassword: rsp.PassWord,
+		}); err != nil {
+			c.JSON(http.StatusInternalServerError, map[string]string{
+				"password": "登录失败",
+			})
+		} else {
+			if passRsp.Success {
+				c.JSON(http.StatusOK, map[string]string{
+					"msg": "登录成功",
+				})
+			} else {
+				c.JSON(http.StatusBadRequest, map[string]string{
+					"msg": "登录失败",
+				})
+			}
+		}
+	}
+
 }

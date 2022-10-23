@@ -7,7 +7,6 @@ import (
 	"fmt"
 	"net/http"
 	"strconv"
-	"strings"
 	"time"
 
 	"github.com/cloudwego/hertz/pkg/app"
@@ -22,14 +21,6 @@ import (
 	"E-commerce-system/apis/user-web/global/response"
 	proto "E-commerce-system/apis/user-web/proto/gen"
 )
-
-func removeTopStruct(fileds map[string]string) map[string]string {
-	rsp := map[string]string{}
-	for field, err := range fileds {
-		rsp[field[strings.Index(field, ".")+1:]] = err
-	}
-	return rsp
-}
 
 func HandleGRPCErrorToHTTP(err error, c *app.RequestContext) {
 	// 将 gRPC 的 code 转换成 HTTP 的状态码

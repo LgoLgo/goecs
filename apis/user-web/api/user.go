@@ -2,6 +2,7 @@ package api
 
 import (
 	"E-commerce-system/apis/user-web/forms"
+	"E-commerce-system/apis/user-web/validator"
 	"context"
 	"fmt"
 	"net/http"
@@ -109,6 +110,7 @@ func GetUserList(ctx context.Context, c *app.RequestContext) {
 
 func PassWordLogin(ctx context.Context, c *app.RequestContext) {
 	// 表单验证
+	validator.ValidateMobile() // 手机号自定义表单验证设置
 	passwordLoginForm := forms.PassWordLoginForm{}
 	if err := c.BindAndValidate(&passwordLoginForm); err != nil {
 		HandleValidatorError(c, err)

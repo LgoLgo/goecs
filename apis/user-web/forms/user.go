@@ -1,7 +1,7 @@
 package forms
 
 type PassWordLoginForm struct {
-	Mobile   string `form:"mobile,required" json:"mobile,required"`
+	Mobile   string `form:"mobile,required" json:"mobile,required" vd:"mobile($)"`
 	PassWord string `form:"password,required" json:"password,required" vd:"len($)>3 && len($)<20; msg:'password length should be 4 - 19'"`
 	//Captcha   string `form:"captcha" json:"captcha" binding:"required,min=5,max=5"`
 	//CaptchaId string `form:"captcha_id" json:"captcha_id" binding:"required"`

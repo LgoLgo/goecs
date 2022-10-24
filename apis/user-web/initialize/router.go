@@ -17,6 +17,7 @@ func Routers(port int) *server.Hertz {
 
 	ApiGroup := Router.Group("/v1")
 	userRouter.InitUserRouter(ApiGroup)
+	userRouter.InitBaseRouter(ApiGroup)
 
 	return Router
 }

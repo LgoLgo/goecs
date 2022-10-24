@@ -36,15 +36,15 @@ func HandleGRPCErrorToHTTP(err error, c *app.RequestContext) {
 				})
 			case codes.Internal:
 				c.JSON(http.StatusInternalServerError, utils.H{
-					"msg:": "Internal error",
+					"msg:": "内部错误",
 				})
 			case codes.InvalidArgument:
 				c.JSON(http.StatusBadRequest, utils.H{
-					"msg": "Argument error",
+					"msg": "参数错误",
 				})
 			case codes.Unavailable:
 				c.JSON(http.StatusInternalServerError, utils.H{
-					"msg": "Server error",
+					"msg": "用户服务不可用",
 				})
 			default:
 				c.JSON(http.StatusInternalServerError, utils.H{
@@ -111,6 +111,14 @@ func PassWordLogin(ctx context.Context, c *app.RequestContext) {
 	passwordLoginForm := forms.PassWordLoginForm{}
 	if err := c.BindAndValidate(&passwordLoginForm); err != nil {
 		HandleValidatorError(c, err)
+		return
+	}
+
+	if !store.Verify(passwordLoginForm.CaptchaId, passwordLoginForm.Captcha, false) {
+		c.JSON(http.StatusBadRequest, utils.H{
+			"captcha": "验证码错误",
+		})
+		return
 	}
 
 	userConn, err := grpc.Dial(fmt.Sprintf("%s:%d", global.ServerConfig.UserSrvInfo.Host, global.ServerConfig.UserSrvInfo.Port),

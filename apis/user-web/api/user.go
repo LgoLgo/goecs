@@ -1,8 +1,6 @@
 package api
 
 import (
-	"E-commerce-system/apis/user-web/forms"
-	"E-commerce-system/apis/user-web/validator"
 	"context"
 	"fmt"
 	"net/http"
@@ -11,15 +9,20 @@ import (
 
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/utils"
+	"github.com/dgrijalva/jwt-go"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/status"
 
+	"E-commerce-system/apis/user-web/forms"
 	"E-commerce-system/apis/user-web/global"
 	"E-commerce-system/apis/user-web/global/response"
+	middlewares "E-commerce-system/apis/user-web/middleware"
+	"E-commerce-system/apis/user-web/models"
 	proto "E-commerce-system/apis/user-web/proto/gen"
+	"E-commerce-system/apis/user-web/validator"
 )
 
 func HandleGRPCErrorToHTTP(err error, c *app.RequestContext) {
@@ -145,8 +148,30 @@ func PassWordLogin(ctx context.Context, c *app.RequestContext) {
 			})
 		} else {
 			if passRsp.Success {
-				c.JSON(http.StatusOK, map[string]string{
-					"msg": "登录成功",
+				// 生成token
+				j := middlewares.NewJWT()
+				claims := models.CustomClaims{
+					ID:          uint(rsp.Id),
+					NickName:    rsp.NickName,
+					AuthorityId: uint(rsp.Role),
+					StandardClaims: jwt.StandardClaims{
+						NotBefore: time.Now().Unix(),               // 签名的生效时间
+						ExpiresAt: time.Now().Unix() + 60*60*24*30, // 30天过期
+						Issuer:    "L2ncE",
+					},
+				}
+				token, err := j.CreateToken(claims)
+				if err != nil {
+					c.JSON(http.StatusInternalServerError, utils.H{
+						"msg": "生成token失败",
+					})
+					return
+				}
+				c.JSON(http.StatusOK, utils.H{
+					"id":         rsp.Id,
+					"nick_name":  rsp.NickName,
+					"token":      token,
+					"expired_at": (time.Now().Unix() + 60*60*24*30) * 1000,
 				})
 			} else {
 				c.JSON(http.StatusBadRequest, map[string]string{

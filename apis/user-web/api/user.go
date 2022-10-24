@@ -71,6 +71,9 @@ func GetUserList(ctx context.Context, c *app.RequestContext) {
 			"msg", err.Error(),
 		)
 	}
+	claims, _ := c.Get("claims")
+	currentUser := claims.(*models.CustomClaims)
+	zap.S().Infof("User: %d", currentUser.ID)
 	// 调用接口
 	userSrvClient := proto.NewUserClient(userConn)
 

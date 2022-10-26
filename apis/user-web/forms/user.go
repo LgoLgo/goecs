@@ -8,9 +8,9 @@ type PassWordLoginForm struct {
 }
 
 type RegisterForm struct {
-	Mobile   string `form:"mobile" json:"mobile" binding:"required,mobile"`
-	PassWord string `form:"password" json:"password" binding:"required,min=3,max=20"`
-	Code     string `form:"code" json:"code" binding:"required,min=6,max=6"`
+	Mobile   string `form:"mobile,required" json:"mobile,required" vd:"mobile($)"`
+	PassWord string `form:"password,required" json:"password,required" vd:"len($)>3 && len($)<20; msg:'password length should be 4 - 19'"`
+	Code     string `form:"code,required" json:"code,required" vd:"len($)==6; msg:'code length should be 6'"`
 }
 
 type UpdateUserForm struct {

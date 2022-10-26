@@ -3,6 +3,7 @@ package api
 import (
 	"context"
 	"fmt"
+	"github.com/go-redis/redis/v8"
 	"net/http"
 	"strconv"
 	"time"
@@ -24,6 +25,8 @@ import (
 	proto "E-commerce-system/apis/user-web/proto/gen"
 	"E-commerce-system/apis/user-web/validator"
 )
+
+// TODO：暂未实现选择类型登录（1选择账号密码，2选择手机验证码）
 
 func HandleGRPCErrorToHTTP(err error, c *app.RequestContext) {
 	// 将 gRPC 的 code 转换成 HTTP 的状态码
@@ -191,5 +194,81 @@ func PassWordLogin(ctx context.Context, c *app.RequestContext) {
 			}
 		}
 	}
+}
 
+func Register(ctx context.Context, c *app.RequestContext) {
+	validator.ValidateMobile() // 手机号自定义表单验证设置
+	//用户注册
+	registerForm := forms.RegisterForm{}
+	if err := c.BindAndValidate(&registerForm); err != nil {
+		HandleValidatorError(c, err)
+		return
+	}
+
+	//验证码
+	rdb := redis.NewClient(&redis.Options{
+		Addr: fmt.Sprintf("%s:%d", global.ServerConfig.RedisInfo.Host, global.ServerConfig.RedisInfo.Port),
+	})
+	value, err := rdb.Get(ctx, registerForm.Mobile).Result()
+	if err == redis.Nil {
+		c.JSON(http.StatusBadRequest, utils.H{
+			"code": "验证码错误",
+		})
+		return
+	} else {
+		if value != registerForm.Code {
+			fmt.Printf("value: %s\ncode: %s", value, registerForm.Code)
+			c.JSON(http.StatusBadRequest, utils.H{
+				"code": "验证码错误",
+			})
+			return
+		}
+	}
+
+	userConn, err := grpc.Dial(fmt.Sprintf("%s:%d", global.ServerConfig.UserSrvInfo.Host, global.ServerConfig.UserSrvInfo.Port),
+		grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		zap.S().Errorw("[GetUserList] connected error",
+			"msg", err.Error(),
+		)
+	}
+	// 调用接口
+	userSrvClient := proto.NewUserClient(userConn)
+
+	user, err := userSrvClient.CreateUser(context.Background(), &proto.CreateUserInfo{
+		NickName: registerForm.Mobile,
+		PassWord: registerForm.PassWord,
+		Mobile:   registerForm.Mobile,
+	})
+	if err != nil {
+		zap.S().Errorf("[Register] create user error: %s", err.Error())
+		HandleGRPCErrorToHTTP(err, c)
+		return
+	}
+
+	j := middlewares.NewJWT()
+	claims := models.CustomClaims{
+		ID:          uint(user.Id),
+		NickName:    user.NickName,
+		AuthorityId: uint(user.Role),
+		StandardClaims: jwt.StandardClaims{
+			NotBefore: time.Now().Unix(),               //签名的生效时间
+			ExpiresAt: time.Now().Unix() + 60*60*24*30, //30天过期
+			Issuer:    "L2ncE",
+		},
+	}
+	token, err := j.CreateToken(claims)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, utils.H{
+			"msg": "生成token失败",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, utils.H{
+		"id":         user.Id,
+		"nick_name":  user.NickName,
+		"token":      token,
+		"expired_at": (time.Now().Unix() + 60*60*24*30) * 1000,
+	})
 }

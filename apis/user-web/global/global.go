@@ -1,8 +1,8 @@
 package global
 
 import (
-	"E-commerce-system/apis/user-web/config"
-	pb "E-commerce-system/apis/user-web/proto/gen"
+	"apis/user-web/config"
+	pb "apis/user-web/proto/gen"
 )
 
 var (

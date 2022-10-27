@@ -1,8 +1,8 @@
 package initialize
 
 import (
-	middlewares "E-commerce-system/apis/user-web/middleware"
-	userRouter "E-commerce-system/apis/user-web/router"
+	middlewares "apis/user-web/middleware"
+	userRouter "apis/user-web/router"
 	"fmt"
 	"github.com/cloudwego/hertz/pkg/app/server"
 )

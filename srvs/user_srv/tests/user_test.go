@@ -1,9 +1,9 @@
 package main
 
 import (
-	"E-commerce-system/srvs/user_srv/proto/gen"
 	"context"
 	"google.golang.org/grpc/credentials/insecure"
+	"srvs/user_srv/proto/gen"
 	"testing"
 
 	"google.golang.org/grpc"

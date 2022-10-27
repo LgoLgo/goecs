@@ -1,7 +1,7 @@
 package router
 
 import (
-	"E-commerce-system/apis/user-web/api"
+	"apis/user-web/api"
 	"github.com/cloudwego/hertz/pkg/route"
 )
 

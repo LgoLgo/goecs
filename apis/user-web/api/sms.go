@@ -1,8 +1,8 @@
 package api
 
 import (
-	"E-commerce-system/apis/user-web/forms"
-	"E-commerce-system/apis/user-web/validator"
+	"apis/user-web/forms"
+	"apis/user-web/validator"
 	"context"
 	"fmt"
 	"go.uber.org/zap"
@@ -11,7 +11,7 @@ import (
 	"strings"
 	"time"
 
-	"E-commerce-system/apis/user-web/global"
+	"apis/user-web/global"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/utils"
 	"github.com/go-redis/redis/v8"

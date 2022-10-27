@@ -1,14 +1,14 @@
 package handler
 
 import (
-	"E-commerce-system/srvs/user_srv/global"
-	"E-commerce-system/srvs/user_srv/model"
-	"E-commerce-system/srvs/user_srv/proto/gen"
 	"context"
 	"crypto/sha512"
 	"fmt"
 	"github.com/anaskhan96/go-password-encoder"
 	"github.com/golang/protobuf/ptypes/empty"
+	"srvs/user_srv/global"
+	"srvs/user_srv/model"
+	"srvs/user_srv/proto/gen"
 	"strings"
 	"time"
 

@@ -1,8 +1,8 @@
 package middlewares
 
 import (
-	"E-commerce-system/apis/user-web/global"
-	"E-commerce-system/apis/user-web/models"
+	"apis/user-web/global"
+	"apis/user-web/models"
 	"context"
 	"errors"
 	"net/http"

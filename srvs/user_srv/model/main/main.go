@@ -1,11 +1,11 @@
 package main
 
 import (
-	"E-commerce-system/srvs/user_srv/model"
 	"crypto/sha512"
 	"fmt"
 	"log"
 	"os"
+	"srvs/user_srv/model"
 	"time"
 
 	"github.com/anaskhan96/go-password-encoder"

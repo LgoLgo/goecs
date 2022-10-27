@@ -1,8 +1,8 @@
 package main
 
 import (
-	"E-commerce-system/apis/user-web/global"
-	"E-commerce-system/apis/user-web/initialize"
+	"apis/user-web/global"
+	"apis/user-web/initialize"
 	"go.uber.org/zap"
 )
 

@@ -3,7 +3,7 @@ package middlewares
 import (
 	"context"
 
-	"E-commerce-system/apis/user-web/models"
+	"apis/user-web/models"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/utils"
 	"net/http"

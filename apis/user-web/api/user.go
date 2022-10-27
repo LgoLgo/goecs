@@ -17,13 +17,13 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/status"
 
-	"E-commerce-system/apis/user-web/forms"
-	"E-commerce-system/apis/user-web/global"
-	"E-commerce-system/apis/user-web/global/response"
-	middlewares "E-commerce-system/apis/user-web/middleware"
-	"E-commerce-system/apis/user-web/models"
-	proto "E-commerce-system/apis/user-web/proto/gen"
-	"E-commerce-system/apis/user-web/validator"
+	"apis/user-web/forms"
+	"apis/user-web/global"
+	"apis/user-web/global/response"
+	middlewares "apis/user-web/middleware"
+	"apis/user-web/models"
+	proto "apis/user-web/proto/gen"
+	"apis/user-web/validator"
 )
 
 // TODO：暂未实现选择类型登录（1选择账号密码，2选择手机验证码）

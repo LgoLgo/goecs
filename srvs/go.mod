@@ -6,6 +6,8 @@ require (
 	github.com/anaskhan96/go-password-encoder v0.0.0-20201010210601-c765b799fd72
 	github.com/fsnotify/fsnotify v1.6.0
 	github.com/golang/protobuf v1.5.2
+	github.com/hashicorp/consul/api v1.12.0
+	github.com/satori/go.uuid v1.2.0
 	github.com/spf13/viper v1.13.0
 	go.uber.org/zap v1.23.0
 	google.golang.org/grpc v1.50.1
@@ -15,11 +17,22 @@ require (
 )
 
 require (
+	github.com/armon/go-metrics v0.3.10 // indirect
+	github.com/fatih/color v1.13.0 // indirect
 	github.com/go-sql-driver/mysql v1.6.0 // indirect
+	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
+	github.com/hashicorp/go-hclog v1.2.0 // indirect
+	github.com/hashicorp/go-immutable-radix v1.3.1 // indirect
+	github.com/hashicorp/go-rootcerts v1.0.2 // indirect
+	github.com/hashicorp/golang-lru v0.5.4 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
+	github.com/hashicorp/serf v0.9.7 // indirect
 	github.com/jinzhu/inflection v1.0.0 // indirect
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/magiconair/properties v1.8.6 // indirect
+	github.com/mattn/go-colorable v0.1.12 // indirect
+	github.com/mattn/go-isatty v0.0.14 // indirect
+	github.com/mitchellh/go-homedir v1.1.0 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/pelletier/go-toml v1.9.5 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.5 // indirect

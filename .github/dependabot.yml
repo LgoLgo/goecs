@@ -6,9 +6,6 @@ updates:
       - "dependencies"
     schedule:
       interval: "daily"
-    ignore:
-      - dependency-name: "github.com/go-redis/redis/v8"
-        versions: [ "8.x" ]
     allow:
       - dependency-name: "github.com/spf13/viper"
       - dependency-name: "github.com/go-redis/redis/v8"

@@ -3,14 +3,16 @@ package main
 import (
 	"flag"
 	"fmt"
+
+	"net"
+
 	"github.com/hashicorp/consul/api"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/health"
 	"google.golang.org/grpc/health/grpc_health_v1"
-	"net"
-	"srvs/user_srv/global"
 
+	"srvs/user_srv/global"
 	"srvs/user_srv/handler"
 	"srvs/user_srv/initialize"
 	"srvs/user_srv/proto/gen"

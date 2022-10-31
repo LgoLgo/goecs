@@ -3,7 +3,6 @@ package api
 import (
 	"context"
 	"fmt"
-	"github.com/go-redis/redis/v8"
 	"net/http"
 	"strconv"
 	"time"
@@ -11,6 +10,8 @@ import (
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/utils"
 	"github.com/dgrijalva/jwt-go"
+	"github.com/go-redis/redis/v8"
+	"github.com/hashicorp/consul/api"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
@@ -67,7 +68,35 @@ func HandleValidatorError(c *app.RequestContext, err error) {
 }
 
 func GetUserList(ctx context.Context, c *app.RequestContext) {
-	userConn, err := grpc.Dial(fmt.Sprintf("%s:%d", global.ServerConfig.UserSrvInfo.Host, global.ServerConfig.UserSrvInfo.Port),
+	// 从注册中心获取用户服务的信息
+	cfg := api.DefaultConfig()
+	cfg.Address = fmt.Sprintf("%s:%d", global.ServerConfig.ConsulInfo.Host, global.ServerConfig.ConsulInfo.Port)
+
+	userSrvHost := ""
+	userSrvPort := 0
+	client, err := api.NewClient(cfg)
+	if err != nil {
+		panic(err)
+	}
+
+	data, err := client.Agent().ServicesWithFilter(fmt.Sprintf(`Service == "%s"`, global.ServerConfig.UserSrvInfo.Name))
+	if err != nil {
+		panic(err)
+	}
+
+	for _, value := range data {
+		userSrvHost = value.Address
+		userSrvPort = value.Port
+		break
+	}
+
+	if userSrvHost == "" {
+		c.JSON(http.StatusBadRequest, utils.H{
+			"captcha": "用户服务不可达",
+		})
+	}
+
+	userConn, err := grpc.Dial(fmt.Sprintf("%s:%d", userSrvHost, userSrvPort),
 		grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		zap.S().Errorw("[GetUserList] connected error",

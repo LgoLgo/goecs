@@ -1,8 +1,10 @@
 name: 'user-web'
 port: 8021
+
 user_srv:
-  host: '127.0.0.1'
+  host: '10.20.244.204'
   port: 50051
+  name: 'user-srv'
 
 jwt:
   key: 'km!RU#a*43BsTsBVLQPpmuXI&$BJD%Sz'
@@ -10,3 +12,8 @@ jwt:
 redis:
   host: '127.0.0.1'
   port: 6379
+  expire: 300
+
+consul:
+  host: 127.0.0.1
+  port: 8500

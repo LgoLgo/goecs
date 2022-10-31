@@ -9,4 +9,3 @@ updates:
     ignore:
       - dependency-name: "github.com/cloudwego/hertz"
       - dependency-name: "go.uber.org/zap"
-      - dependency-name: "google.golang.org/grpc"

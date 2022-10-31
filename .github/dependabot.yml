@@ -7,6 +7,6 @@ updates:
     schedule:
       interval: "daily"
     ignore:
-      - dependency-name: "hertz"
-      - dependency-name: "zap"
-      - dependency-name: "grpc"
+      - dependency-name: "github.com/cloudwego/hertz"
+      - dependency-name: "go.uber.org/zap"
+      - dependency-name: "google.golang.org/grpc"

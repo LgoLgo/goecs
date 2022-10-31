@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"srvs/user_srv/utils"
 
 	"net"
 
@@ -20,7 +21,7 @@ import (
 
 func main() {
 	IP := flag.String("ip", "0.0.0.0", "address")
-	Port := flag.Int("port", 50051, "post")
+	Port := flag.Int("port", 0, "post")
 	// 初始化
 	initialize.InitLogger()
 	initialize.InitConfig()
@@ -28,6 +29,10 @@ func main() {
 
 	flag.Parse()
 	zap.S().Info("ip: ", *IP)
+	if *Port == 0 {
+		*Port, _ = utils.GetFreePort()
+	}
+
 	zap.S().Info("port: ", *Port)
 
 	server := grpc.NewServer()

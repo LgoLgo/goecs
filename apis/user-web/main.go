@@ -13,6 +13,9 @@ func main() {
 	// 初始化配置
 	initialize.InitConfig()
 
+	// 初始化 srv 的连接
+	initialize.InitSrvConn()
+
 	// 初始化 routers
 	Router := initialize.Routers(global.ServerConfig.Port)
 

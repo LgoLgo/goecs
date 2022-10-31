@@ -3,6 +3,7 @@ package main
 import (
 	"apis/user-web/global"
 	"apis/user-web/initialize"
+	"apis/user-web/utils"
 	"go.uber.org/zap"
 )
 
@@ -15,6 +16,11 @@ func main() {
 
 	// 初始化 srv 的连接
 	initialize.InitSrvConn()
+
+	port, err := utils.GetFreePort()
+	if err == nil {
+		global.ServerConfig.Port = port
+	}
 
 	// 初始化 routers
 	Router := initialize.Routers(global.ServerConfig.Port)

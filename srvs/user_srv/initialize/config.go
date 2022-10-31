@@ -9,18 +9,9 @@ import (
 	"srvs/user_srv/global"
 )
 
-func GetEnvInfo(env string) bool {
-	viper.AutomaticEnv()
-	return viper.GetBool(env)
-}
-
 func InitConfig() {
-	debug := GetEnvInfo("ECS_DEBUG")
 	configFilePrefix := "config"
-	configFileName := fmt.Sprintf("./user_srv/%s-pro.yaml", configFilePrefix)
-	if debug {
-		configFileName = fmt.Sprintf("./user_srv/%s-debug.yaml", configFilePrefix)
-	}
+	configFileName := fmt.Sprintf("./user_srv/%s.yaml", configFilePrefix)
 
 	v := viper.New()
 	v.SetConfigFile(configFileName)

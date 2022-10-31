@@ -1,0 +1,8 @@
+version: 2
+updates:
+  - package-ecosystem: "gomod"
+    directory: "/check.yaml"
+    labels:
+      - "Dependencies"
+    schedule:
+      interval: "daily"

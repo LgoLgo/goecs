@@ -1,7 +1,7 @@
 version: 2
 updates:
   - package-ecosystem: "gomod"
-    directory: "/"
+    directory: "/apis/go.mod"
     labels:
       - "🤖 Dependencies"
     schedule:

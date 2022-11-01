@@ -6,6 +6,9 @@ updates:
       - "dependencies"
     schedule:
       interval: "daily"
-    allow:
-      - dependency-name: "github.com/spf13/viper"
-      - dependency-name: "github.com/go-redis/redis/v8"
+  - package-ecosystem: "gomod"
+    directory: "/srvs"
+    labels:
+      - "dependencies"
+    schedule:
+      interval: "daily"

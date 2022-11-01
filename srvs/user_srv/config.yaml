@@ -1,11 +1,7 @@
-name: 'user-srv'
-mysql:
-  host: "127.0.0.1"
-  port: 3306
-  user: 'root'
-  password: '123456'
-  db: 'ecs_user_srv'
-
-consul:
-  host: '127.0.0.1'
-  port: 8500
+host: '192.168.0.104'
+port: 8849
+namespace: '6af9810f-2e08-4e9e-ab52-ae2868fe5fcc'
+user: 'nacos'
+password: 'nacos'
+dataid: 'user-srv.json'
+group: 'dev'

@@ -80,11 +80,6 @@ func main() {
 		panic(err)
 	}
 
-	err = server.Serve(lis)
-	if err != nil {
-		panic("failed to start grpc:" + err.Error())
-	}
-
 	go func() {
 		err = server.Serve(lis)
 		if err != nil {
@@ -92,12 +87,13 @@ func main() {
 		}
 	}()
 
-	// 接收终止信号
+	//接收终止信号
 	quit := make(chan os.Signal)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	<-quit
 	if err = client.Agent().ServiceDeregister(serviceID); err != nil {
 		zap.S().Info("sign out failed")
+	} else {
+		zap.S().Info("sign out success")
 	}
-	zap.S().Info("sign out success")
 }

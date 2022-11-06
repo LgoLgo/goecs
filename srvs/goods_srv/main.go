@@ -29,7 +29,7 @@ func main() {
 	// 初始化
 	initialize.InitLogger()
 	initialize.InitConfig()
-	//initialize.InitDB()
+	initialize.InitDB()
 	//initialize.InitEs()
 
 	flag.Parse()

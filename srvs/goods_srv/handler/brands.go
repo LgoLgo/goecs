@@ -2,15 +2,16 @@ package handler
 
 import (
 	"context"
+
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
+
 	"srvs/goods_srv/global"
 	"srvs/goods_srv/model"
 	"srvs/goods_srv/proto/gen"
 )
 
-//品牌和轮播图
 func (s *GoodsServer) BrandList(ctx context.Context, req *proto.BrandFilterRequest) (*proto.BrandListResponse, error) {
 	brandListResponse := proto.BrandListResponse{}
 
@@ -49,12 +50,14 @@ func (s *GoodsServer) CreateBrand(ctx context.Context, req *proto.BrandRequest) 
 
 	return &proto.BrandInfoResponse{Id: brand.ID}, nil
 }
+
 func (s *GoodsServer) DeleteBrand(ctx context.Context, req *proto.BrandRequest) (*emptypb.Empty, error) {
 	if result := global.DB.Delete(&model.Brands{}, req.Id); result.RowsAffected == 0 {
 		return nil, status.Errorf(codes.NotFound, "品牌不存在")
 	}
 	return &emptypb.Empty{}, nil
 }
+
 func (s *GoodsServer) UpdateBrand(ctx context.Context, req *proto.BrandRequest) (*emptypb.Empty, error) {
 	brands := model.Brands{}
 	if result := global.DB.First(&brands); result.RowsAffected == 0 {

@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"srvs/goods_srv/model"
@@ -13,33 +14,15 @@ import (
 	"srvs/goods_srv/proto/gen"
 )
 
-////商品分类
-func (s *GoodsServer) GetAllCategorysList(context.Context, *emptypb.Empty) (*proto.CategoryListResponse, error) {
-	/*
-		[
-			{
-				"id":xxx,
-				"name":"",
-				"level":1,
-				"is_tab":false,
-				"parent":13xxx,
-				"sub_category":[
-					"id":xxx,
-					"name":"",
-					"level":1,
-					"is_tab":false,
-					"sub_category":[]
-				]
-			}
-		]
-	*/
-	var categorys []model.Category
-	global.DB.Where(&model.Category{Level: 1}).Preload("SubCategory.SubCategory").Find(&categorys)
-	b, _ := json.Marshal(&categorys)
+// GetAllCategoryList 商品分类
+func (s *GoodsServer) GetAllCategoryList(context.Context, *emptypb.Empty) (*proto.CategoryListResponse, error) {
+	var categories []model.Category
+	global.DB.Where(&model.Category{Level: 1}).Preload("SubCategory.SubCategory").Find(&categories)
+	b, _ := json.Marshal(&categories)
 	return &proto.CategoryListResponse{JsonData: string(b)}, nil
 }
 
-////获取子分类
+// GetSubCategory 获取子分类
 func (s *GoodsServer) GetSubCategory(ctx context.Context, req *proto.CategoryListRequest) (*proto.SubCategoryListResponse, error) {
 	categoryListResponse := proto.SubCategoryListResponse{}
 
@@ -56,14 +39,14 @@ func (s *GoodsServer) GetSubCategory(ctx context.Context, req *proto.CategoryLis
 		ParentCategory: category.ParentCategoryID,
 	}
 
-	var subCategorys []model.Category
+	var subCategories []model.Category
 	var subCategoryResponse []*proto.CategoryInfoResponse
 	//preloads := "SubCategory"
 	//if category.Level == 1 {
 	//	preloads = "SubCategory.SubCategory"
 	//}
-	global.DB.Where(&model.Category{ParentCategoryID: req.Id}).Find(&subCategorys)
-	for _, subCategory := range subCategorys {
+	global.DB.Where(&model.Category{ParentCategoryID: req.Id}).Find(&subCategories)
+	for _, subCategory := range subCategories {
 		subCategoryResponse = append(subCategoryResponse, &proto.CategoryInfoResponse{
 			Id:             subCategory.ID,
 			Name:           subCategory.Name,
@@ -76,6 +59,7 @@ func (s *GoodsServer) GetSubCategory(ctx context.Context, req *proto.CategoryLis
 	categoryListResponse.SubCategorys = subCategoryResponse
 	return &categoryListResponse, nil
 }
+
 func (s *GoodsServer) CreateCategory(ctx context.Context, req *proto.CategoryInfoRequest) (*proto.CategoryInfoResponse, error) {
 	category := model.Category{}
 	cMap := map[string]interface{}{}

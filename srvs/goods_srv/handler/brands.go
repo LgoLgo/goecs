@@ -37,7 +37,7 @@ func (s *GoodsServer) BrandList(ctx context.Context, req *proto.BrandFilterReque
 	return &brandListResponse, nil
 }
 func (s *GoodsServer) CreateBrand(ctx context.Context, req *proto.BrandRequest) (*proto.BrandInfoResponse, error) {
-	//新建品牌
+	// 新建品牌
 	if result := global.DB.Where("name=?", req.Name).First(&model.Brands{}); result.RowsAffected == 1 {
 		return nil, status.Errorf(codes.InvalidArgument, "品牌已存在")
 	}

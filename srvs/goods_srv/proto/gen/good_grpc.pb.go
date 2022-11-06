@@ -121,7 +121,7 @@ func (c *goodsClient) GetGoodsDetail(ctx context.Context, in *GoodInfoRequest, o
 
 func (c *goodsClient) GetAllCategorysList(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*CategoryListResponse, error) {
 	out := new(CategoryListResponse)
-	err := c.cc.Invoke(ctx, "/Goods/GetAllCategorysList", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/Goods/GetAllCategoryList", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -343,7 +343,7 @@ func (UnimplementedGoodsServer) GetGoodsDetail(context.Context, *GoodInfoRequest
 	return nil, status.Errorf(codes.Unimplemented, "method GetGoodsDetail not implemented")
 }
 func (UnimplementedGoodsServer) GetAllCategorysList(context.Context, *emptypb.Empty) (*CategoryListResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetAllCategorysList not implemented")
+	return nil, status.Errorf(codes.Unimplemented, "method GetAllCategoryList not implemented")
 }
 func (UnimplementedGoodsServer) GetSubCategory(context.Context, *CategoryListRequest) (*SubCategoryListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSubCategory not implemented")
@@ -527,7 +527,7 @@ func _Goods_GetAllCategorysList_Handler(srv interface{}, ctx context.Context, de
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/Goods/GetAllCategorysList",
+		FullMethod: "/Goods/GetAllCategoryList",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(GoodsServer).GetAllCategorysList(ctx, req.(*emptypb.Empty))
@@ -873,7 +873,7 @@ var Goods_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Goods_GetGoodsDetail_Handler,
 		},
 		{
-			MethodName: "GetAllCategorysList",
+			MethodName: "GetAllCategoryList",
 			Handler:    _Goods_GetAllCategorysList_Handler,
 		},
 		{

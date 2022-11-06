@@ -19,9 +19,9 @@ func (s *GoodsServer) BannerList(ctx context.Context, req *emptypb.Empty) (*prot
 	result := global.DB.Find(&banners)
 	bannerListResponse.Total = int32(result.RowsAffected)
 
-	var bannerReponses []*proto.BannerResponse
+	var bannerResponses []*proto.BannerResponse
 	for _, banner := range banners {
-		bannerReponses = append(bannerReponses, &proto.BannerResponse{
+		bannerResponses = append(bannerResponses, &proto.BannerResponse{
 			Id:    banner.ID,
 			Image: banner.Image,
 			Index: banner.Index,
@@ -29,7 +29,7 @@ func (s *GoodsServer) BannerList(ctx context.Context, req *emptypb.Empty) (*prot
 		})
 	}
 
-	bannerListResponse.Data = bannerReponses
+	bannerListResponse.Data = bannerResponses
 
 	return &bannerListResponse, nil
 }

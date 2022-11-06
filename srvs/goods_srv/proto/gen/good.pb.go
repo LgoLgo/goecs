@@ -2506,7 +2506,7 @@ var file_good_proto_depIdxs = []int32{
 	20, // 14: Goods.DeleteGoods:input_type -> DeleteGoodsInfo
 	24, // 15: Goods.UpdateGoods:input_type -> CreateGoodsInfo
 	23, // 16: Goods.GetGoodsDetail:input_type -> GoodInfoRequest
-	30, // 17: Goods.GetAllCategorysList:input_type -> google.protobuf.Empty
+	30, // 17: Goods.GetAllCategoryList:input_type -> google.protobuf.Empty
 	0,  // 18: Goods.GetSubCategory:input_type -> CategoryListRequest
 	1,  // 19: Goods.CreateCategory:input_type -> CategoryInfoRequest
 	2,  // 20: Goods.DeleteCategory:input_type -> DeleteCategoryRequest
@@ -2530,7 +2530,7 @@ var file_good_proto_depIdxs = []int32{
 	30, // 38: Goods.DeleteGoods:output_type -> google.protobuf.Empty
 	30, // 39: Goods.UpdateGoods:output_type -> google.protobuf.Empty
 	28, // 40: Goods.GetGoodsDetail:output_type -> GoodsInfoResponse
-	5,  // 41: Goods.GetAllCategorysList:output_type -> CategoryListResponse
+	5,  // 41: Goods.GetAllCategoryList:output_type -> CategoryListResponse
 	6,  // 42: Goods.GetSubCategory:output_type -> SubCategoryListResponse
 	4,  // 43: Goods.CreateCategory:output_type -> CategoryInfoResponse
 	30, // 44: Goods.DeleteCategory:output_type -> google.protobuf.Empty

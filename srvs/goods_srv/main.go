@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
+	"srvs/goods_srv/initialize"
 	"srvs/user_srv/utils"
 	"syscall"
 
@@ -17,10 +18,9 @@ import (
 	"google.golang.org/grpc/health"
 	"google.golang.org/grpc/health/grpc_health_v1"
 
-	"srvs/user_srv/global"
-	"srvs/user_srv/handler"
-	"srvs/user_srv/initialize"
-	"srvs/user_srv/proto/gen"
+	"srvs/goods_srv/global"
+	"srvs/goods_srv/handler"
+	"srvs/goods_srv/proto/gen"
 )
 
 func main() {
@@ -29,7 +29,8 @@ func main() {
 	// 初始化
 	initialize.InitLogger()
 	initialize.InitConfig()
-	initialize.InitDB()
+	//initialize.InitDB()
+	//initialize.InitEs()
 
 	flag.Parse()
 	zap.S().Info("ip: ", *IP)
@@ -40,7 +41,7 @@ func main() {
 	zap.S().Info("port: ", *Port)
 
 	server := grpc.NewServer()
-	proto.RegisterUserServer(server, &handler.UserServer{})
+	proto.RegisterGoodsServer(server, &handler.GoodsServer{})
 	lis, err := net.Listen("tcp", fmt.Sprintf("%s:%d", *IP, *Port))
 	if err != nil {
 		panic("failed to listen:" + err.Error())
@@ -71,7 +72,7 @@ func main() {
 	serviceID := fmt.Sprintf("%s", uuid.NewV4())
 	registration.ID = serviceID
 	registration.Port = *Port
-	registration.Tags = []string{"L2ncE", "user", "srv"}
+	registration.Tags = []string{"L2ncE", "goods", "srv"}
 	registration.Address = global.ServerConfig.Host
 	registration.Check = check
 

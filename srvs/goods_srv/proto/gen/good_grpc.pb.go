@@ -23,34 +23,34 @@ const _ = grpc.SupportPackageIsVersion7
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type GoodsClient interface {
-	//商品接口
+	// 商品接口
 	GoodsList(ctx context.Context, in *GoodsFilterRequest, opts ...grpc.CallOption) (*GoodsListResponse, error)
-	//现在用户提交订单有多个商品，你得批量查询商品的信息吧
+	// 现在用户提交订单有多个商品，你得批量查询商品的信息吧
 	BatchGetGoods(ctx context.Context, in *BatchGoodsIdInfo, opts ...grpc.CallOption) (*GoodsListResponse, error)
 	CreateGoods(ctx context.Context, in *CreateGoodsInfo, opts ...grpc.CallOption) (*GoodsInfoResponse, error)
 	DeleteGoods(ctx context.Context, in *DeleteGoodsInfo, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	UpdateGoods(ctx context.Context, in *CreateGoodsInfo, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	GetGoodsDetail(ctx context.Context, in *GoodInfoRequest, opts ...grpc.CallOption) (*GoodsInfoResponse, error)
-	//商品分类
+	// 商品分类
 	GetAllCategorysList(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*CategoryListResponse, error)
-	//获取子分类
+	// 获取子分类
 	GetSubCategory(ctx context.Context, in *CategoryListRequest, opts ...grpc.CallOption) (*SubCategoryListResponse, error)
 	CreateCategory(ctx context.Context, in *CategoryInfoRequest, opts ...grpc.CallOption) (*CategoryInfoResponse, error)
 	DeleteCategory(ctx context.Context, in *DeleteCategoryRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	UpdateCategory(ctx context.Context, in *CategoryInfoRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	//品牌和轮播图
+	// 品牌和轮播图
 	BrandList(ctx context.Context, in *BrandFilterRequest, opts ...grpc.CallOption) (*BrandListResponse, error)
 	CreateBrand(ctx context.Context, in *BrandRequest, opts ...grpc.CallOption) (*BrandInfoResponse, error)
 	DeleteBrand(ctx context.Context, in *BrandRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	UpdateBrand(ctx context.Context, in *BrandRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	//轮播图
+	// 轮播图
 	BannerList(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*BannerListResponse, error)
 	CreateBanner(ctx context.Context, in *BannerRequest, opts ...grpc.CallOption) (*BannerResponse, error)
 	DeleteBanner(ctx context.Context, in *BannerRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
 	UpdateBanner(ctx context.Context, in *BannerRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
-	//品牌分类
+	// 品牌分类
 	CategoryBrandList(ctx context.Context, in *CategoryBrandFilterRequest, opts ...grpc.CallOption) (*CategoryBrandListResponse, error)
-	//通过category获取brands
+	// 通过category获取brands
 	GetCategoryBrandList(ctx context.Context, in *CategoryInfoRequest, opts ...grpc.CallOption) (*BrandListResponse, error)
 	CreateCategoryBrand(ctx context.Context, in *CategoryBrandRequest, opts ...grpc.CallOption) (*CategoryBrandResponse, error)
 	DeleteCategoryBrand(ctx context.Context, in *CategoryBrandRequest, opts ...grpc.CallOption) (*emptypb.Empty, error)
@@ -285,34 +285,34 @@ func (c *goodsClient) UpdateCategoryBrand(ctx context.Context, in *CategoryBrand
 // All implementations must embed UnimplementedGoodsServer
 // for forward compatibility
 type GoodsServer interface {
-	//商品接口
+	// 商品接口
 	GoodsList(context.Context, *GoodsFilterRequest) (*GoodsListResponse, error)
-	//现在用户提交订单有多个商品，你得批量查询商品的信息吧
+	// 现在用户提交订单有多个商品，你得批量查询商品的信息吧
 	BatchGetGoods(context.Context, *BatchGoodsIdInfo) (*GoodsListResponse, error)
 	CreateGoods(context.Context, *CreateGoodsInfo) (*GoodsInfoResponse, error)
 	DeleteGoods(context.Context, *DeleteGoodsInfo) (*emptypb.Empty, error)
 	UpdateGoods(context.Context, *CreateGoodsInfo) (*emptypb.Empty, error)
 	GetGoodsDetail(context.Context, *GoodInfoRequest) (*GoodsInfoResponse, error)
-	//商品分类
+	// 商品分类
 	GetAllCategorysList(context.Context, *emptypb.Empty) (*CategoryListResponse, error)
-	//获取子分类
+	// 获取子分类
 	GetSubCategory(context.Context, *CategoryListRequest) (*SubCategoryListResponse, error)
 	CreateCategory(context.Context, *CategoryInfoRequest) (*CategoryInfoResponse, error)
 	DeleteCategory(context.Context, *DeleteCategoryRequest) (*emptypb.Empty, error)
 	UpdateCategory(context.Context, *CategoryInfoRequest) (*emptypb.Empty, error)
-	//品牌和轮播图
+	// 品牌和轮播图
 	BrandList(context.Context, *BrandFilterRequest) (*BrandListResponse, error)
 	CreateBrand(context.Context, *BrandRequest) (*BrandInfoResponse, error)
 	DeleteBrand(context.Context, *BrandRequest) (*emptypb.Empty, error)
 	UpdateBrand(context.Context, *BrandRequest) (*emptypb.Empty, error)
-	//轮播图
+	// 轮播图
 	BannerList(context.Context, *emptypb.Empty) (*BannerListResponse, error)
 	CreateBanner(context.Context, *BannerRequest) (*BannerResponse, error)
 	DeleteBanner(context.Context, *BannerRequest) (*emptypb.Empty, error)
 	UpdateBanner(context.Context, *BannerRequest) (*emptypb.Empty, error)
-	//品牌分类
+	// 品牌分类
 	CategoryBrandList(context.Context, *CategoryBrandFilterRequest) (*CategoryBrandListResponse, error)
-	//通过category获取brands
+	// 通过category获取brands
 	GetCategoryBrandList(context.Context, *CategoryInfoRequest) (*BrandListResponse, error)
 	CreateCategoryBrand(context.Context, *CategoryBrandRequest) (*CategoryBrandResponse, error)
 	DeleteCategoryBrand(context.Context, *CategoryBrandRequest) (*emptypb.Empty, error)

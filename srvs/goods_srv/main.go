@@ -30,7 +30,7 @@ func main() {
 	initialize.InitLogger()
 	initialize.InitConfig()
 	initialize.InitDB()
-	//initialize.InitEs()
+	initialize.InitEs()
 
 	flag.Parse()
 	zap.S().Info("ip: ", *IP)

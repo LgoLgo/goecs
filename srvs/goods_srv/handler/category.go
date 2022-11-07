@@ -41,11 +41,11 @@ func (s *GoodsServer) GetSubCategory(ctx context.Context, req *proto.CategoryLis
 
 	var subCategories []model.Category
 	var subCategoryResponse []*proto.CategoryInfoResponse
-	//preloads := "SubCategory"
-	//if category.Level == 1 {
-	//	preloads = "SubCategory.SubCategory"
-	//}
-	global.DB.Where(&model.Category{ParentCategoryID: req.Id}).Find(&subCategories)
+	preloads := "SubCategory"
+	if category.Level == 1 {
+		preloads = "SubCategory.SubCategory"
+	}
+	global.DB.Where(&model.Category{ParentCategoryID: req.Id}).Preload(preloads).Find(&subCategories)
 	for _, subCategory := range subCategories {
 		subCategoryResponse = append(subCategoryResponse, &proto.CategoryInfoResponse{
 			Id:             subCategory.ID,

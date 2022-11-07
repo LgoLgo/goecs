@@ -51,16 +51,9 @@ func ModelToResponse(goods model.Goods) proto.GoodsInfoResponse {
 }
 
 func (s *GoodsServer) GoodsList(ctx context.Context, req *proto.GoodsFilterRequest) (*proto.GoodsListResponse, error) {
-	//使用es的目的是搜索出商品的id来，通过id拿到具体的字段信息是通过mysql来完成
-	//我们使用es是用来做搜索的， 是否应该将所有的mysql字段全部在es中保存一份
-	//es用来做搜索，这个时候我们一般只把搜索和过滤的字段信息保存到es中
-	//es可以用来当做mysql使用， 但是实际上mysql和es之间是互补的关系， 一般mysql用来做存储使用，es用来做搜索使用
-	//es想要提高性能， 就要将es的内存设置的够大， 1k 2k
-
-	//关键词搜索、查询新品、查询热门商品、通过价格区间筛选， 通过商品分类筛选
 	goodsListResponse := &proto.GoodsListResponse{}
 
-	//match bool 复合查询
+	// match bool 复合查询
 	q := elastic.NewBoolQuery()
 	localDB := global.DB.Model(model.Goods{})
 	if req.KeyWords != "" {
@@ -85,7 +78,7 @@ func (s *GoodsServer) GoodsList(ctx context.Context, req *proto.GoodsFilterReque
 		q = q.Filter(elastic.NewTermQuery("brands_id", req.Brand))
 	}
 
-	//通过category去查询商品
+	// 通过category去查询商品
 	var subQuery string
 	categoryIds := make([]interface{}, 0)
 	if req.TopCategory > 0 {
@@ -111,11 +104,11 @@ func (s *GoodsServer) GoodsList(ctx context.Context, req *proto.GoodsFilterReque
 			categoryIds = append(categoryIds, re.ID)
 		}
 
-		//生成terms查询
+		// 生成terms查询
 		q = q.Filter(elastic.NewTermsQuery("category_id", categoryIds...))
 	}
 
-	//分页
+	// 分页
 	if req.Pages == 0 {
 		req.Pages = 1
 	}
@@ -139,7 +132,7 @@ func (s *GoodsServer) GoodsList(ctx context.Context, req *proto.GoodsFilterReque
 		goodsIds = append(goodsIds, goods.ID)
 	}
 
-	//查询id在某个数组中的值
+	// 查询id在某个数组中的值
 	var goods []model.Goods
 	re := localDB.Preload("Category").Preload("Brands").Find(&goods, goodsIds)
 	if re.Error != nil {
@@ -154,12 +147,11 @@ func (s *GoodsServer) GoodsList(ctx context.Context, req *proto.GoodsFilterReque
 	return goodsListResponse, nil
 }
 
-//现在用户提交订单有多个商品，你得批量查询商品的信息吧
+// BatchGetGoods 用户提交订单有多个商品，批量查询商品的信息
 func (s *GoodsServer) BatchGetGoods(ctx context.Context, req *proto.BatchGoodsIdInfo) (*proto.GoodsListResponse, error) {
 	goodsListResponse := &proto.GoodsListResponse{}
 	var goods []model.Goods
 
-	//调用where并不会真正执行sql 只是用来生成sql的 当调用find， first才会去执行sql，
 	result := global.DB.Where(req.Id).Find(&goods)
 	for _, good := range goods {
 		goodsInfoResponse := ModelToResponse(good)
@@ -188,9 +180,9 @@ func (s *GoodsServer) CreateGoods(ctx context.Context, req *proto.CreateGoodsInf
 	if result := global.DB.First(&brand, req.BrandId); result.RowsAffected == 0 {
 		return nil, status.Errorf(codes.InvalidArgument, "品牌不存在")
 	}
-	//先检查redis中是否有这个token
-	//防止同一个token的数据重复插入到数据库中，如果redis中没有这个token则放入redis
-	//这里没有看到图片文件是如何上传， 在微服务中 普通的文件上传已经不再使用
+	// 先检查redis中是否有这个token
+	// 防止同一个token的数据重复插入到数据库中，如果redis中没有这个token则放入redis
+	// 这里没有看到图片文件是如何上传， 在微服务中 普通的文件上传已经不再使用
 	goods := model.Goods{
 		Brands:          brand,
 		BrandsID:        brand.ID,
@@ -210,7 +202,7 @@ func (s *GoodsServer) CreateGoods(ctx context.Context, req *proto.CreateGoodsInf
 		OnSale:          req.OnSale,
 	}
 
-	//srv之间互相调用了
+	// srv之间互相调用了
 	tx := global.DB.Begin()
 	result := tx.Save(&goods)
 	if result.Error != nil {

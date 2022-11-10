@@ -15,7 +15,7 @@ import (
 func InitEs() {
 	// 初始化连接
 	host := fmt.Sprintf("http://%s:%d", global.ServerConfig.EsInfo.Host, global.ServerConfig.EsInfo.Port)
-	logger := log.New(os.Stdout, "mxshop", log.LstdFlags)
+	logger := log.New(os.Stdout, "ECS", log.LstdFlags)
 	var err error
 	global.EsClient, err = elastic.NewClient(elastic.SetURL(host), elastic.SetSniff(false),
 		elastic.SetTraceLog(logger))

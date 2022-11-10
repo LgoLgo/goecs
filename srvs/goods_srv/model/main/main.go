@@ -49,11 +49,11 @@ func main() {
 
 	_ = db.AutoMigrate(&model.Category{},
 		&model.Brands{}, &model.GoodsCategoryBrand{}, &model.Banner{}, &model.Goods{})
-	//Mysql2Es()
+	Mysql2Es()
 }
 
 func Mysql2Es() {
-	dsn := "root:root@tcp(192.168.0.104:3306)/mxshop_goods_srv?charset=utf8mb4&parseTime=True&loc=Local"
+	dsn := "root:123456@tcp(127.0.0.1:3306)/ecs_goods_srv?charset=utf8mb4&parseTime=True&loc=Local"
 
 	newLogger := logger.New(
 		log.New(os.Stdout, "\r\n", log.LstdFlags), // io writer
@@ -75,8 +75,8 @@ func Mysql2Es() {
 		panic(err)
 	}
 
-	host := "http://192.168.0.104:9200"
-	logger := log.New(os.Stdout, "mxshop", log.LstdFlags)
+	host := "http://127.0.0.1:9200"
+	logger := log.New(os.Stdout, "ECS", log.LstdFlags)
 	global.EsClient, err = elastic.NewClient(elastic.SetURL(host), elastic.SetSniff(false),
 		elastic.SetTraceLog(logger))
 	if err != nil {
@@ -107,6 +107,5 @@ func Mysql2Es() {
 		if err != nil {
 			panic(err)
 		}
-		//强调一下 一定要将docker启动es的java_ops的内存设置大一些 否则运行过程中会出现 bad request错误
 	}
 }

@@ -1,15 +1,16 @@
 package main
 
 import (
-	"apis/user-web/global"
-	"apis/user-web/initialize"
-	"apis/user-web/utils/register/consul"
+	"apis/goods-web/utils/register/consul"
 	"fmt"
 	uuid "github.com/satori/go.uuid"
 	"go.uber.org/zap"
 	"os"
 	"os/signal"
 	"syscall"
+
+	"apis/goods-web/global"
+	"apis/goods-web/initialize"
 )
 
 func main() {
@@ -24,6 +25,9 @@ func main() {
 
 	// 初始化 routers
 	Router := initialize.Routers(global.ServerConfig.Port)
+
+	// 初始化sentinel
+	initialize.InitSentinel()
 
 	registerClient := consul.NewRegistryClient(global.ServerConfig.ConsulInfo.Host, global.ServerConfig.ConsulInfo.Port)
 	serviceId := fmt.Sprintf("%s", uuid.NewV4())

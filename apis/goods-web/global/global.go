@@ -1,8 +1,8 @@
 package global
 
 import (
-	"apis/user-web/config"
-	"apis/user-web/proto/gen"
+	"apis/goods-web/config"
+	"apis/goods-web/proto/gen"
 )
 
 var (
@@ -10,5 +10,5 @@ var (
 
 	NacosConfig = &config.NacosConfig{}
 
-	UserSrvClient proto.UserClient
+	GoodsSrvClient proto.GoodsClient
 )

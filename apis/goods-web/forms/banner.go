@@ -1,7 +1,7 @@
 package forms
 
 type BannerForm struct {
-	Image string `form:"image" json:"image" binding:"url"`
-	Index int    `form:"index" json:"index" binding:"required"`
-	Url   string `form:"url" json:"url" binding:"url"`
+	Image string `form:"image" json:"image"`
+	Index int    `form:"index,required" json:"index,required"`
+	Url   string `form:"url" json:"url"`
 }

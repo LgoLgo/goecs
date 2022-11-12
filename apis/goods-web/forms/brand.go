@@ -1,11 +1,11 @@
 package forms
 
 type BrandForm struct {
-	Name string `form:"name" json:"name" binding:"required,min=3,max=10"`
-	Logo string `form:"logo" json:"logo" binding:"url"`
+	Name string `form:"name" json:"name"`
+	Logo string `form:"logo" json:"logo"`
 }
 
 type CategoryBrandForm struct {
-	CategoryId int `form:"category_id" json:"category_id" binding:"required"`
-	BrandId    int `form:"brand_id" json:"brand_id" binding:"required"`
+	CategoryId int `form:"category_id,required" json:"category_id,required"`
+	BrandId    int `form:"brand_id,required" json:"brand_id,required"`
 }

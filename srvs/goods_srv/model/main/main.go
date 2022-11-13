@@ -2,14 +2,11 @@ package main
 
 import (
 	"context"
-	"crypto/md5"
-	"encoding/hex"
 	"github.com/olivere/elastic/v7"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
-	"io"
 	"log"
 	"os"
 	"srvs/goods_srv/global"
@@ -17,12 +14,6 @@ import (
 	"strconv"
 	"time"
 )
-
-func genMd5(code string) string {
-	Md5 := md5.New()
-	_, _ = io.WriteString(Md5, code)
-	return hex.EncodeToString(Md5.Sum(nil))
-}
 
 func main() {
 	dsn := "root:123456@tcp(127.0.0.1:3306)/ecs_goods_srv?charset=utf8mb4&parseTime=True&loc=Local"

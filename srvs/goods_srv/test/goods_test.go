@@ -9,13 +9,10 @@ import (
 	"testing"
 )
 
-var brandClient proto.GoodsClient
-var conn *grpc.ClientConn
-
 func Init() {
 	var err error
 	// 根据随机的端口进行更改
-	conn, err = grpc.Dial("127.0.0.1:51706", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err = grpc.Dial("127.0.0.1:50833", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		panic(err)
 	}

@@ -1,6 +1,7 @@
 package otgrpc
 
 import (
+	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/opentracing/opentracing-go"
 	"github.com/opentracing/opentracing-go/ext"
 	"github.com/opentracing/opentracing-go/log"
@@ -47,11 +48,11 @@ func OpenTracingClientInterceptor(tracer opentracing.Tracer, optFuncs ...Option)
 
 		ginContext := ctx.Value("ginContext")
 		switch ginContext.(type) {
-		case *gin.Context:
-			if itracer, ok := ginContext.(*gin.Context).Get("tracer"); ok {
+		case *app.RequestContext:
+			if itracer, ok := ginContext.(*app.RequestContext).Get("tracer"); ok {
 				tracer = itracer.(opentracing.Tracer)
 			}
-			if parentSpan, ok := ginContext.(*gin.Context).Get("parentSpan"); ok {
+			if parentSpan, ok := ginContext.(*app.RequestContext).Get("parentSpan"); ok {
 				parentCtx = parentSpan.(*jaegerClient.Span).Context()
 			}
 		}

@@ -6,10 +6,11 @@ require (
 	github.com/alibaba/sentinel-golang v1.0.4
 	github.com/cloudwego/hertz v0.4.0
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/go-playground/validator/v10 v10.11.1
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/golang/protobuf v1.5.2
 	github.com/grpc-ecosystem/grpc-opentracing v0.0.0-20180507213350-8e809c8a8645
-	github.com/hashicorp/consul/api v1.15.3
+	github.com/hashicorp/consul/api v1.16.0
 	github.com/mbobakov/grpc-consul-resolver v1.4.4
 	github.com/mojocn/base64Captcha v1.3.5
 	github.com/nacos-group/nacos-sdk-go v1.1.2
@@ -55,7 +56,7 @@ require (
 	github.com/hashicorp/go-rootcerts v1.0.2 // indirect
 	github.com/hashicorp/golang-lru v0.5.4 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
-	github.com/hashicorp/serf v0.9.8 // indirect
+	github.com/hashicorp/serf v0.10.1 // indirect
 	github.com/henrylee2cn/ameda v1.4.10 // indirect
 	github.com/henrylee2cn/goutil v0.0.0-20210127050712-89660552f6f8 // indirect
 	github.com/jmespath/go-jmespath v0.0.0-20180206201540-c2b33e8439af // indirect

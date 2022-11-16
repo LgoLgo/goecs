@@ -6,7 +6,6 @@ require (
 	github.com/alibaba/sentinel-golang v1.0.4
 	github.com/cloudwego/hertz v0.4.0
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
-	github.com/go-playground/validator/v10 v10.11.1
 	github.com/go-redis/redis/v8 v8.11.5
 	github.com/golang/protobuf v1.5.2
 	github.com/grpc-ecosystem/grpc-opentracing v0.0.0-20180507213350-8e809c8a8645

@@ -34,7 +34,7 @@ type ServerConfig struct {
 	Tags             []string       `mapstructure:"tags" json:"tags"`
 	GoodsSrvInfo     GoodsSrvConfig `mapstructure:"goods_srv" json:"goods_srv"`
 	OrderSrvInfo     GoodsSrvConfig `mapstructure:"order_srv" json:"order_srv"`
-	InventorySrvInfo GoodsSrvConfig `mapstructure:"order_srv" json:"inventory_srv"`
+	InventorySrvInfo GoodsSrvConfig `mapstructure:"inventory_srv" json:"inventory_srv"`
 	JWTInfo          JWTConfig      `mapstructure:"jwt" json:"jwt"`
 	ConsulInfo       ConsulConfig   `mapstructure:"consul" json:"consul"`
 	AliPayInfo       AlipayConfig   `mapstructure:"alipay" json:"alipay"`

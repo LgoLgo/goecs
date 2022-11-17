@@ -3,5 +3,5 @@ port: 8848
 namespace: '84bc4805-6988-418f-b7b1-aef15bae7b61'
 user: 'nacos'
 password: 'nacos'
-dataid: 'userop-srv'
+dataid: 'userop-web'
 group: 'DEFAULT_GROUP'

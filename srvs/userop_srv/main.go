@@ -72,7 +72,7 @@ func main() {
 		serviceID := fmt.Sprintf("%s", uuid.NewV4())
 		registration.ID = serviceID
 		registration.Port = *Port
-		registration.Tags = []string{"L2ncE", "inventory", "srv"}
+		registration.Tags = []string{"L2ncE", "userop", "srv"}
 		registration.Address = global.ServerConfig.Host
 		registration.Check = check
 

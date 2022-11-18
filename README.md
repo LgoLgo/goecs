@@ -1,3 +1,5 @@
 # E-commerce-system
 
-年轻人的第一个电商系统
+A distributed microservice e-commerce system based on Hertz and gRPC.
+
+Still under construction.

@@ -121,7 +121,7 @@ func (*InventoryServer) TrySell(ctx context.Context, req *proto.SellInfo) (*empt
 	//数据库基本的一个应用场景：数据库事务
 	//并发情况之下 可能会出现超卖 1
 	client := goredislib.NewClient(&goredislib.Options{
-		Addr: "192.168.0.104:6379",
+		Addr: "127.0.0.1:6379",
 	})
 	pool := goredis.NewPool(client) // or, pool := redigo.NewPool(...)
 	rs := redsync.New(pool)
@@ -179,7 +179,7 @@ func (*InventoryServer) ConfirmSell(ctx context.Context, req *proto.SellInfo) (*
 	//数据库基本的一个应用场景：数据库事务
 	//并发情况之下 可能会出现超卖 1
 	client := goredislib.NewClient(&goredislib.Options{
-		Addr: "192.168.0.104:6379",
+		Addr: "127.0.0.1:6379",
 	})
 	pool := goredis.NewPool(client) // or, pool := redigo.NewPool(...)
 	rs := redsync.New(pool)
@@ -237,7 +237,7 @@ func (*InventoryServer) CancelSell(ctx context.Context, req *proto.SellInfo) (*e
 	//数据库基本的一个应用场景：数据库事务
 	//并发情况之下 可能会出现超卖 1
 	client := goredislib.NewClient(&goredislib.Options{
-		Addr: "192.168.0.104:6379",
+		Addr: "127.0.0.1:6379",
 	})
 	pool := goredis.NewPool(client) // or, pool := redigo.NewPool(...)
 	rs := redsync.New(pool)

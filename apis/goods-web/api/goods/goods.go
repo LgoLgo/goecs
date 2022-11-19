@@ -6,16 +6,17 @@ import (
 	"apis/goods-web/global"
 	"apis/goods-web/proto/gen"
 	"context"
-	"fmt"
+	sentinel "github.com/alibaba/sentinel-golang/api"
+	"github.com/alibaba/sentinel-golang/core/base"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/utils"
+	"github.com/opentracing/opentracing-go"
 	"go.uber.org/zap"
 	"net/http"
 	"strconv"
 )
 
 func List(c context.Context, ctx *app.RequestContext) {
-	fmt.Println("商品列表")
 	request := &proto.GoodsFilterRequest{}
 
 	priceMin := ctx.DefaultQuery("pmin", "0")
@@ -60,23 +61,23 @@ func List(c context.Context, ctx *app.RequestContext) {
 	request.Brand = int32(brandIdInt)
 
 	//请求商品的service服务、负载均衡
-	//parent, _ := ctx.Get("parentSpan")
-	//opentracing.ContextWithSpan(context.Background(), parent.(opentracing.Span))
-	//
-	//e, b := sentinel.Entry("goods-list", sentinel.WithTrafficType(base.Inbound))
-	//if b != nil {
-	//	ctx.JSON(http.StatusTooManyRequests, utils.H{
-	//		"msg": "请求过于频繁，请稍后重试",
-	//	})
-	//	return
-	//}
+	parent, _ := ctx.Get("parentSpan")
+	opentracing.ContextWithSpan(context.WithValue(c, "hertzContext", ctx), parent.(opentracing.Span))
+	e, b := sentinel.Entry("goods-list", sentinel.WithTrafficType(base.Inbound))
+	if b != nil {
+		ctx.JSON(http.StatusTooManyRequests, utils.H{
+			"msg": "请求过于频繁，请稍后重试",
+		})
+		return
+	}
+
 	r, err := global.GoodsSrvClient.GoodsList(c, request)
 	if err != nil {
 		zap.S().Errorw("[List] 查询 【商品列表】失败")
 		api.HandleGRPCErrorToHTTP(err, ctx)
 		return
 	}
-	//e.Exit()
+	e.Exit()
 	reMap := map[string]interface{}{
 		"total": r.Total,
 	}

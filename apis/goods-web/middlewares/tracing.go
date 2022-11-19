@@ -24,7 +24,6 @@ func Trace() app.HandlerFunc {
 			},
 			ServiceName: global.ServerConfig.JaegerInfo.Name,
 		}
-
 		tracer, closer, err := cfg.NewTracer(jaegercfg.Logger(jaeger.StdLogger))
 		if err != nil {
 			panic(err)

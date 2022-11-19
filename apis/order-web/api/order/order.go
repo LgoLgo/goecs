@@ -91,7 +91,7 @@ func New(c context.Context, ctx *app.RequestContext) {
 		api.HandleValidatorError(ctx, err)
 	}
 	userId, _ := ctx.Get("userId")
-	rsp, err := global.OrderSrvClient.CreateOrder(context.WithValue(context.Background(), "ginContext", ctx), &proto.OrderRequest{
+	rsp, err := global.OrderSrvClient.CreateOrder(context.WithValue(context.Background(), "hertzContext", ctx), &proto.OrderRequest{
 		UserId:  int32(userId.(uint)),
 		Name:    orderForm.Name,
 		Mobile:  orderForm.Mobile,

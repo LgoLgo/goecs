@@ -29,7 +29,7 @@ type ServerConfig struct {
 	GoodSrvInfo GoodsSrvConfig `mapstructure:"goods_srv" json:"goods_srv"`
 	JWTInfo     JWTConfig      `mapstructure:"jwt" json:"jwt"`
 	ConsulInfo  ConsulConfig   `mapstructure:"consul" json:"consul"`
-	JaegerInfo  JaegerConfig   `mapstructure:"consul" json:"jaeger"`
+	JaegerInfo  JaegerConfig   `mapstructure:"jaeger" json:"jaeger"`
 }
 
 type NacosConfig struct {

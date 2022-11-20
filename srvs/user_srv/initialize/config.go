@@ -9,6 +9,7 @@ import (
 	"github.com/nacos-group/nacos-sdk-go/vo"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
+
 	"srvs/user_srv/global"
 )
 
@@ -26,7 +27,7 @@ func InitConfig() {
 	}
 	zap.S().Infof("Config Info: %v", global.NacosConfig)
 
-	//从nacos中读取配置信息
+	// Read configuration information from nacos
 	sc := []constant.ServerConfig{
 		{
 			IpAddr: global.NacosConfig.Host,
@@ -35,7 +36,7 @@ func InitConfig() {
 	}
 
 	cc := constant.ClientConfig{
-		NamespaceId:         global.NacosConfig.Namespace, // 如果需要支持多namespace，我们可以场景多个client,它们有不同的NamespaceId
+		NamespaceId:         global.NacosConfig.Namespace,
 		TimeoutMs:           5000,
 		NotLoadCacheAtStart: true,
 		LogDir:              "tmp/nacos/log",
@@ -63,5 +64,4 @@ func InitConfig() {
 	if err != nil {
 		zap.S().Fatalf("nacos config failed: %s", err.Error())
 	}
-	fmt.Println(&global.ServerConfig)
 }

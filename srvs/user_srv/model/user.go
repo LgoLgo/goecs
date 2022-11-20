@@ -7,7 +7,7 @@ import (
 
 type BaseModel struct {
 	ID        int32     `gorm:"primarykey"`
-	CreatedAt time.Time `gorm:"column:add_time"`
+	CreatedAt time.Time `gorm:"column:add_tiwme"`
 	UpdatedAt time.Time `gorm:"column:update_time"`
 	DeletedAt gorm.DeletedAt
 	IsDeleted bool

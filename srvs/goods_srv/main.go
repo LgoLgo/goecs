@@ -46,10 +46,10 @@ func main() {
 	if err != nil {
 		panic("failed to listen:" + err.Error())
 	}
-	// 注册服务健康检查
+	// Registration Service Health Check
 	grpc_health_v1.RegisterHealthServer(server, health.NewServer())
 
-	//服务注册
+	// service registry
 	cfg := api.DefaultConfig()
 	cfg.Address = fmt.Sprintf("%s:%d", global.ServerConfig.ConsulInfo.Host,
 		global.ServerConfig.ConsulInfo.Port)
@@ -58,7 +58,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	//生成对应的检查对象
+	// Generate corresponding inspection objects
 	check := &api.AgentServiceCheck{
 		GRPC:                           fmt.Sprintf("%s:%d", global.ServerConfig.Host, *Port),
 		Timeout:                        "5s",
@@ -66,7 +66,7 @@ func main() {
 		DeregisterCriticalServiceAfter: "15s",
 	}
 
-	//生成注册对象
+	// Generate registration object
 	registration := new(api.AgentServiceRegistration)
 	registration.Name = global.ServerConfig.Name
 	serviceID := fmt.Sprintf("%s", uuid.NewV4())
@@ -88,7 +88,7 @@ func main() {
 		}
 	}()
 
-	//接收终止信号
+	// receive termination signal
 	quit := make(chan os.Signal)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	<-quit

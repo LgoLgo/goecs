@@ -55,7 +55,7 @@ func main() {
 			LogSpans:           true,
 			LocalAgentHostPort: "192.168.124.51:6831",
 		},
-		ServiceName: "mxshop",
+		ServiceName: "LgoECS",
 	}
 
 	tracer, closer, err := jcfg.NewTracer(jaegercfg.Logger(jaeger.StdLogger))
@@ -70,10 +70,10 @@ func main() {
 	if err != nil {
 		panic("failed to listen:" + err.Error())
 	}
-	// 注册服务健康检查
+	// Registration Service Health Check
 	grpc_health_v1.RegisterHealthServer(server, health.NewServer())
 
-	//服务注册
+	// service registry
 	cfg := api.DefaultConfig()
 	cfg.Address = fmt.Sprintf("%s:%d", global.ServerConfig.ConsulInfo.Host,
 		global.ServerConfig.ConsulInfo.Port)
@@ -82,7 +82,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	//生成对应的检查对象
+	// Generate corresponding inspection objects
 	check := &api.AgentServiceCheck{
 		GRPC:                           fmt.Sprintf("%s:%d", global.ServerConfig.Host, *Port),
 		Timeout:                        "5s",
@@ -90,7 +90,7 @@ func main() {
 		DeregisterCriticalServiceAfter: "15s",
 	}
 
-	//生成注册对象
+	// Generate registration object
 	registration := new(api.AgentServiceRegistration)
 	registration.Name = global.ServerConfig.Name
 	serviceID := fmt.Sprintf("%s", uuid.NewV4())
@@ -114,7 +114,7 @@ func main() {
 
 	c, _ := rocketmq.NewPushConsumer(
 		consumer.WithNameServer([]string{"10.17.105.123:9876"}),
-		consumer.WithGroupName("mxshop-order"),
+		consumer.WithGroupName("LgoECS-order"),
 	)
 
 	if err := c.Subscribe("order_timeout", consumer.MessageSelector{}, handler.OrderTimeout); err != nil {
@@ -122,7 +122,7 @@ func main() {
 	}
 	_ = c.Start()
 
-	//接收终止信号
+	// receive termination signal
 	quit := make(chan os.Signal)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	<-quit

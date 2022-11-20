@@ -30,7 +30,7 @@ func main() {
 	serviceId := fmt.Sprintf("%s", uuid.NewV4())
 	err := registerClient.Register(global.ServerConfig.Host, global.ServerConfig.Port, global.ServerConfig.Name, global.ServerConfig.Tags, serviceId)
 	if err != nil {
-		zap.S().Panic("服务注册失败:", err.Error())
+		zap.S().Panic("service registry failed:", err.Error())
 	}
 	zap.S().Debugf("启动服务器, 端口： %d", global.ServerConfig.Port)
 	go func() {
@@ -39,7 +39,7 @@ func main() {
 		}
 	}()
 
-	// 接收终止信号
+	//  receive termination signal
 	quit := make(chan os.Signal)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	<-quit

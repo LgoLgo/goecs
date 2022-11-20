@@ -3,12 +3,10 @@ package main
 import (
 	"flag"
 	"fmt"
+	"net"
 	"os"
 	"os/signal"
-	"srvs/user_srv/utils"
 	"syscall"
-
-	"net"
 
 	"github.com/hashicorp/consul/api"
 	uuid "github.com/satori/go.uuid"
@@ -21,12 +19,14 @@ import (
 	"srvs/user_srv/handler"
 	"srvs/user_srv/initialize"
 	"srvs/user_srv/proto/gen"
+	"srvs/user_srv/utils"
 )
 
 func main() {
 	IP := flag.String("ip", "0.0.0.0", "address")
 	Port := flag.Int("port", 0, "post")
-	// 初始化
+
+	// initialization
 	initialize.InitLogger()
 	initialize.InitConfig()
 	initialize.InitDB()
@@ -45,10 +45,10 @@ func main() {
 	if err != nil {
 		panic("failed to listen:" + err.Error())
 	}
-	// 注册服务健康检查
+	// Registration Service Health Check
 	grpc_health_v1.RegisterHealthServer(server, health.NewServer())
 
-	//服务注册
+	// service registry
 	cfg := api.DefaultConfig()
 	cfg.Address = fmt.Sprintf("%s:%d", global.ServerConfig.ConsulInfo.Host,
 		global.ServerConfig.ConsulInfo.Port)
@@ -57,7 +57,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	//生成对应的检查对象
+	// Generate corresponding inspection objects
 	check := &api.AgentServiceCheck{
 		GRPC:                           fmt.Sprintf("%s:%d", global.ServerConfig.Host, *Port),
 		Timeout:                        "5s",
@@ -65,13 +65,13 @@ func main() {
 		DeregisterCriticalServiceAfter: "15s",
 	}
 
-	//生成注册对象
+	// Generate registration object
 	registration := new(api.AgentServiceRegistration)
 	registration.Name = global.ServerConfig.Name
 	serviceID := fmt.Sprintf("%s", uuid.NewV4())
 	registration.ID = serviceID
 	registration.Port = *Port
-	registration.Tags = []string{"L2ncE", "user", "srv"}
+	registration.Tags = []string{"LgoECS", "user", "srv"}
 	registration.Address = global.ServerConfig.Host
 	registration.Check = check
 
@@ -87,7 +87,7 @@ func main() {
 		}
 	}()
 
-	//接收终止信号
+	// receive termination signal
 	quit := make(chan os.Signal)
 	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM)
 	<-quit

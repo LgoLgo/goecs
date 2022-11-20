@@ -2,6 +2,7 @@ package global
 
 import (
 	"gorm.io/gorm"
+
 	"srvs/user_srv/config"
 )
 

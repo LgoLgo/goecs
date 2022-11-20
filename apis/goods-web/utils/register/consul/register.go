@@ -31,7 +31,7 @@ func (r *Registry) Register(address string, port int, name string, tags []string
 	if err != nil {
 		panic(err)
 	}
-	//生成对应的检查对象
+	// Generate corresponding inspection objects
 	check := &api.AgentServiceCheck{
 		HTTP:                           fmt.Sprintf("http://%s:%d/health", address, port),
 		Timeout:                        "5s",
@@ -39,7 +39,7 @@ func (r *Registry) Register(address string, port int, name string, tags []string
 		DeregisterCriticalServiceAfter: "10s",
 	}
 
-	//生成注册对象
+	// Generate registration object
 	registration := new(api.AgentServiceRegistration)
 	registration.Name = name
 	registration.ID = id

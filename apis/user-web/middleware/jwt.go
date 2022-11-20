@@ -6,6 +6,7 @@ import (
 	"context"
 	"errors"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/cloudwego/hertz/pkg/app"
@@ -23,6 +24,7 @@ func JWTAuth() app.HandlerFunc {
 			c.Abort()
 			return
 		}
+		token = strings.Split(token, " ")[1]
 		j := NewJWT()
 		// parseToken 解析token包含的信息
 		claims, err := j.ParseToken(token)

@@ -224,7 +224,7 @@ func Register(ctx context.Context, c *app.RequestContext) {
 		StandardClaims: jwt.StandardClaims{
 			NotBefore: time.Now().Unix(),               //签名的生效时间
 			ExpiresAt: time.Now().Unix() + 60*60*24*30, //30天过期
-			Issuer:    "L2ncE",
+			Issuer:    "ecs",
 		},
 	}
 	token, err := j.CreateToken(claims)

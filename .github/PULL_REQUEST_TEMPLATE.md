@@ -25,15 +25,10 @@ Please check your PR title with the below requirements:
 - [ ] The description of this PR title is user-oriented and clear enough for others to understand.
 
 
-#### (Optional) Translate the PR title into Chinese.
-
-
-#### (Optional) More detail description for this PR(en: English/zh: Chinese).
+#### (Optional) More detail description for this PR.
 <!--
 Provide more detailed info for review. If it is a perf type PR, perf data is suggested to give.
 -->
-en:
-zh(optional):
 
 #### Which issue(s) this PR fixes:
 <!--

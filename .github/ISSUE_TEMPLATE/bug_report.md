@@ -27,10 +27,6 @@ A clear and concise description of what you expected to happen.
 
 If applicable, add screenshots to help explain your problem.
 
-**Hertz version:**
-
-Please provide the version of Hertz you are using.
-
 **Environment:**
 
 The output of `go env`.

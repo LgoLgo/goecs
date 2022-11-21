@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/alibaba/sentinel-golang v1.0.4
-	github.com/cloudwego/hertz v0.4.0
+	github.com/cloudwego/hertz v0.4.1
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/go-playground/validator/v10 v10.11.1
 	github.com/go-redis/redis/v8 v8.11.5
@@ -18,11 +18,9 @@ require (
 	github.com/satori/go.uuid v1.2.0
 	github.com/smartwalle/alipay/v3 v3.1.8
 	github.com/spf13/viper v1.14.0
-	github.com/stretchr/testify v1.8.1
 	github.com/uber/jaeger-client-go v2.30.0+incompatible
 	go.uber.org/zap v1.23.0
-	golang.org/x/net v0.0.0-20221014081412-f15817d10f9b
-	google.golang.org/grpc v1.50.1
+	google.golang.org/grpc v1.51.0
 	google.golang.org/protobuf v1.28.1
 )
 
@@ -38,8 +36,7 @@ require (
 	github.com/bytedance/sonic v1.5.0 // indirect
 	github.com/cespare/xxhash/v2 v2.1.2 // indirect
 	github.com/chenzhuoyu/base64x v0.0.0-20211019084208-fb5309c8db06 // indirect
-	github.com/cloudwego/netpoll v0.2.6 // indirect
-	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/cloudwego/netpoll v0.3.1 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/fatih/color v1.13.0 // indirect
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
@@ -76,7 +73,6 @@ require (
 	github.com/pelletier/go-toml v1.9.5 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.5 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
-	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/prometheus/client_golang v1.9.0 // indirect
 	github.com/prometheus/client_model v0.2.0 // indirect
 	github.com/prometheus/common v0.15.0 // indirect
@@ -87,6 +83,7 @@ require (
 	github.com/spf13/cast v1.5.0 // indirect
 	github.com/spf13/jwalterweatherman v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
+	github.com/stretchr/objx v0.5.0 // indirect
 	github.com/subosito/gotenv v1.4.1 // indirect
 	github.com/tidwall/gjson v1.13.0 // indirect
 	github.com/tidwall/match v1.1.1 // indirect
@@ -100,6 +97,7 @@ require (
 	golang.org/x/arch v0.0.0-20210923205945-b76863e36670 // indirect
 	golang.org/x/crypto v0.0.0-20220525230936-793ad666bf5e // indirect
 	golang.org/x/image v0.0.0-20190802002840-cff245a6509b // indirect
+	golang.org/x/net v0.0.0-20221014081412-f15817d10f9b // indirect
 	golang.org/x/sync v0.1.0 // indirect
 	golang.org/x/sys v0.0.0-20220908164124-27713097b956 // indirect
 	golang.org/x/text v0.4.0 // indirect

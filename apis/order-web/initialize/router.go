@@ -20,7 +20,7 @@ func Routers(port int) *server.Hertz {
 		})
 	})
 
-	//配置跨域
+	// Configure cross-domain.
 	Router.Use(middlewares.Cors())
 
 	ApiGroup := Router.Group("/o/v1")

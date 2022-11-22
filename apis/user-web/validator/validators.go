@@ -2,8 +2,9 @@ package validator
 
 import (
 	"fmt"
-	"github.com/cloudwego/hertz/pkg/app/server/binding"
 	"regexp"
+
+	"github.com/cloudwego/hertz/pkg/app/server/binding"
 )
 
 func ValidateMobile() {

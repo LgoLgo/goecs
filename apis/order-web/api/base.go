@@ -9,7 +9,7 @@ import (
 )
 
 func HandleGRPCErrorToHTTP(err error, c *app.RequestContext) {
-	// 将 gRPC 的 code 转换成 HTTP 的状态码
+	// Convert gRPC code to HTTP status code
 	if err != nil {
 		if e, ok := status.FromError(err); ok {
 			switch e.Code() {
@@ -19,11 +19,11 @@ func HandleGRPCErrorToHTTP(err error, c *app.RequestContext) {
 				})
 			case codes.Internal:
 				c.JSON(http.StatusInternalServerError, utils.H{
-					"msg:": "内部错误",
+					"msg:": "Internal error",
 				})
 			case codes.InvalidArgument:
 				c.JSON(http.StatusBadRequest, utils.H{
-					"msg": "参数错误",
+					"msg": "Parameter error",
 				})
 			case codes.Unavailable:
 				c.JSON(http.StatusInternalServerError, utils.H{

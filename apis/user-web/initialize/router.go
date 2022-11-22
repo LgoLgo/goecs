@@ -1,14 +1,16 @@
 package initialize
 
 import (
-	middlewares "apis/user-web/middleware"
-	userRouter "apis/user-web/router"
 	"context"
 	"fmt"
+	"net/http"
+
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/cloudwego/hertz/pkg/common/utils"
-	"net/http"
+
+	middlewares "apis/user-web/middleware"
+	userRouter "apis/user-web/router"
 )
 
 func Routers(port int) *server.Hertz {
@@ -22,7 +24,7 @@ func Routers(port int) *server.Hertz {
 		})
 	})
 
-	//配置跨域
+	// Configure cross-domain.
 	Router.Use(middlewares.Cors())
 
 	ApiGroup := Router.Group("/v1")

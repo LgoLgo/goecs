@@ -3,12 +3,12 @@ import "google/protobuf/empty.proto";
 option go_package = ".;proto";
 
 service User{
-  rpc GetUserList(PageInfo) returns (UserListResponse); // 用户列表
-  rpc GetUserByMobile(MobileRequest) returns (UserInfoResponse); //通过mobile查询用户
-  rpc GetUserById(IdRequest) returns (UserInfoResponse); //通过id查询用户
-  rpc CreateUser(CreateUserInfo) returns (UserInfoResponse); // 添加用户
-  rpc UpdateUser(UpdateUserInfo) returns (google.protobuf.Empty); // 更新用户
-  rpc CheckPassWord(PasswordCheckInfo) returns (CheckResponse); //检查密码
+  rpc GetUserList(PageInfo) returns (UserListResponse);
+  rpc GetUserByMobile(MobileRequest) returns (UserInfoResponse);
+  rpc GetUserById(IdRequest) returns (UserInfoResponse);
+  rpc CreateUser(CreateUserInfo) returns (UserInfoResponse);
+  rpc UpdateUser(UpdateUserInfo) returns (google.protobuf.Empty);
+  rpc CheckPassWord(PasswordCheckInfo) returns (CheckResponse);
 }
 
 message PasswordCheckInfo {

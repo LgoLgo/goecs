@@ -24,10 +24,8 @@ import (
 	"apis/user-web/validator"
 )
 
-// TODO：暂未实现选择类型登录（1选择账号密码，2选择手机验证码）
-
 func HandleGRPCErrorToHTTP(err error, c *app.RequestContext) {
-	// 将 gRPC 的 code 转换成 HTTP 的状态码
+	// Convert gRPC code to HTTP status code
 	if err != nil {
 		if e, ok := status.FromError(err); ok {
 			switch e.Code() {
@@ -37,15 +35,15 @@ func HandleGRPCErrorToHTTP(err error, c *app.RequestContext) {
 				})
 			case codes.Internal:
 				c.JSON(http.StatusInternalServerError, utils.H{
-					"msg:": "内部错误",
+					"msg:": "Internal error",
 				})
 			case codes.InvalidArgument:
 				c.JSON(http.StatusBadRequest, utils.H{
-					"msg": "参数错误",
+					"msg": "Parameter error",
 				})
 			case codes.Unavailable:
 				c.JSON(http.StatusInternalServerError, utils.H{
-					"msg": "用户服务不可用",
+					"msg": "User service unavailable",
 				})
 			default:
 				c.JSON(http.StatusInternalServerError, utils.H{
@@ -68,7 +66,6 @@ func GetUserList(ctx context.Context, c *app.RequestContext) {
 	claims, _ := c.Get("claims")
 	currentUser := claims.(*models.CustomClaims)
 	zap.S().Infof("User: %d", currentUser.ID)
-	// 调用接口
 
 	pn := c.DefaultQuery("pn", "0")
 	pnInt, _ := strconv.Atoi(pn)
@@ -99,8 +96,8 @@ func GetUserList(ctx context.Context, c *app.RequestContext) {
 }
 
 func PassWordLogin(ctx context.Context, c *app.RequestContext) {
-	// 表单验证
-	validator.ValidateMobile() // 手机号自定义表单验证设置
+	// form validation
+	validator.ValidateMobile()
 	passwordLoginForm := forms.PassWordLoginForm{}
 	if err := c.BindAndValidate(&passwordLoginForm); err != nil {
 		HandleValidatorError(c, err)
@@ -109,12 +106,12 @@ func PassWordLogin(ctx context.Context, c *app.RequestContext) {
 
 	if !store.Verify(passwordLoginForm.CaptchaId, passwordLoginForm.Captcha, false) {
 		c.JSON(http.StatusBadRequest, utils.H{
-			"captcha": "验证码错误",
+			"captcha": "wrong code",
 		})
 		return
 	}
 
-	// 登录的逻辑
+	// Login logic
 	if rsp, err := global.UserSrvClient.GetUserByMobile(ctx, &proto.MobileRequest{
 		Mobile: passwordLoginForm.Mobile,
 	}); err != nil {
@@ -122,42 +119,42 @@ func PassWordLogin(ctx context.Context, c *app.RequestContext) {
 			switch e.Code() {
 			case codes.NotFound:
 				c.JSON(http.StatusBadRequest, map[string]string{
-					"mobile": "用户不存在",
+					"mobile": "User doesn't exist",
 				})
 			default:
 				c.JSON(http.StatusInternalServerError, map[string]string{
-					"mobile": "登录失败",
+					"mobile": "Login failed",
 				})
 			}
 			return
 		}
 	} else {
-		// 仅查询到用户
+		// Have searched user
 		if passRsp, err := global.UserSrvClient.CheckPassWord(ctx, &proto.PasswordCheckInfo{
 			Password:          passwordLoginForm.PassWord,
 			EncryptedPassword: rsp.PassWord,
 		}); err != nil {
 			c.JSON(http.StatusInternalServerError, map[string]string{
-				"password": "登录失败",
+				"password": "Login failed",
 			})
 		} else {
 			if passRsp.Success {
-				// 生成token
+				// Generate token
 				j := middlewares.NewJWT()
 				claims := models.CustomClaims{
 					ID:          uint(rsp.Id),
 					NickName:    rsp.NickName,
 					AuthorityId: uint(rsp.Role),
 					StandardClaims: jwt.StandardClaims{
-						NotBefore: time.Now().Unix(),               // 签名的生效时间
-						ExpiresAt: time.Now().Unix() + 60*60*24*30, // 30天过期
-						Issuer:    "L2ncE",
+						NotBefore: time.Now().Unix(),               // Signature valid time
+						ExpiresAt: time.Now().Unix() + 60*60*24*30, // 30 days expired
+						Issuer:    "ecs",
 					},
 				}
 				token, err := j.CreateToken(claims)
 				if err != nil {
 					c.JSON(http.StatusInternalServerError, utils.H{
-						"msg": "生成token失败",
+						"msg": "Generate token failed",
 					})
 					return
 				}
@@ -169,7 +166,7 @@ func PassWordLogin(ctx context.Context, c *app.RequestContext) {
 				})
 			} else {
 				c.JSON(http.StatusBadRequest, map[string]string{
-					"msg": "登录失败",
+					"msg": "Login failed",
 				})
 			}
 		}
@@ -177,35 +174,35 @@ func PassWordLogin(ctx context.Context, c *app.RequestContext) {
 }
 
 func Register(ctx context.Context, c *app.RequestContext) {
-	validator.ValidateMobile() // 手机号自定义表单验证设置
-	//用户注册
+	validator.ValidateMobile()
+	// User register
 	registerForm := forms.RegisterForm{}
 	if err := c.BindAndValidate(&registerForm); err != nil {
 		HandleValidatorError(c, err)
 		return
 	}
 
-	//验证码
 	rdb := redis.NewClient(&redis.Options{
 		Addr: fmt.Sprintf("%s:%d", global.ServerConfig.RedisInfo.Host, global.ServerConfig.RedisInfo.Port),
 	})
+
 	value, err := rdb.Get(ctx, registerForm.Mobile).Result()
 	if err == redis.Nil {
 		c.JSON(http.StatusBadRequest, utils.H{
-			"code": "验证码错误",
+			"code": "wrong code",
 		})
 		return
 	} else {
 		if value != registerForm.Code {
 			fmt.Printf("value: %s\ncode: %s", value, registerForm.Code)
 			c.JSON(http.StatusBadRequest, utils.H{
-				"code": "验证码错误",
+				"code": "wrong code",
 			})
 			return
 		}
 	}
 
-	user, err := global.UserSrvClient.CreateUser(context.Background(), &proto.CreateUserInfo{
+	user, err := global.UserSrvClient.CreateUser(ctx, &proto.CreateUserInfo{
 		NickName: registerForm.Mobile,
 		PassWord: registerForm.PassWord,
 		Mobile:   registerForm.Mobile,
@@ -222,15 +219,15 @@ func Register(ctx context.Context, c *app.RequestContext) {
 		NickName:    user.NickName,
 		AuthorityId: uint(user.Role),
 		StandardClaims: jwt.StandardClaims{
-			NotBefore: time.Now().Unix(),               //签名的生效时间
-			ExpiresAt: time.Now().Unix() + 60*60*24*30, //30天过期
+			NotBefore: time.Now().Unix(),
+			ExpiresAt: time.Now().Unix() + 60*60*24*30,
 			Issuer:    "ecs",
 		},
 	}
 	token, err := j.CreateToken(claims)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, utils.H{
-			"msg": "生成token失败",
+			"msg": "Generate token failed",
 		})
 		return
 	}

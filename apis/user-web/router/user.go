@@ -1,9 +1,10 @@
 package router
 
 import (
+	"github.com/cloudwego/hertz/pkg/route"
+
 	"apis/user-web/api"
 	middlewares "apis/user-web/middleware"
-	"github.com/cloudwego/hertz/pkg/route"
 )
 
 func InitUserRouter(Router *route.RouterGroup) {

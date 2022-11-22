@@ -1,8 +1,9 @@
 package router
 
 import (
-	"apis/user-web/api"
 	"github.com/cloudwego/hertz/pkg/route"
+
+	"apis/user-web/api"
 )
 
 func InitBaseRouter(Router *route.RouterGroup) {

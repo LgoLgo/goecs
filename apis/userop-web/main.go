@@ -14,16 +14,16 @@ import (
 )
 
 func main() {
-	// 初始化 logger
+	// Init logger
 	initialize.InitLogger()
 
-	// 初始化配置
+	// Init config
 	initialize.InitConfig()
 
-	// 初始化 srv 的连接
+	// Init connection to microservice
 	initialize.InitSrvConn()
 
-	// 初始化 routers
+	// Init routers
 	Router := initialize.Routers(global.ServerConfig.Port)
 
 	registerClient := consul.NewRegistryClient(global.ServerConfig.ConsulInfo.Host, global.ServerConfig.ConsulInfo.Port)
@@ -32,10 +32,10 @@ func main() {
 	if err != nil {
 		zap.S().Panic("service registry failed:", err.Error())
 	}
-	zap.S().Debugf("启动服务器, 端口： %d", global.ServerConfig.Port)
+	zap.S().Debugf("Start the server, port: %d", global.ServerConfig.Port)
 	go func() {
 		if err := Router.Run(); err != nil {
-			zap.S().Panic("启动失败:", err.Error())
+			zap.S().Panic("start error:", err.Error())
 		}
 	}()
 

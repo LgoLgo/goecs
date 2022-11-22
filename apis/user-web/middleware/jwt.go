@@ -15,31 +15,28 @@ import (
 
 func JWTAuth() app.HandlerFunc {
 	return func(ctx context.Context, c *app.RequestContext) {
-		// 我们这里jwt鉴权取头部信息 x-token 登录时回返回token信息 这里前端需要把token存储到cookie或者本地localStorage中 不过需要跟后端协商过期时间 可以约定刷新令牌或者重新登录
 		token := c.Request.Header.Get("x-token")
 		if token == "" {
 			c.JSON(http.StatusUnauthorized, map[string]string{
-				"msg": "请登录",
+				"msg": "please sign in",
 			})
 			c.Abort()
 			return
 		}
 		token = strings.Split(token, " ")[1]
 		j := NewJWT()
-		// parseToken 解析token包含的信息
+		// Parse the information contained in the token
 		claims, err := j.ParseToken(token)
 		if err != nil {
 			if err == TokenExpired {
-				if err == TokenExpired {
-					c.JSON(http.StatusUnauthorized, map[string]string{
-						"msg": "授权已过期",
-					})
-					c.Abort()
-					return
-				}
+				c.JSON(http.StatusUnauthorized, map[string]string{
+					"msg": "Authorization has expired",
+				})
+				c.Abort()
+				return
 			}
 
-			c.JSON(http.StatusUnauthorized, "未登陆")
+			c.JSON(http.StatusUnauthorized, "not logged in")
 			c.Abort()
 			return
 		}
@@ -62,17 +59,17 @@ var (
 
 func NewJWT() *JWT {
 	return &JWT{
-		[]byte(global.ServerConfig.JWTInfo.SigningKey), //可以设置过期时间
+		[]byte(global.ServerConfig.JWTInfo.SigningKey),
 	}
 }
 
-// CreateToken 创建一个token
+// CreateToken to create a token
 func (j *JWT) CreateToken(claims models.CustomClaims) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString(j.SigningKey)
 }
 
-// ParseToken 解析 token
+// ParseToken to parse a token
 func (j *JWT) ParseToken(tokenString string) (*models.CustomClaims, error) {
 	token, err := jwt.ParseWithClaims(tokenString, &models.CustomClaims{}, func(token *jwt.Token) (i interface{}, e error) {
 		return j.SigningKey, nil
@@ -104,7 +101,7 @@ func (j *JWT) ParseToken(tokenString string) (*models.CustomClaims, error) {
 
 }
 
-// RefreshToken 更新token
+// RefreshToken to refresh a token
 func (j *JWT) RefreshToken(tokenString string) (string, error) {
 	jwt.TimeFunc = func() time.Time {
 		return time.Unix(0, 0)

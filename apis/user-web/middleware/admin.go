@@ -2,11 +2,12 @@ package middlewares
 
 import (
 	"context"
+	"net/http"
 
-	"apis/user-web/models"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/utils"
-	"net/http"
+
+	"apis/user-web/models"
 )
 
 func IsAdminAuth() app.HandlerFunc {
@@ -16,7 +17,7 @@ func IsAdminAuth() app.HandlerFunc {
 
 		if currentUser.AuthorityId != 2 {
 			ctx.JSON(http.StatusForbidden, utils.H{
-				"msg": "无权限",
+				"msg": "You are not admin.",
 			})
 			ctx.Abort()
 			return

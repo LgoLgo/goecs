@@ -1,16 +1,18 @@
 package message
 
 import (
+	"context"
+	"net/http"
+
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/common/utils"
+	"go.uber.org/zap"
+
 	"apis/userop-web/api"
 	"apis/userop-web/forms"
 	"apis/userop-web/global"
 	"apis/userop-web/models"
 	"apis/userop-web/proto/gen"
-	"context"
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/common/utils"
-	"go.uber.org/zap"
-	"net/http"
 )
 
 func List(c context.Context, ctx *app.RequestContext) {
@@ -23,9 +25,9 @@ func List(c context.Context, ctx *app.RequestContext) {
 		request.UserId = int32(userId.(uint))
 	}
 
-	rsp, err := global.MessageClient.MessageList(context.Background(), request)
+	rsp, err := global.MessageClient.MessageList(c, request)
 	if err != nil {
-		zap.S().Errorw("获取留言失败")
+		zap.S().Errorw("Get message error")
 		api.HandleGRPCErrorToHTTP(err, ctx)
 		return
 	}
@@ -59,7 +61,7 @@ func New(c context.Context, ctx *app.RequestContext) {
 		return
 	}
 
-	rsp, err := global.MessageClient.CreateMessage(context.Background(), &proto.MessageRequest{
+	rsp, err := global.MessageClient.CreateMessage(c, &proto.MessageRequest{
 		UserId:      int32(userId.(uint)),
 		MessageType: messageForm.MessageType,
 		Subject:     messageForm.Subject,
@@ -68,7 +70,7 @@ func New(c context.Context, ctx *app.RequestContext) {
 	})
 
 	if err != nil {
-		zap.S().Errorw("添加留言失败")
+		zap.S().Errorw("Add message failed")
 		api.HandleGRPCErrorToHTTP(err, ctx)
 		return
 	}

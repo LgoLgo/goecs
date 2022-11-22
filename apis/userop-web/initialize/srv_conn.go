@@ -30,7 +30,7 @@ func InitSrvConn() {
 		grpc.WithDefaultServiceConfig(`{"loadBalancingPolicy": "round_robin"}`),
 	)
 	if err != nil {
-		zap.S().Fatal("[InitSrvConn] 连接 【用户操作服务失败】")
+		zap.S().Fatal("[InitSrvConn] Connect to user failed")
 	}
 
 	global.UserFavClient = proto.NewUserFavClient(userOpConn)

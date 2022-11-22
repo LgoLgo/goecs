@@ -1,26 +1,27 @@
 package handler
 
 import (
-	"apis/oss-web/global"
 	"context"
 	"fmt"
-	"github.com/cloudwego/hertz/pkg/app"
-	utils2 "github.com/cloudwego/hertz/pkg/common/utils"
 	"net/http"
 	"net/url"
 	"strings"
 
+	"github.com/cloudwego/hertz/pkg/app"
+	utils2 "github.com/cloudwego/hertz/pkg/common/utils"
+
+	"apis/oss-web/global"
 	"apis/oss-web/utils"
 )
 
-func Token(ctx context.Context, c *app.RequestContext) {
+func Token(_ context.Context, c *app.RequestContext) {
 	response := utils.GetPolicyToken()
 	c.Header("Access-Control-Allow-Methods", "POST")
 	c.Header("Access-Control-Allow-Origin", "*")
 	c.String(200, response)
 }
 
-func Request(c context.Context, ctx *app.RequestContext) {
+func Request(_ context.Context, ctx *app.RequestContext) {
 	fmt.Println("\nHandle Post Request ... ")
 	// Get PublicKey bytes
 	bytePublicKey, err := utils.GetPublicKey(ctx)
@@ -47,7 +48,6 @@ func Request(c context.Context, ctx *app.RequestContext) {
 	if err != nil {
 		fmt.Println(err)
 	}
-	fmt.Println(decodeUrl)
 	params := make(map[string]string)
 	datas := strings.Split(decodeUrl, "&")
 	for _, v := range datas {

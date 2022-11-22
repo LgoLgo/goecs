@@ -1,17 +1,19 @@
 package address
 
 import (
+	"context"
+	"net/http"
+	"strconv"
+
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/common/utils"
+	"go.uber.org/zap"
+
 	"apis/userop-web/api"
 	"apis/userop-web/forms"
 	"apis/userop-web/global"
 	"apis/userop-web/models"
 	"apis/userop-web/proto/gen"
-	"context"
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/common/utils"
-	"go.uber.org/zap"
-	"net/http"
-	"strconv"
 )
 
 func List(c context.Context, ctx *app.RequestContext) {
@@ -25,9 +27,9 @@ func List(c context.Context, ctx *app.RequestContext) {
 		request.UserId = int32(userId.(uint))
 	}
 
-	rsp, err := global.AddressClient.GetAddressList(context.Background(), request)
+	rsp, err := global.AddressClient.GetAddressList(c, request)
 	if err != nil {
-		zap.S().Errorw("获取地址列表失败")
+		zap.S().Errorw("Get address failed")
 		api.HandleGRPCErrorToHTTP(err, ctx)
 		return
 	}
@@ -64,7 +66,7 @@ func New(c context.Context, ctx *app.RequestContext) {
 	}
 
 	userId, _ := ctx.Get("userId")
-	rsp, err := global.AddressClient.CreateAddress(context.Background(), &proto.AddressRequest{
+	rsp, err := global.AddressClient.CreateAddress(c, &proto.AddressRequest{
 		UserId:       int32(userId.(uint)),
 		Province:     addressForm.Province,
 		City:         addressForm.City,
@@ -75,7 +77,7 @@ func New(c context.Context, ctx *app.RequestContext) {
 	})
 
 	if err != nil {
-		zap.S().Errorw("新建地址失败")
+		zap.S().Errorw("Create address error")
 		api.HandleGRPCErrorToHTTP(err, ctx)
 		return
 	}
@@ -92,15 +94,15 @@ func Delete(c context.Context, ctx *app.RequestContext) {
 		ctx.Status(http.StatusNotFound)
 		return
 	}
-	_, err = global.AddressClient.DeleteAddress(context.Background(), &proto.AddressRequest{Id: int32(i)})
+	_, err = global.AddressClient.DeleteAddress(c, &proto.AddressRequest{Id: int32(i)})
 	if err != nil {
-		zap.S().Errorw("删除地址失败")
+		zap.S().Errorw("Delete address error")
 		api.HandleGRPCErrorToHTTP(err, ctx)
 		return
 	}
 
 	ctx.JSON(http.StatusOK, utils.H{
-		"msg": "删除成功",
+		"msg": "Delete successful",
 	})
 }
 
@@ -118,7 +120,7 @@ func Update(c context.Context, ctx *app.RequestContext) {
 		return
 	}
 
-	_, err = global.AddressClient.UpdateAddress(context.Background(), &proto.AddressRequest{
+	_, err = global.AddressClient.UpdateAddress(c, &proto.AddressRequest{
 		Id:           int32(i),
 		Province:     addressForm.Province,
 		City:         addressForm.City,
@@ -128,7 +130,7 @@ func Update(c context.Context, ctx *app.RequestContext) {
 		SignerMobile: addressForm.SignerMobile,
 	})
 	if err != nil {
-		zap.S().Errorw("更新地址失败")
+		zap.S().Errorw("Update address failed")
 		api.HandleGRPCErrorToHTTP(err, ctx)
 		return
 	}

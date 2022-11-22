@@ -27,7 +27,7 @@ func Routers(port int) *server.Hertz {
 	// Configure cross-domain.
 	Router.Use(middlewares.Cors())
 
-	ApiGroup := Router.Group("/v1")
+	ApiGroup := Router.Group("/u/v1")
 	userRouter.InitUserRouter(ApiGroup)
 	userRouter.InitBaseRouter(ApiGroup)
 

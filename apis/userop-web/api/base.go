@@ -27,7 +27,7 @@ func HandleGRPCErrorToHTTP(err error, c *app.RequestContext) {
 				})
 			case codes.Unavailable:
 				c.JSON(http.StatusInternalServerError, utils.H{
-					"msg": "商品服务不可用",
+					"msg": "Server error",
 				})
 			default:
 				c.JSON(http.StatusInternalServerError, utils.H{

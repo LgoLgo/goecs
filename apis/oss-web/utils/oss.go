@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"apis/oss-web/global"
 	"crypto"
 	"crypto/hmac"
 	"crypto/md5"
@@ -13,13 +12,16 @@ import (
 	"encoding/pem"
 	"errors"
 	"fmt"
-	"github.com/cloudwego/hertz/pkg/app"
 	"hash"
 	"io"
 	"io/ioutil"
 	"net/http"
 	"strconv"
 	"time"
+
+	"github.com/cloudwego/hertz/pkg/app"
+
+	"apis/oss-web/global"
 )
 
 var expireTime int64 = 3000
@@ -67,8 +69,8 @@ func GetPolicyToken() string {
 	//calculate signature
 	result, err := json.Marshal(config)
 	debyte := base64.StdEncoding.EncodeToString(result)
-	h := hmac.New(func() hash.Hash { return sha1.New() }, []byte(global.ServerConfig.OssInfo.ApiSecrect))
-	io.WriteString(h, debyte)
+	h := hmac.New(func() hash.Hash { return sha1.New() }, []byte(global.ServerConfig.OssInfo.ApiSecret))
+	_, _ = io.WriteString(h, debyte)
 	signedStr := base64.StdEncoding.EncodeToString(h.Sum(nil))
 
 	var callbackParam CallbackParam
@@ -118,7 +120,9 @@ func GetPublicKey(c *app.RequestContext) ([]byte, error) {
 		fmt.Printf("Read PublicKey Content from URL failed : %s \n", err.Error())
 		return bytePublicKey, err
 	}
-	defer responsePublicKeyURL.Body.Close()
+	defer func(Body io.ReadCloser) {
+		_ = Body.Close()
+	}(responsePublicKeyURL.Body)
 	// fmt.Printf("publicKey={%s}\n", bytePublicKey)
 	return bytePublicKey, nil
 }

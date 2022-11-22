@@ -1,14 +1,16 @@
 package initialize
 
 import (
-	"apis/userop-web/middlewares"
-	"apis/userop-web/router"
 	"context"
 	"fmt"
+	"net/http"
+
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/cloudwego/hertz/pkg/common/utils"
-	"net/http"
+
+	"apis/userop-web/middlewares"
+	"apis/userop-web/router"
 )
 
 func Routers(port int) *server.Hertz {

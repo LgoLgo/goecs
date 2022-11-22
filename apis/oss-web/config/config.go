@@ -16,7 +16,7 @@ type ServerConfig struct {
 
 type OssConfig struct {
 	ApiKey      string `mapstructure:"key" json:"key"`
-	ApiSecrect  string `mapstructure:"secrect" json:"secrect"`
+	ApiSecret   string `mapstructure:"secret" json:"secret"`
 	Host        string `mapstructure:"host" json:"host"`
 	CallBackUrl string `mapstructure:"callback_url" json:"callback_url"`
 	UploadDir   string `mapstructure:"upload_dir" json:"upload_dir"`

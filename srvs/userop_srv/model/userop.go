@@ -4,7 +4,7 @@ type LeavingMessages struct {
 	BaseModel
 
 	User        int32  `gorm:"type:int;index"`
-	MessageType int32  `gorm:"type:int comment '留言类型: 1(留言),2(投诉),3(询问),4(售后),5(求购)'"`
+	MessageType int32  `gorm:"type:int comment"`
 	Subject     string `gorm:"type:varchar(100)"`
 
 	Message string

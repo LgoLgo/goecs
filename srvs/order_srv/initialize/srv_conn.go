@@ -26,7 +26,7 @@ func InitSrvConn() {
 
 	global.GoodsSrvClient = proto.NewGoodsClient(goodsConn)
 
-	//初始化库存服务连接
+	//Init库存服务连接
 	invConn, err := grpc.Dial(
 		fmt.Sprintf("consul://%s:%d/%s?wait=14s", consulInfo.Host, consulInfo.Port, global.ServerConfig.InventorySrvInfo.Name),
 		grpc.WithTransportCredentials(insecure.NewCredentials()),

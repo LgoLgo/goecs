@@ -2,8 +2,8 @@ syntax = "proto3";
 option go_package = ".;proto";
 
 service Message{
-    rpc MessageList(MessageRequest) returns(MessageListResponse); //批量获取留言信息
-    rpc CreateMessage(MessageRequest) returns(MessageResponse); //添加留言
+    rpc MessageList(MessageRequest) returns(MessageListResponse);
+    rpc CreateMessage(MessageRequest) returns(MessageResponse);
 }
 
 message MessageRequest{

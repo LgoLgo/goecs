@@ -3,10 +3,10 @@ import "google/protobuf/empty.proto";
 option go_package = ".;proto";
 
 service Address{
-    rpc GetAddressList(AddressRequest) returns(AddressListResponse); //查看地址
-    rpc CreateAddress(AddressRequest) returns(AddressResponse); //新增地址
-    rpc DeleteAddress(AddressRequest) returns(google.protobuf.Empty); //删除地址
-    rpc UpdateAddress(AddressRequest) returns(google.protobuf.Empty); //修改地址
+    rpc GetAddressList(AddressRequest) returns(AddressListResponse);
+    rpc CreateAddress(AddressRequest) returns(AddressResponse);
+    rpc DeleteAddress(AddressRequest) returns(google.protobuf.Empty);
+    rpc UpdateAddress(AddressRequest) returns(google.protobuf.Empty);
 }
 
 message AddressRequest{

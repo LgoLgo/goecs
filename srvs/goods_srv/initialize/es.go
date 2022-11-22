@@ -13,7 +13,7 @@ import (
 )
 
 func InitEs() {
-	// 初始化连接
+	// Init连接
 	host := fmt.Sprintf("http://%s:%d", global.ServerConfig.EsInfo.Host, global.ServerConfig.EsInfo.Port)
 	logger := log.New(os.Stdout, "ECS", log.LstdFlags)
 	var err error

@@ -26,7 +26,7 @@ func main() {
 	// Init routers
 	Router := initialize.Routers(global.ServerConfig.Port)
 
-	// 初始化sentinel
+	// Initsentinel
 	initialize.InitSentinel()
 
 	registerClient := consul.NewRegistryClient(global.ServerConfig.ConsulInfo.Host, global.ServerConfig.ConsulInfo.Port)

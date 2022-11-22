@@ -2,15 +2,17 @@ package handler
 
 import (
 	"context"
+
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
+
 	"srvs/userop_srv/global"
 	"srvs/userop_srv/model"
 	"srvs/userop_srv/proto/gen"
 )
 
-func (*UserOpServer) GetAddressList(ctx context.Context, req *proto.AddressRequest) (*proto.AddressListResponse, error) {
+func (*UserOpServer) GetAddressList(_ context.Context, req *proto.AddressRequest) (*proto.AddressListResponse, error) {
 	var addresses []model.Address
 	var rsp proto.AddressListResponse
 	var addressResponse []*proto.AddressResponse
@@ -36,7 +38,7 @@ func (*UserOpServer) GetAddressList(ctx context.Context, req *proto.AddressReque
 	return &rsp, nil
 }
 
-func (*UserOpServer) CreateAddress(ctx context.Context, req *proto.AddressRequest) (*proto.AddressResponse, error) {
+func (*UserOpServer) CreateAddress(_ context.Context, req *proto.AddressRequest) (*proto.AddressResponse, error) {
 	var address model.Address
 
 	address.User = req.UserId
@@ -52,18 +54,18 @@ func (*UserOpServer) CreateAddress(ctx context.Context, req *proto.AddressReques
 	return &proto.AddressResponse{Id: address.ID}, nil
 }
 
-func (*UserOpServer) DeleteAddress(ctx context.Context, req *proto.AddressRequest) (*emptypb.Empty, error) {
+func (*UserOpServer) DeleteAddress(_ context.Context, req *proto.AddressRequest) (*emptypb.Empty, error) {
 	if result := global.DB.Where("id=? and user=?", req.Id, req.UserId).Delete(&model.Address{}); result.RowsAffected == 0 {
-		return nil, status.Errorf(codes.NotFound, "收货地址不存在")
+		return nil, status.Errorf(codes.NotFound, "Address doesn't exist")
 	}
 	return &emptypb.Empty{}, nil
 }
 
-func (*UserOpServer) UpdateAddress(ctx context.Context, req *proto.AddressRequest) (*emptypb.Empty, error) {
+func (*UserOpServer) UpdateAddress(_ context.Context, req *proto.AddressRequest) (*emptypb.Empty, error) {
 	var address model.Address
 
 	if result := global.DB.Where("id=? and user=?", req.Id, req.UserId).First(&address); result.RowsAffected == 0 {
-		return nil, status.Errorf(codes.NotFound, "购物车记录不存在")
+		return nil, status.Errorf(codes.NotFound, "Shop car doesn't exist")
 	}
 
 	if address.Province != "" {

@@ -3,8 +3,8 @@ import "google/protobuf/empty.proto";
 option go_package = ".;proto";
 
 service UserFav{
-    rpc GetFavList(UserFavRequest) returns(UserFavListResponse); //过滤收藏信息
-    rpc AddUserFav(UserFavRequest) returns(google.protobuf.Empty); //添加收藏
+    rpc GetFavList(UserFavRequest) returns(UserFavListResponse);
+    rpc AddUserFav(UserFavRequest) returns(google.protobuf.Empty);
     rpc DeleteUserFav(UserFavRequest) returns(google.protobuf.Empty);
     rpc GetUserFavDetail(UserFavRequest) returns(google.protobuf.Empty);
 }

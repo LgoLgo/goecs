@@ -9,10 +9,10 @@ import (
 )
 
 func main() {
-	//先初始化sentinel
+	//先Initsentinel
 	err := sentinel.InitDefault()
 	if err != nil {
-		log.Fatalf("初始化sentinel 异常: %v", err)
+		log.Fatalf("Initsentinel 异常: %v", err)
 	}
 
 	//配置限流规则

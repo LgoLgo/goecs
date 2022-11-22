@@ -9,7 +9,7 @@ import (
 func InitSentinel() {
 	err := sentinel.InitDefault()
 	if err != nil {
-		zap.S().Fatalf("初始化sentinel 异常: %v", err)
+		zap.S().Fatalf("Initsentinel 异常: %v", err)
 	}
 
 	//配置限流规则

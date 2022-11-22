@@ -28,7 +28,7 @@ import (
 func main() {
 	IP := flag.String("ip", "0.0.0.0", "address")
 	Port := flag.Int("port", 0, "post")
-	// 初始化
+	// Init
 	initialize.InitLogger()
 	initialize.InitConfig()
 	initialize.InitDB()

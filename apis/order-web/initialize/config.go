@@ -36,7 +36,7 @@ func InitConfig() {
 	}
 
 	cc := constant.ClientConfig{
-
+		NamespaceId:         global.NacosConfig.Namespace,
 		TimeoutMs:           5000,
 		NotLoadCacheAtStart: true,
 		LogDir:              "tmp/nacos/log",

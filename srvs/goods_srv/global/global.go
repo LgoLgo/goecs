@@ -11,6 +11,5 @@ var (
 	DB           *gorm.DB
 	ServerConfig config.ServerConfig
 	NacosConfig  config.NacosConfig
-
-	EsClient *elastic.Client
+	EsClient     *elastic.Client
 )

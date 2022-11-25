@@ -1,15 +1,17 @@
 package initialize
 
 import (
-	"apis/order-web/global"
-	"apis/order-web/proto/gen"
 	"fmt"
+
 	"github.com/grpc-ecosystem/grpc-opentracing/go/otgrpc"
 	_ "github.com/mbobakov/grpc-consul-resolver" // It's important
 	"github.com/opentracing/opentracing-go"
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+
+	"apis/order-web/global"
+	"apis/order-web/proto/gen"
 )
 
 func InitSrvConn() {
@@ -34,7 +36,7 @@ func InitSrvConn() {
 		grpc.WithUnaryInterceptor(otgrpc.OpenTracingClientInterceptor(opentracing.GlobalTracer())),
 	)
 	if err != nil {
-		zap.S().Fatal("[InitSrvConn] 连接 【订单服务失败】")
+		zap.S().Fatal("[InitSrvConn] connect order service error")
 	}
 
 	global.OrderSrvClient = proto.NewOrderClient(orderConn)
@@ -46,7 +48,7 @@ func InitSrvConn() {
 		grpc.WithUnaryInterceptor(otgrpc.OpenTracingClientInterceptor(opentracing.GlobalTracer())),
 	)
 	if err != nil {
-		zap.S().Fatal("[InitSrvConn] 连接 【库存服务失败】")
+		zap.S().Fatal("[InitSrvConn] connect inventory service error")
 	}
 
 	global.InventorySrvClient = proto.NewInventoryClient(invConn)

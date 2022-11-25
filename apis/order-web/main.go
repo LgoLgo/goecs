@@ -1,16 +1,17 @@
 package main
 
 import (
-	"apis/order-web/utils/register/consul"
 	"fmt"
-	uuid "github.com/satori/go.uuid"
-	"go.uber.org/zap"
 	"os"
 	"os/signal"
 	"syscall"
 
+	uuid "github.com/satori/go.uuid"
+	"go.uber.org/zap"
+
 	"apis/order-web/global"
 	"apis/order-web/initialize"
+	"apis/order-web/utils/register/consul"
 )
 
 func main() {

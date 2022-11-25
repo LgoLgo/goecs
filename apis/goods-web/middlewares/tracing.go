@@ -1,13 +1,13 @@
 package middlewares
 
 import (
-	"apis/goods-web/global"
 	"context"
 	"fmt"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/opentracing/opentracing-go"
 	"github.com/uber/jaeger-client-go"
 
+	"apis/goods-web/global"
 	jaegercfg "github.com/uber/jaeger-client-go/config"
 )
 

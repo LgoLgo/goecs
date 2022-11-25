@@ -2,10 +2,10 @@ package banners
 
 import (
 	"context"
-	"github.com/cloudwego/hertz/pkg/app"
 	"net/http"
 	"strconv"
 
+	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/golang/protobuf/ptypes/empty"
 
 	"apis/goods-web/api"
@@ -15,7 +15,7 @@ import (
 )
 
 func List(ctx context.Context, c *app.RequestContext) {
-	rsp, err := global.GoodsSrvClient.BannerList(context.Background(), &empty.Empty{})
+	rsp, err := global.GoodsSrvClient.BannerList(ctx, &empty.Empty{})
 	if err != nil {
 		api.HandleGRPCErrorToHTTP(err, c)
 		return
@@ -42,7 +42,7 @@ func New(c context.Context, ctx *app.RequestContext) {
 		return
 	}
 
-	rsp, err := global.GoodsSrvClient.CreateBanner(context.Background(), &proto.BannerRequest{
+	rsp, err := global.GoodsSrvClient.CreateBanner(c, &proto.BannerRequest{
 		Index: int32(bannerForm.Index),
 		Url:   bannerForm.Url,
 		Image: bannerForm.Image,
@@ -75,7 +75,7 @@ func Update(c context.Context, ctx *app.RequestContext) {
 		return
 	}
 
-	_, err = global.GoodsSrvClient.UpdateBanner(context.Background(), &proto.BannerRequest{
+	_, err = global.GoodsSrvClient.UpdateBanner(c, &proto.BannerRequest{
 		Id:    int32(i),
 		Index: int32(bannerForm.Index),
 		Url:   bannerForm.Url,
@@ -95,7 +95,7 @@ func Delete(c context.Context, ctx *app.RequestContext) {
 		ctx.Status(http.StatusNotFound)
 		return
 	}
-	_, err = global.GoodsSrvClient.DeleteBanner(context.Background(), &proto.BannerRequest{Id: int32(i)})
+	_, err = global.GoodsSrvClient.DeleteBanner(c, &proto.BannerRequest{Id: int32(i)})
 	if err != nil {
 		api.HandleGRPCErrorToHTTP(err, ctx)
 		return

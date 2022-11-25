@@ -1,27 +1,27 @@
 package shop_cart
 
 import (
-	"apis/order-web/api"
-	"apis/order-web/forms"
-	"apis/order-web/proto/gen"
 	"context"
-	"github.com/cloudwego/hertz/pkg/app"
-	"github.com/cloudwego/hertz/pkg/common/utils"
-	"go.uber.org/zap"
 	"net/http"
 	"strconv"
 
+	"github.com/cloudwego/hertz/pkg/app"
+	"github.com/cloudwego/hertz/pkg/common/utils"
+	"go.uber.org/zap"
+
+	"apis/order-web/api"
+	"apis/order-web/forms"
 	"apis/order-web/global"
+	"apis/order-web/proto/gen"
 )
 
 func List(c context.Context, ctx *app.RequestContext) {
-	//获取购物车商品
 	userId, _ := ctx.Get("userId")
 	rsp, err := global.OrderSrvClient.CartItemList(c, &proto.UserInfo{
 		Id: int32(userId.(uint)),
 	})
 	if err != nil {
-		zap.S().Errorw("[List] 查询 【购物车列表】失败")
+		zap.S().Errorw("[List] Query [Shopping Cart List] failed")
 		api.HandleGRPCErrorToHTTP(err, ctx)
 		return
 	}
@@ -37,12 +37,12 @@ func List(c context.Context, ctx *app.RequestContext) {
 		return
 	}
 
-	//请求商品服务获取商品信息
+	// Request product service to obtain product information
 	goodsRsp, err := global.GoodsSrvClient.BatchGetGoods(c, &proto.BatchGoodsIdInfo{
 		Id: ids,
 	})
 	if err != nil {
-		zap.S().Errorw("[List] 批量查询【商品列表】失败")
+		zap.S().Errorw("[List] Batch query [Product List] failed")
 		api.HandleGRPCErrorToHTTP(err, ctx)
 		return
 	}
@@ -50,23 +50,6 @@ func List(c context.Context, ctx *app.RequestContext) {
 	reMap := utils.H{
 		"total": rsp.Total,
 	}
-
-	/*
-		{
-			"total":12,
-			"data":[
-				{
-					"id":1,
-					"goods_id":421,
-					"goods_name":421,
-					"goods_price":421,
-					"goods_image":421,
-					"nums":421,
-					"checked":421,
-				}
-			]
-		}
-	*/
 	goodsList := make([]interface{}, 0)
 	for _, item := range rsp.Data {
 		for _, good := range goodsRsp.Data {
@@ -89,35 +72,35 @@ func List(c context.Context, ctx *app.RequestContext) {
 }
 
 func New(c context.Context, ctx *app.RequestContext) {
-	//添加商品到购物车
+	// Add item to cart
 	itemForm := forms.ShopCartItemForm{}
 	if err := ctx.BindAndValidate(&itemForm); err != nil {
 		api.HandleValidatorError(ctx, err)
 		return
 	}
 
-	//为了严谨性，添加商品到购物车之前，记得检查一下商品是否存在
+	// For the sake of rigor, remember to check if the item exists before adding it to the cart
 	_, err := global.GoodsSrvClient.GetGoodsDetail(c, &proto.GoodInfoRequest{
 		Id: itemForm.GoodsId,
 	})
 	if err != nil {
-		zap.S().Errorw("[List] 查询【商品信息】失败")
+		zap.S().Errorw("[List] Query [Product Information] failed")
 		api.HandleGRPCErrorToHTTP(err, ctx)
 		return
 	}
 
-	//如果现在添加到购物车的数量和库存的数量不一致
+	// If the quantity added to the cart now does not match the quantity in stock
 	invRsp, err := global.InventorySrvClient.InvDetail(c, &proto.GoodsInvInfo{
 		GoodsId: itemForm.GoodsId,
 	})
 	if err != nil {
-		zap.S().Errorw("[List] 查询【库存信息】失败")
+		zap.S().Errorw("[List] Query [Inventory Information] failed")
 		api.HandleGRPCErrorToHTTP(err, ctx)
 		return
 	}
 	if invRsp.Num < itemForm.Nums {
 		ctx.JSON(http.StatusBadRequest, utils.H{
-			"nums": "库存不足",
+			"nums": "Inventory shortage",
 		})
 		return
 	}
@@ -130,7 +113,7 @@ func New(c context.Context, ctx *app.RequestContext) {
 	})
 
 	if err != nil {
-		zap.S().Errorw("添加到购物车失败")
+		zap.S().Errorw("Add to cart failed")
 		api.HandleGRPCErrorToHTTP(err, ctx)
 		return
 	}
@@ -141,12 +124,11 @@ func New(c context.Context, ctx *app.RequestContext) {
 }
 
 func Update(c context.Context, ctx *app.RequestContext) {
-	// o/v1/421
 	id := ctx.Param("id")
 	i, err := strconv.Atoi(id)
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, utils.H{
-			"msg": "url格式出错",
+			"msg": "url format error",
 		})
 		return
 	}
@@ -170,7 +152,7 @@ func Update(c context.Context, ctx *app.RequestContext) {
 
 	_, err = global.OrderSrvClient.UpdateCartItem(c, &request)
 	if err != nil {
-		zap.S().Errorw("更新购物车记录失败")
+		zap.S().Errorw("Failed to update cart record")
 		api.HandleGRPCErrorToHTTP(err, ctx)
 		return
 	}
@@ -182,7 +164,7 @@ func Delete(c context.Context, ctx *app.RequestContext) {
 	i, err := strconv.Atoi(id)
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, utils.H{
-			"msg": "url格式出错",
+			"msg": "url format error",
 		})
 		return
 	}
@@ -193,7 +175,7 @@ func Delete(c context.Context, ctx *app.RequestContext) {
 		GoodsId: int32(i),
 	})
 	if err != nil {
-		zap.S().Errorw("删除购物车记录失败")
+		zap.S().Errorw("Failed to delete cart record")
 		api.HandleGRPCErrorToHTTP(err, ctx)
 		return
 	}

@@ -2,9 +2,10 @@ package brands
 
 import (
 	"context"
-	"github.com/cloudwego/hertz/pkg/app"
 	"net/http"
 	"strconv"
+
+	"github.com/cloudwego/hertz/pkg/app"
 
 	"apis/goods-web/api"
 	"apis/goods-web/forms"
@@ -18,7 +19,7 @@ func BrandList(c context.Context, ctx *app.RequestContext) {
 	pSize := ctx.DefaultQuery("psize", "10")
 	pSizeInt, _ := strconv.Atoi(pSize)
 
-	rsp, err := global.GoodsSrvClient.BrandList(context.Background(), &proto.BrandFilterRequest{
+	rsp, err := global.GoodsSrvClient.BrandList(c, &proto.BrandFilterRequest{
 		Pages:       int32(pnInt),
 		PagePerNums: int32(pSizeInt),
 	})
@@ -52,7 +53,7 @@ func NewBrand(c context.Context, ctx *app.RequestContext) {
 		return
 	}
 
-	rsp, err := global.GoodsSrvClient.CreateBrand(context.Background(), &proto.BrandRequest{
+	rsp, err := global.GoodsSrvClient.CreateBrand(c, &proto.BrandRequest{
 		Name: brandForm.Name,
 		Logo: brandForm.Logo,
 	})
@@ -76,7 +77,7 @@ func DeleteBrand(c context.Context, ctx *app.RequestContext) {
 		ctx.Status(http.StatusNotFound)
 		return
 	}
-	_, err = global.GoodsSrvClient.DeleteBrand(context.Background(), &proto.BrandRequest{Id: int32(i)})
+	_, err = global.GoodsSrvClient.DeleteBrand(c, &proto.BrandRequest{Id: int32(i)})
 	if err != nil {
 		api.HandleGRPCErrorToHTTP(err, ctx)
 		return
@@ -99,7 +100,7 @@ func UpdateBrand(c context.Context, ctx *app.RequestContext) {
 		return
 	}
 
-	_, err = global.GoodsSrvClient.UpdateBrand(context.Background(), &proto.BrandRequest{
+	_, err = global.GoodsSrvClient.UpdateBrand(c, &proto.BrandRequest{
 		Id:   int32(i),
 		Name: brandForm.Name,
 		Logo: brandForm.Logo,
@@ -119,7 +120,7 @@ func GetCategoryBrandList(c context.Context, ctx *app.RequestContext) {
 		return
 	}
 
-	rsp, err := global.GoodsSrvClient.GetCategoryBrandList(context.Background(), &proto.CategoryInfoRequest{
+	rsp, err := global.GoodsSrvClient.GetCategoryBrandList(c, &proto.CategoryInfoRequest{
 		Id: int32(i),
 	})
 	if err != nil {
@@ -141,14 +142,7 @@ func GetCategoryBrandList(c context.Context, ctx *app.RequestContext) {
 }
 
 func CategoryBrandList(c context.Context, ctx *app.RequestContext) {
-	//所有的list返回的数据结构
-	/*
-		{
-			"total": 100,
-			"data":[{},{}]
-		}
-	*/
-	rsp, err := global.GoodsSrvClient.CategoryBrandList(context.Background(), &proto.CategoryBrandFilterRequest{})
+	rsp, err := global.GoodsSrvClient.CategoryBrandList(c, &proto.CategoryBrandFilterRequest{})
 	if err != nil {
 		api.HandleGRPCErrorToHTTP(err, ctx)
 		return
@@ -185,7 +179,7 @@ func NewCategoryBrand(c context.Context, ctx *app.RequestContext) {
 		return
 	}
 
-	rsp, err := global.GoodsSrvClient.CreateCategoryBrand(context.Background(), &proto.CategoryBrandRequest{
+	rsp, err := global.GoodsSrvClient.CreateCategoryBrand(c, &proto.CategoryBrandRequest{
 		CategoryId: int32(categoryBrandForm.CategoryId),
 		BrandId:    int32(categoryBrandForm.BrandId),
 	})
@@ -214,7 +208,7 @@ func UpdateCategoryBrand(c context.Context, ctx *app.RequestContext) {
 		return
 	}
 
-	_, err = global.GoodsSrvClient.UpdateCategoryBrand(context.Background(), &proto.CategoryBrandRequest{
+	_, err = global.GoodsSrvClient.UpdateCategoryBrand(c, &proto.CategoryBrandRequest{
 		Id:         int32(i),
 		CategoryId: int32(categoryBrandForm.CategoryId),
 		BrandId:    int32(categoryBrandForm.BrandId),
@@ -233,7 +227,7 @@ func DeleteCategoryBrand(c context.Context, ctx *app.RequestContext) {
 		ctx.Status(http.StatusNotFound)
 		return
 	}
-	_, err = global.GoodsSrvClient.DeleteCategoryBrand(context.Background(), &proto.CategoryBrandRequest{Id: int32(i)})
+	_, err = global.GoodsSrvClient.DeleteCategoryBrand(c, &proto.CategoryBrandRequest{Id: int32(i)})
 	if err != nil {
 		api.HandleGRPCErrorToHTTP(err, ctx)
 		return

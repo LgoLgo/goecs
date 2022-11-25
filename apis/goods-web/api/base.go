@@ -1,11 +1,12 @@
 package api
 
 import (
+	"net/http"
+
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/utils"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"net/http"
 )
 
 func HandleGRPCErrorToHTTP(err error, c *app.RequestContext) {
@@ -27,7 +28,7 @@ func HandleGRPCErrorToHTTP(err error, c *app.RequestContext) {
 				})
 			case codes.Unavailable:
 				c.JSON(http.StatusInternalServerError, utils.H{
-					"msg": "商品服务不可用",
+					"msg": "Goods service unavailable",
 				})
 			default:
 				c.JSON(http.StatusInternalServerError, utils.H{

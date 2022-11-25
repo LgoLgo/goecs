@@ -1,8 +1,6 @@
 package middlewares
 
 import (
-	"apis/order-web/global"
-	"apis/order-web/models"
 	"context"
 	"errors"
 	"net/http"
@@ -10,6 +8,9 @@ import (
 
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/dgrijalva/jwt-go"
+
+	"apis/order-web/global"
+	"apis/order-web/models"
 )
 
 func JWTAuth() app.HandlerFunc {

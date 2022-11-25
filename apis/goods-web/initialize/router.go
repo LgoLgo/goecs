@@ -1,14 +1,16 @@
 package initialize
 
 import (
-	"apis/goods-web/middlewares"
-	"apis/goods-web/router"
 	"context"
 	"fmt"
+	"net/http"
+
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/app/server"
 	"github.com/cloudwego/hertz/pkg/common/utils"
-	"net/http"
+
+	"apis/goods-web/middlewares"
+	"apis/goods-web/router"
 )
 
 func Routers(port int) *server.Hertz {
@@ -22,7 +24,6 @@ func Routers(port int) *server.Hertz {
 
 	// Configure cross-domain.
 	Router.Use(middlewares.Cors())
-	//添加链路追踪
 	ApiGroup := Router.Group("/v1")
 	router.InitGoodsRouter(ApiGroup)
 	router.InitCategoryRouter(ApiGroup)

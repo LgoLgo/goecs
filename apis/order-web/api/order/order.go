@@ -1,29 +1,29 @@
 package order
 
 import (
-	"apis/order-web/forms"
-	"apis/order-web/global"
-	"apis/order-web/proto/gen"
 	"context"
+	"net/http"
+	"strconv"
+
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/utils"
 	"github.com/smartwalle/alipay/v3"
 	"go.uber.org/zap"
-	"net/http"
-	"strconv"
 
 	"apis/order-web/api"
+	"apis/order-web/forms"
+	"apis/order-web/global"
 	"apis/order-web/models"
+	"apis/order-web/proto/gen"
 )
 
 func List(c context.Context, ctx *app.RequestContext) {
-	//订单的列表
 	userId, _ := ctx.Get("userId")
 	claims, _ := ctx.Get("claims")
 
 	request := proto.OrderFilterRequest{}
 
-	//如果是管理员用户则返回所有的订单
+	// Returns all orders if an admin user
 	model := claims.(*models.CustomClaims)
 	if model.AuthorityId == 1 {
 		request.UserId = int32(userId.(uint))
@@ -40,23 +40,12 @@ func List(c context.Context, ctx *app.RequestContext) {
 	request.Pages = int32(pagesInt)
 	request.PagePerNums = int32(perNumsInt)
 
-	rsp, err := global.OrderSrvClient.OrderList(context.Background(), &request)
+	rsp, err := global.OrderSrvClient.OrderList(c, &request)
 	if err != nil {
-		zap.S().Errorw("获取订单列表失败")
+		zap.S().Errorw("Failed to get order list")
 		api.HandleGRPCErrorToHTTP(err, ctx)
 		return
 	}
-
-	/*
-		{
-			"total":100,
-			"data":[
-				{
-					"
-				}
-			]
-		}
-	*/
 	reMap := utils.H{
 		"total": rsp.Total,
 	}
@@ -84,14 +73,13 @@ func List(c context.Context, ctx *app.RequestContext) {
 	ctx.JSON(http.StatusOK, reMap)
 }
 
-//链路的起点在哪里 http请求
 func New(c context.Context, ctx *app.RequestContext) {
 	orderForm := forms.CreateOrderForm{}
 	if err := ctx.BindAndValidate(&orderForm); err != nil {
 		api.HandleValidatorError(ctx, err)
 	}
 	userId, _ := ctx.Get("userId")
-	rsp, err := global.OrderSrvClient.CreateOrder(context.WithValue(context.Background(), "hertzContext", ctx), &proto.OrderRequest{
+	rsp, err := global.OrderSrvClient.CreateOrder(context.WithValue(c, "hertzContext", ctx), &proto.OrderRequest{
 		UserId:  int32(userId.(uint)),
 		Name:    orderForm.Name,
 		Mobile:  orderForm.Mobile,
@@ -99,15 +87,15 @@ func New(c context.Context, ctx *app.RequestContext) {
 		Post:    orderForm.Post,
 	})
 	if err != nil {
-		zap.S().Errorw("新建订单失败")
+		zap.S().Errorw("New order failed")
 		api.HandleGRPCErrorToHTTP(err, ctx)
 		return
 	}
 
-	//生成支付宝的支付url
+	// Generate Alipay payment url
 	client, err := alipay.New(global.ServerConfig.AliPayInfo.AppID, global.ServerConfig.AliPayInfo.PrivateKey, false)
 	if err != nil {
-		zap.S().Errorw("实例化支付宝失败")
+		zap.S().Errorw("Failed to instantiate Alipay")
 		ctx.JSON(http.StatusInternalServerError, utils.H{
 			"msg": err.Error(),
 		})
@@ -115,7 +103,7 @@ func New(c context.Context, ctx *app.RequestContext) {
 	}
 	err = client.LoadAliPayPublicKey(global.ServerConfig.AliPayInfo.AliPublicKey)
 	if err != nil {
-		zap.S().Errorw("加载支付宝的公钥失败")
+		zap.S().Errorw("Failed to load Alipay public key")
 		ctx.JSON(http.StatusInternalServerError, utils.H{
 			"msg": err.Error(),
 		})
@@ -125,14 +113,14 @@ func New(c context.Context, ctx *app.RequestContext) {
 	var p = alipay.TradePagePay{}
 	p.NotifyURL = global.ServerConfig.AliPayInfo.NotifyURL
 	p.ReturnURL = global.ServerConfig.AliPayInfo.ReturnURL
-	p.Subject = "慕学生鲜订单-" + rsp.OrderSn
+	p.Subject = rsp.OrderSn
 	p.OutTradeNo = rsp.OrderSn
 	p.TotalAmount = strconv.FormatFloat(float64(rsp.Total), 'f', 2, 64)
 	p.ProductCode = "FAST_INSTANT_TRADE_PAY"
 
 	url, err := client.TradePagePay(p)
 	if err != nil {
-		zap.S().Errorw("生成支付url失败")
+		zap.S().Errorw("Failed to generate payment url")
 		ctx.JSON(http.StatusInternalServerError, utils.H{
 			"msg": err.Error(),
 		})
@@ -151,12 +139,12 @@ func Detail(c context.Context, ctx *app.RequestContext) {
 	i, err := strconv.Atoi(id)
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, utils.H{
-			"msg": "url格式出错",
+			"msg": "url format error",
 		})
 		return
 	}
 
-	//如果是管理员用户则返回所有的订单
+	// Returns all orders if an admin user
 	request := proto.OrderRequest{
 		Id: int32(i),
 	}
@@ -166,9 +154,9 @@ func Detail(c context.Context, ctx *app.RequestContext) {
 		request.UserId = int32(userId.(uint))
 	}
 
-	rsp, err := global.OrderSrvClient.OrderDetail(context.Background(), &request)
+	rsp, err := global.OrderSrvClient.OrderDetail(c, &request)
 	if err != nil {
-		zap.S().Errorw("获取订单详情失败")
+		zap.S().Errorw("Failed to get order details")
 		api.HandleGRPCErrorToHTTP(err, ctx)
 		return
 	}
@@ -198,18 +186,18 @@ func Detail(c context.Context, ctx *app.RequestContext) {
 	}
 	reMap["goods"] = goodsList
 
-	//生成支付宝的支付url
+	// Generate Alipay payment url
 	client, err := alipay.New(global.ServerConfig.AliPayInfo.AppID, global.ServerConfig.AliPayInfo.PrivateKey, false)
 	if err != nil {
-		zap.S().Errorw("实例化支付宝失败")
+		zap.S().Errorw("Failed to instantiate Alipay")
 		ctx.JSON(http.StatusInternalServerError, utils.H{
 			"msg": err.Error(),
 		})
 		return
 	}
-	err = client.LoadAliPayPublicKey((global.ServerConfig.AliPayInfo.AliPublicKey))
+	err = client.LoadAliPayPublicKey(global.ServerConfig.AliPayInfo.AliPublicKey)
 	if err != nil {
-		zap.S().Errorw("加载支付宝的公钥失败")
+		zap.S().Errorw("Failed to load Alipay public key")
 		ctx.JSON(http.StatusInternalServerError, utils.H{
 			"msg": err.Error(),
 		})
@@ -219,14 +207,14 @@ func Detail(c context.Context, ctx *app.RequestContext) {
 	var p = alipay.TradePagePay{}
 	p.NotifyURL = global.ServerConfig.AliPayInfo.NotifyURL
 	p.ReturnURL = global.ServerConfig.AliPayInfo.ReturnURL
-	p.Subject = "慕学生鲜订单-" + rsp.OrderInfo.OrderSn
+	p.Subject = rsp.OrderInfo.OrderSn
 	p.OutTradeNo = rsp.OrderInfo.OrderSn
 	p.TotalAmount = strconv.FormatFloat(float64(rsp.OrderInfo.Total), 'f', 2, 64)
 	p.ProductCode = "FAST_INSTANT_TRADE_PAY"
 
 	url, err := client.TradePagePay(p)
 	if err != nil {
-		zap.S().Errorw("生成支付url失败")
+		zap.S().Errorw("Failed to generate payment url")
 		ctx.JSON(http.StatusInternalServerError, utils.H{
 			"msg": err.Error(),
 		})

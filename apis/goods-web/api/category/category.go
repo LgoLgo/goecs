@@ -3,10 +3,10 @@ package category
 import (
 	"context"
 	"encoding/json"
-	"github.com/cloudwego/hertz/pkg/app"
 	"net/http"
 	"strconv"
 
+	"github.com/cloudwego/hertz/pkg/app"
 	empty "github.com/golang/protobuf/ptypes/empty"
 	"go.uber.org/zap"
 
@@ -17,7 +17,7 @@ import (
 )
 
 func List(c context.Context, ctx *app.RequestContext) {
-	r, err := global.GoodsSrvClient.GetAllCategorysList(context.Background(), &empty.Empty{})
+	r, err := global.GoodsSrvClient.GetAllCategorysList(c, &empty.Empty{})
 	if err != nil {
 		api.HandleGRPCErrorToHTTP(err, ctx)
 		return
@@ -26,7 +26,7 @@ func List(c context.Context, ctx *app.RequestContext) {
 	data := make([]interface{}, 0)
 	err = json.Unmarshal([]byte(r.JsonData), &data)
 	if err != nil {
-		zap.S().Errorw("[List] 查询 【分类列表】失败： ", err.Error())
+		zap.S().Errorw("[List] search error", err.Error())
 	}
 
 	ctx.JSON(http.StatusOK, data)
@@ -42,13 +42,12 @@ func Detail(c context.Context, ctx *app.RequestContext) {
 
 	reMap := make(map[string]interface{})
 	subCategorys := make([]interface{}, 0)
-	if r, err := global.GoodsSrvClient.GetSubCategory(context.Background(), &proto.CategoryListRequest{
+	if r, err := global.GoodsSrvClient.GetSubCategory(c, &proto.CategoryListRequest{
 		Id: int32(i),
 	}); err != nil {
 		api.HandleGRPCErrorToHTTP(err, ctx)
 		return
 	} else {
-		//写文档 特别是数据多的时候很慢， 先开发后写文档
 		for _, value := range r.SubCategorys {
 			subCategorys = append(subCategorys, map[string]interface{}{
 				"id":              value.Id,
@@ -77,7 +76,7 @@ func New(c context.Context, ctx *app.RequestContext) {
 		return
 	}
 
-	rsp, err := global.GoodsSrvClient.CreateCategory(context.Background(), &proto.CategoryInfoRequest{
+	rsp, err := global.GoodsSrvClient.CreateCategory(c, &proto.CategoryInfoRequest{
 		Name:           categoryForm.Name,
 		IsTab:          *categoryForm.IsTab,
 		Level:          categoryForm.Level,
@@ -106,10 +105,7 @@ func Delete(c context.Context, ctx *app.RequestContext) {
 		return
 	}
 
-	//1. 先查询出该分类写的所有子分类
-	//2. 将所有的分类全部逻辑删除
-	//3. 将该分类下的所有的商品逻辑删除
-	_, err = global.GoodsSrvClient.DeleteCategory(context.Background(), &proto.DeleteCategoryRequest{Id: int32(i)})
+	_, err = global.GoodsSrvClient.DeleteCategory(c, &proto.DeleteCategoryRequest{Id: int32(i)})
 	if err != nil {
 		api.HandleGRPCErrorToHTTP(err, ctx)
 		return
@@ -139,7 +135,7 @@ func Update(c context.Context, ctx *app.RequestContext) {
 	if categoryForm.IsTab != nil {
 		request.IsTab = *categoryForm.IsTab
 	}
-	_, err = global.GoodsSrvClient.UpdateCategory(context.Background(), request)
+	_, err = global.GoodsSrvClient.UpdateCategory(c, request)
 	if err != nil {
 		api.HandleGRPCErrorToHTTP(err, ctx)
 		return

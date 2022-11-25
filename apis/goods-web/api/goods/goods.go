@@ -1,19 +1,21 @@
 package goods
 
 import (
-	"apis/goods-web/api"
-	"apis/goods-web/forms"
-	"apis/goods-web/global"
-	"apis/goods-web/proto/gen"
 	"context"
+	"net/http"
+	"strconv"
+
 	sentinel "github.com/alibaba/sentinel-golang/api"
 	"github.com/alibaba/sentinel-golang/core/base"
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/utils"
 	"github.com/opentracing/opentracing-go"
 	"go.uber.org/zap"
-	"net/http"
-	"strconv"
+
+	"apis/goods-web/api"
+	"apis/goods-web/forms"
+	"apis/goods-web/global"
+	"apis/goods-web/proto/gen"
 )
 
 func List(c context.Context, ctx *app.RequestContext) {
@@ -60,20 +62,20 @@ func List(c context.Context, ctx *app.RequestContext) {
 	brandIdInt, _ := strconv.Atoi(brandId)
 	request.Brand = int32(brandIdInt)
 
-	//请求商品的service服务、负载均衡
+	// service and load balancing for requesting products
 	parent, _ := ctx.Get("parentSpan")
 	opentracing.ContextWithSpan(context.WithValue(c, "hertzContext", ctx), parent.(opentracing.Span))
 	e, b := sentinel.Entry("goods-list", sentinel.WithTrafficType(base.Inbound))
 	if b != nil {
 		ctx.JSON(http.StatusTooManyRequests, utils.H{
-			"msg": "请求过于频繁，请稍后重试",
+			"msg": "Too frequent requests, please try again later",
 		})
 		return
 	}
 
 	r, err := global.GoodsSrvClient.GoodsList(c, request)
 	if err != nil {
-		zap.S().Errorw("[List] 查询 【商品列表】失败")
+		zap.S().Errorw("[List] Query [Product List] failed")
 		api.HandleGRPCErrorToHTTP(err, ctx)
 		return
 	}
@@ -120,7 +122,7 @@ func New(c context.Context, ctx *app.RequestContext) {
 		return
 	}
 	goodsClient := global.GoodsSrvClient
-	rsp, err := goodsClient.CreateGoods(context.Background(), &proto.CreateGoodsInfo{
+	rsp, err := goodsClient.CreateGoods(c, &proto.CreateGoodsInfo{
 		Name:            goodsForm.Name,
 		GoodsSn:         goodsForm.GoodsSn,
 		Stocks:          goodsForm.Stocks,
@@ -139,8 +141,6 @@ func New(c context.Context, ctx *app.RequestContext) {
 		return
 	}
 
-	//如何设置库存
-	//TODO 商品的库存 - 分布式事务
 	ctx.JSON(http.StatusOK, rsp)
 }
 
@@ -203,15 +203,13 @@ func Delete(c context.Context, ctx *app.RequestContext) {
 	return
 }
 
-func Stocks(c context.Context, ctx *app.RequestContext) {
+func Stocks(_ context.Context, ctx *app.RequestContext) {
 	id := ctx.Param("id")
 	_, err := strconv.ParseInt(id, 10, 32)
 	if err != nil {
 		ctx.Status(http.StatusNotFound)
 		return
 	}
-
-	//TODO 商品的库存
 	return
 }
 
@@ -234,7 +232,7 @@ func UpdateStatus(c context.Context, ctx *app.RequestContext) {
 		return
 	}
 	ctx.JSON(http.StatusOK, utils.H{
-		"msg": "修改成功",
+		"msg": "change successful",
 	})
 }
 
@@ -266,6 +264,6 @@ func Update(c context.Context, ctx *app.RequestContext) {
 		return
 	}
 	ctx.JSON(http.StatusOK, utils.H{
-		"msg": "更新成功",
+		"msg": "update successful",
 	})
 }

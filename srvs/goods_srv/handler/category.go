@@ -7,28 +7,26 @@ import (
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"srvs/goods_srv/model"
-
 	"google.golang.org/protobuf/types/known/emptypb"
+
 	"srvs/goods_srv/global"
+	"srvs/goods_srv/model"
 	"srvs/goods_srv/proto/gen"
 )
 
-// GetAllCategoryList 商品分类
-func (s *GoodsServer) GetAllCategoryList(context.Context, *emptypb.Empty) (*proto.CategoryListResponse, error) {
+func (s *GoodsServer) GetAllCategoryList() (*proto.CategoryListResponse, error) {
 	var categories []model.Category
 	global.DB.Where(&model.Category{Level: 1}).Preload("SubCategory.SubCategory").Find(&categories)
 	b, _ := json.Marshal(&categories)
 	return &proto.CategoryListResponse{JsonData: string(b)}, nil
 }
 
-// GetSubCategory 获取子分类
 func (s *GoodsServer) GetSubCategory(ctx context.Context, req *proto.CategoryListRequest) (*proto.SubCategoryListResponse, error) {
 	categoryListResponse := proto.SubCategoryListResponse{}
 
 	var category model.Category
 	if result := global.DB.First(&category, req.Id); result.RowsAffected == 0 {
-		return nil, status.Errorf(codes.NotFound, "商品分类不存在")
+		return nil, status.Errorf(codes.NotFound, "Product category does not exist")
 	}
 
 	categoryListResponse.Info = &proto.CategoryInfoResponse{
@@ -67,7 +65,6 @@ func (s *GoodsServer) CreateCategory(ctx context.Context, req *proto.CategoryInf
 	cMap["level"] = req.Level
 	cMap["is_tab"] = req.IsTab
 	if req.Level != 1 {
-		//去查询父类目是否存在
 		cMap["parent_category_id"] = req.ParentCategory
 	}
 	tx := global.DB.Model(&model.Category{}).Create(cMap)
@@ -77,7 +74,7 @@ func (s *GoodsServer) CreateCategory(ctx context.Context, req *proto.CategoryInf
 
 func (s *GoodsServer) DeleteCategory(ctx context.Context, req *proto.DeleteCategoryRequest) (*emptypb.Empty, error) {
 	if result := global.DB.Delete(&model.Category{}, req.Id); result.RowsAffected == 0 {
-		return nil, status.Errorf(codes.NotFound, "商品分类不存在")
+		return nil, status.Errorf(codes.NotFound, "Product category does not exist")
 	}
 	return &emptypb.Empty{}, nil
 }
@@ -86,7 +83,7 @@ func (s *GoodsServer) UpdateCategory(ctx context.Context, req *proto.CategoryInf
 	var category model.Category
 
 	if result := global.DB.First(&category, req.Id); result.RowsAffected == 0 {
-		return nil, status.Errorf(codes.NotFound, "商品分类不存在")
+		return nil, status.Errorf(codes.NotFound, "Product category does not exist")
 	}
 
 	if req.Name != "" {

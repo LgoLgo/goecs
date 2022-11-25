@@ -4,13 +4,14 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"srvs/goods_srv/global"
 	"time"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
+
+	"srvs/goods_srv/global"
 )
 
 func InitDB() {

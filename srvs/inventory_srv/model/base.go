@@ -3,8 +3,9 @@ package model
 import (
 	"database/sql/driver"
 	"encoding/json"
-	"gorm.io/gorm"
 	"time"
+
+	"gorm.io/gorm"
 )
 
 type GormList []string

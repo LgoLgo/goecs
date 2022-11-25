@@ -53,7 +53,7 @@ func main() {
 		},
 		Reporter: &jaegercfg.ReporterConfig{
 			LogSpans:           true,
-			LocalAgentHostPort: "192.168.124.51:6831",
+			LocalAgentHostPort: "127.0.0.1:6831",
 		},
 		ServiceName: "LgoECS",
 	}
@@ -118,7 +118,7 @@ func main() {
 	)
 
 	if err := c.Subscribe("order_timeout", consumer.MessageSelector{}, handler.OrderTimeout); err != nil {
-		fmt.Println("读取消息失败")
+		fmt.Println("Failed to read message")
 	}
 	_ = c.Start()
 

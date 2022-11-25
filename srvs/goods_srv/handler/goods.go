@@ -4,11 +4,11 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"github.com/olivere/elastic/v7"
-	"google.golang.org/protobuf/types/known/emptypb"
 
+	"github.com/olivere/elastic/v7"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+	"google.golang.org/protobuf/types/known/emptypb"
 
 	"srvs/goods_srv/global"
 	"srvs/goods_srv/model"
@@ -50,10 +50,10 @@ func ModelToResponse(goods model.Goods) proto.GoodsInfoResponse {
 	}
 }
 
-func (s *GoodsServer) GoodsList(ctx context.Context, req *proto.GoodsFilterRequest) (*proto.GoodsListResponse, error) {
+func (s *GoodsServer) GoodsList(_ context.Context, req *proto.GoodsFilterRequest) (*proto.GoodsListResponse, error) {
 	goodsListResponse := &proto.GoodsListResponse{}
 
-	// match bool 复合查询
+	// match bool
 	q := elastic.NewBoolQuery()
 	localDB := global.DB.Model(model.Goods{})
 	if req.KeyWords != "" {
@@ -78,13 +78,12 @@ func (s *GoodsServer) GoodsList(ctx context.Context, req *proto.GoodsFilterReque
 		q = q.Filter(elastic.NewTermQuery("brands_id", req.Brand))
 	}
 
-	// 通过category去查询商品
 	var subQuery string
 	categoryIds := make([]interface{}, 0)
 	if req.TopCategory > 0 {
 		var category model.Category
 		if result := global.DB.First(&category, req.TopCategory); result.RowsAffected == 0 {
-			return nil, status.Errorf(codes.NotFound, "商品分类不存在")
+			return nil, status.Errorf(codes.NotFound, "Product category does not exist")
 		}
 
 		if category.Level == 1 {
@@ -104,11 +103,9 @@ func (s *GoodsServer) GoodsList(ctx context.Context, req *proto.GoodsFilterReque
 			categoryIds = append(categoryIds, re.ID)
 		}
 
-		// 生成terms查询
 		q = q.Filter(elastic.NewTermsQuery("category_id", categoryIds...))
 	}
 
-	// 分页
 	if req.Pages == 0 {
 		req.Pages = 1
 	}
@@ -132,7 +129,6 @@ func (s *GoodsServer) GoodsList(ctx context.Context, req *proto.GoodsFilterReque
 		goodsIds = append(goodsIds, goods.ID)
 	}
 
-	// 查询id在某个数组中的值
 	var goods []model.Goods
 	re := localDB.Preload("Category").Preload("Brands").Find(&goods, goodsIds)
 	if re.Error != nil {
@@ -147,8 +143,10 @@ func (s *GoodsServer) GoodsList(ctx context.Context, req *proto.GoodsFilterReque
 	return goodsListResponse, nil
 }
 
-// BatchGetGoods 用户提交订单有多个商品，批量查询商品的信息
-func (s *GoodsServer) BatchGetGoods(ctx context.Context, req *proto.BatchGoodsIdInfo) (*proto.GoodsListResponse, error) {
+// BatchGetGoods
+//
+// The user submits an order with multiple products, and the information of the products is queried in batches
+func (s *GoodsServer) BatchGetGoods(_ context.Context, req *proto.BatchGoodsIdInfo) (*proto.GoodsListResponse, error) {
 	goodsListResponse := &proto.GoodsListResponse{}
 	var goods []model.Goods
 
@@ -160,29 +158,30 @@ func (s *GoodsServer) BatchGetGoods(ctx context.Context, req *proto.BatchGoodsId
 	goodsListResponse.Total = int32(result.RowsAffected)
 	return goodsListResponse, nil
 }
-func (s *GoodsServer) GetGoodsDetail(ctx context.Context, req *proto.GoodInfoRequest) (*proto.GoodsInfoResponse, error) {
+func (s *GoodsServer) GetGoodsDetail(_ context.Context, req *proto.GoodInfoRequest) (*proto.GoodsInfoResponse, error) {
 	var goods model.Goods
 
 	if result := global.DB.Preload("Category").Preload("Brands").First(&goods, req.Id); result.RowsAffected == 0 {
-		return nil, status.Errorf(codes.NotFound, "商品不存在")
+		return nil, status.Errorf(codes.NotFound, "Product does not exist")
 	}
 	goodsInfoResponse := ModelToResponse(goods)
 	return &goodsInfoResponse, nil
 }
 
-func (s *GoodsServer) CreateGoods(ctx context.Context, req *proto.CreateGoodsInfo) (*proto.GoodsInfoResponse, error) {
+func (s *GoodsServer) CreateGoods(_ context.Context, req *proto.CreateGoodsInfo) (*proto.GoodsInfoResponse, error) {
 	var category model.Category
 	if result := global.DB.First(&category, req.CategoryId); result.RowsAffected == 0 {
-		return nil, status.Errorf(codes.InvalidArgument, "商品分类不存在")
+		return nil, status.Errorf(codes.InvalidArgument, "Product category does not exist")
 	}
 
 	var brand model.Brands
 	if result := global.DB.First(&brand, req.BrandId); result.RowsAffected == 0 {
-		return nil, status.Errorf(codes.InvalidArgument, "品牌不存在")
+		return nil, status.Errorf(codes.InvalidArgument, "brand does not exist")
 	}
-	// 先检查 redis 中是否有这个 token
-	// 防止同一个 token 的数据重复插入到数据库中，如果 redis 中没有这个 token 则放入 redis
-	// 这里没有看到图片文件是如何上传， 在微服务中 普通的文件上传已经不再使用
+
+	// First check if there is this token in redis
+	// Prevent the data of the same token from being repeatedly inserted into the database, if there is no such token in redis, put it in redis
+
 	goods := model.Goods{
 		Brands:          brand,
 		BrandsID:        brand.ID,
@@ -214,28 +213,28 @@ func (s *GoodsServer) CreateGoods(ctx context.Context, req *proto.CreateGoodsInf
 	}, nil
 }
 
-func (s *GoodsServer) DeleteGoods(ctx context.Context, req *proto.DeleteGoodsInfo) (*emptypb.Empty, error) {
+func (s *GoodsServer) DeleteGoods(_ context.Context, req *proto.DeleteGoodsInfo) (*emptypb.Empty, error) {
 	if result := global.DB.Delete(&model.Goods{BaseModel: model.BaseModel{ID: req.Id}}, req.Id); result.Error != nil {
-		return nil, status.Errorf(codes.NotFound, "商品不存在")
+		return nil, status.Errorf(codes.NotFound, "goods does not exist")
 	}
 	return &emptypb.Empty{}, nil
 }
 
-func (s *GoodsServer) UpdateGoods(ctx context.Context, req *proto.CreateGoodsInfo) (*emptypb.Empty, error) {
+func (s *GoodsServer) UpdateGoods(_ context.Context, req *proto.CreateGoodsInfo) (*emptypb.Empty, error) {
 	var goods model.Goods
 
 	if result := global.DB.First(&goods, req.Id); result.RowsAffected == 0 {
-		return nil, status.Errorf(codes.NotFound, "商品不存在")
+		return nil, status.Errorf(codes.NotFound, "brand does not exist")
 	}
 
 	var category model.Category
 	if result := global.DB.First(&category, req.CategoryId); result.RowsAffected == 0 {
-		return nil, status.Errorf(codes.InvalidArgument, "商品分类不存在")
+		return nil, status.Errorf(codes.InvalidArgument, "Product category does not exist")
 	}
 
 	var brand model.Brands
 	if result := global.DB.First(&brand, req.BrandId); result.RowsAffected == 0 {
-		return nil, status.Errorf(codes.InvalidArgument, "品牌不存在")
+		return nil, status.Errorf(codes.InvalidArgument, "brand does not exist")
 	}
 
 	goods.Brands = brand

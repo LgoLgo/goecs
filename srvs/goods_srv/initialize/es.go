@@ -23,7 +23,7 @@ func InitEs() {
 		panic(err)
 	}
 
-	// 新建mapping和index
+	// create mapping and index
 	exists, err := global.EsClient.IndexExists(model.EsGoods{}.GetIndexName()).Do(context.Background())
 	if err != nil {
 		panic(err)

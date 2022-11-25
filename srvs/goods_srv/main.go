@@ -3,13 +3,10 @@ package main
 import (
 	"flag"
 	"fmt"
+	"net"
 	"os"
 	"os/signal"
-	"srvs/goods_srv/initialize"
-	"srvs/user_srv/utils"
 	"syscall"
-
-	"net"
 
 	"github.com/hashicorp/consul/api"
 	uuid "github.com/satori/go.uuid"
@@ -20,7 +17,9 @@ import (
 
 	"srvs/goods_srv/global"
 	"srvs/goods_srv/handler"
+	"srvs/goods_srv/initialize"
 	"srvs/goods_srv/proto/gen"
+	"srvs/user_srv/utils"
 )
 
 func main() {

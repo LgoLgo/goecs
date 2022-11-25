@@ -2,6 +2,7 @@ package global
 
 import (
 	"gorm.io/gorm"
+
 	"srvs/order_srv/config"
 	"srvs/order_srv/proto/gen"
 )

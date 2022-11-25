@@ -3,17 +3,13 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/apache/rocketmq-client-go/v2"
-	"github.com/apache/rocketmq-client-go/v2/consumer"
+	"net"
 	"os"
 	"os/signal"
-	"srvs/inventory_srv/initialize"
-	proto "srvs/inventory_srv/proto/gen"
-	"srvs/user_srv/utils"
 	"syscall"
 
-	"net"
-
+	"github.com/apache/rocketmq-client-go/v2"
+	"github.com/apache/rocketmq-client-go/v2/consumer"
 	"github.com/hashicorp/consul/api"
 	uuid "github.com/satori/go.uuid"
 	"go.uber.org/zap"
@@ -23,6 +19,9 @@ import (
 
 	"srvs/inventory_srv/global"
 	"srvs/inventory_srv/handler"
+	"srvs/inventory_srv/initialize"
+	proto "srvs/inventory_srv/proto/gen"
+	"srvs/user_srv/utils"
 )
 
 func main() {
@@ -95,7 +94,7 @@ func main() {
 	)
 
 	if err := c.Subscribe("order_reback", consumer.MessageSelector{}, handler.AutoReback); err != nil {
-		fmt.Println("读取消息失败")
+		zap.S().Info("Failed to read message")
 	}
 	_ = c.Start()
 

@@ -24,9 +24,7 @@ type ServerConfig struct {
 	MysqlInfo  MysqlConfig  `mapstructure:"mysql" json:"mysql"`
 	ConsulInfo ConsulConfig `mapstructure:"consul" json:"consul"`
 
-	//商品微服务的配置
-	GoodsSrvInfo GoodsSrvConfig `mapstructure:"goods_srv" json:"goods_srv"`
-	//库存微服务的配置
+	GoodsSrvInfo     GoodsSrvConfig `mapstructure:"goods_srv" json:"goods_srv"`
 	InventorySrvInfo GoodsSrvConfig `mapstructure:"inventory_srv" json:"inventory_srv"`
 }
 

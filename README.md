@@ -1,4 +1,4 @@
-# Lgo-ECommerce
+# goecs
 
 A distributed microservice e-commerce system based on Hertz and gRPC.
 

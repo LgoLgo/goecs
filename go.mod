@@ -1,3 +1,3 @@
-module github.com/LgoLgo/Lgo-ECommerce
+module github.com/LgoLgo/goecs
 
 go 1.18

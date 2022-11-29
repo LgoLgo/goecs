@@ -1,6 +1,6 @@
 name: Close invalid questions issues
 
-on: [ issues ]
+on: [ push ]
 
 permissions:
   contents: read

@@ -3,61 +3,22 @@
     "invalid_question": {
       "name": "type:invalid question",
       "colour": "#CF2E1F",
-      "description": "invalid question (not related to Hertz or described in document or not enough information provided)"
+      "description": "invalid question (not related to GORM or described in document or not enough information provided)"
+    },
+    "without_playground": {
+      "name": "type:missing reproduction steps",
+      "colour": "#CF2E1F",
+      "description": "missing reproduction steps"
     }
   },
   "issue": {
-    "with_playground": {
-      "requires": 1,
+    "invalid_question": {
+      "requires": 2,
       "conditions": [
         {
           "type": "descriptionMatches",
-          "pattern": "/github.com\/go-gorm\/playground\/pull\/\\d\\d+/s"
-        }
-      ]
-    },
-    "critical": {
-      "requires": 1,
-      "conditions": [
-        {
-          "type": "descriptionMatches",
-          "pattern": "/(critical|urgent)/i"
+          "pattern": "/^((?!question).)*$/is"
         },
-        {
-          "type": "titleMatches",
-          "pattern": "/(critical|urgent)/i"
-        }
-      ]
-    },
-    "question": {
-      "requires": 1,
-      "conditions": [
-        {
-          "type": "titleMatches",
-          "pattern": "/question/i"
-        },
-        {
-          "type": "descriptionMatches",
-          "pattern": "/question/i"
-        }
-      ]
-    },
-    "feature": {
-      "requires": 1,
-      "conditions": [
-        {
-          "type": "titleMatches",
-          "pattern": "/feature/i"
-        },
-        {
-          "type": "descriptionMatches",
-          "pattern": "/Describe the feature/i"
-        }
-      ]
-    },
-    "without_playground": {
-      "requires": 6,
-      "conditions": [
         {
           "type": "descriptionMatches",
           "pattern": "/^((?!Describe the feature).)*$/is"

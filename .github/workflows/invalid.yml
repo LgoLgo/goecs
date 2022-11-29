@@ -1,7 +1,9 @@
 name: "Close Invalid Issue"
 on:
-  schedule:
-  - cron: "*/6 * * * *"
+  issues:
+    types: [ opened, edited, reopened ]
+  pull_request:
+    types: [ opened, edited, reopened ]
 
 permissions:
   contents: read

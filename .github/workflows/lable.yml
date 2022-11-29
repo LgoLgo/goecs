@@ -1,0 +1,26 @@
+# 此工作流使用未经 GitHub 认证的操作。
+# 它们由第三方提供，并受
+# 单独的服务条款、隐私政策和支持
+# 文档。
+
+# GitHub 建议将操作固定到提交 SHA。
+# 若要获取较新版本，需要更新 SHA。
+# 还可以引用标记或分支，但该操作可能会更改而不发出警告。
+
+name: Label issues
+on:
+  issues:
+    types:
+      - reopened
+      - opened
+jobs:
+  label_issues:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Label issues
+        uses: andymckay/labeler@e6c4322d0397f3240f0e7e30a33b5c5df2d39e90
+        with:
+          add-labels: "invalid"
+          repo-token: ${{ secrets.GITHUB_TOKEN }}

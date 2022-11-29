@@ -8,7 +8,7 @@
   },
   "issue": {
     "invalid_question": {
-      "requires": 1,
+      "requires": 2,
       "conditions": [
         {
           "type": "descriptionMatches",

@@ -23,4 +23,4 @@ jobs:
           days-before-stale: 0
           days-before-close: 30
           remove-stale-when-updated: true
-          only-labels: "invalid issue"
+          only-labels: "invalid issue,stale"

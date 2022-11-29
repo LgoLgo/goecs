@@ -28,7 +28,7 @@
   },
   "pr": {
     "invalid_pr": {
-      "requires": 2,
+      "requires": 1,
       "conditions": [
         {
           "type": "descriptionMatches",

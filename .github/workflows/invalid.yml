@@ -1,7 +1,7 @@
-name: "Close invalid questions issues"
+name: "Close Invalid Issue"
 on:
   schedule:
-    - cron: "*/6 * * * *"
+    - cron: "*/10 * * * *"
 
 permissions:
   contents: read
@@ -9,8 +9,7 @@ permissions:
 jobs:
   stale:
     permissions:
-      issues: write  # for actions/stale to close stale issues
-      pull-requests: write  # for actions/stale to close stale PRs
+      issues: write
     runs-on: ubuntu-latest
     env:
       ACTIONS_STEP_DEBUG: true

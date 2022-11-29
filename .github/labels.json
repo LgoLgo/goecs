@@ -12,11 +12,11 @@
       "conditions": [
         {
           "type": "descriptionMatches",
-          "pattern": "/^((?!Describe the bug).)*$/is"
+          "pattern": "/Describe the bug/i"
         },
         {
           "type": "descriptionMatches",
-          "pattern": "/^((?!Is your feature request related to a problem? Please describe).)*$/is"
+          "pattern": "/Is your feature request related to a problem? Please describe/i"
         }
       ]
     }

@@ -1,27 +1,22 @@
 {
   "labels": {
     "invalid_question": {
-      "name": "type:invalid question",
+      "name": "invalid issue",
       "colour": "#CF2E1F",
-      "description": "invalid question (not related to GORM or described in document or not enough information provided)"
-    },
-    "without_playground": {
-      "name": "type:missing reproduction steps",
-      "colour": "#CF2E1F",
-      "description": "missing reproduction steps"
+      "description": "invalid issue (not related to Hertz or described in document or not enough information provided)"
     }
   },
   "issue": {
     "invalid_question": {
-      "requires": 2,
+      "requires": 1,
       "conditions": [
         {
           "type": "descriptionMatches",
-          "pattern": "/^((?!question).)*$/is"
+          "pattern": "/^((?!Describe the bug).)*$/is"
         },
         {
           "type": "descriptionMatches",
-          "pattern": "/^((?!Describe the feature).)*$/is"
+          "pattern": "/^((?!Is your feature request related to a problem? Please describe).)*$/is"
         }
       ]
     }

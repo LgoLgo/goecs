@@ -17,3 +17,15 @@ jobs:
         uses: jbinda/super-labeler-action@develop
         with:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+  add-comment:
+    if: github.event.label.name == 'invalid issue'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - name: Add comment
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            This issue has been marked as invalid issue, please give more information by following the issue template.

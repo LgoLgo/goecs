@@ -7,32 +7,22 @@
 # 若要获取较新版本，需要更新 SHA。
 # 还可以引用标记或分支，但该操作可能会更改而不发出警告。
 
-name: Label issues
+name: "Issue Labeler"
 on:
   issues:
-    types:
-      - reopened
-      - opened
-jobs:
-  label_issues:
-    runs-on: ubuntu-latest
-    permissions:
-      issues: write
-    steps:
-      - name: Label issues
-        uses: andymckay/labeler@e6c4322d0397f3240f0e7e30a33b5c5df2d39e90
-        with:
-          add-labels: "invalid"
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
+    types: [opened, edited, reopened]
+  pull_request:
+    types: [opened, edited, reopened]
 
-  add-comment:
+jobs:
+  triage:
     runs-on: ubuntu-latest
-    permissions:
-      issues: write
+    name: Label issues and pull requests
     steps:
-      - name: Add comment
-        uses: peter-evans/create-or-update-comment@a35cf36e5301d70b76f316e867e7788a55a31dae
+      - name: check out
+        uses: actions/checkout@v3
+
+      - name: labeler
+        uses: jinzhu/super-labeler-action@develop
         with:
-          issue-number: ${{ github.event.issue.number }}
-          body: |
-            This issue is available for anyone to work on. **Make sure to reference this issue in your pull request.** :sparkles: Thank you for your contribution! :sparkles:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"

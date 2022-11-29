@@ -1,7 +1,7 @@
 name: "Close invalid questions issues"
 on:
   schedule:
-    - cron: "36 * * * *"
+    - cron: "*/6 * * * *"
 
 permissions:
   contents: read

@@ -8,7 +8,7 @@
     "invalid_pr": {
       "name": "invalid pr",
       "colour": "#CF2E1F",
-      "description": "invalid pr"
+      "description": "invalid pr (PR not submitted according to the template)"
     }
   },
   "issue": {

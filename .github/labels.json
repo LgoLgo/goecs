@@ -1,0 +1,29 @@
+{
+  "labels": {
+    "invalid_question": {
+      "name": "type:invalid question",
+      "colour": "#CF2E1F",
+      "description": "invalid question (not related to Hertz or described in document or not enough information provided)"
+    }
+  },
+  "issue": {
+    "bug": {
+      "requires": 1,
+      "conditions": [
+        {
+          "type": "descriptionMatches",
+          "pattern": "/Describe the bug/i"
+        }
+      ]
+    },
+    "feature": {
+      "requires": 1,
+      "conditions": [
+        {
+          "type": "descriptionMatches",
+          "pattern": "/Please describe/i"
+        }
+      ]
+    }
+  }
+}

@@ -33,10 +33,6 @@
         {
           "type": "descriptionMatches",
           "pattern": "/\\[\\] The description of this PR title is user-oriented and clear enough for others to understand/"
-        },
-        {
-          "type": "descriptionMatches",
-          "pattern": "/\\[\\] This PR title match the format/"
         }
       ]
     }

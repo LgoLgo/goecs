@@ -4,11 +4,6 @@
       "name": "invalid issue",
       "colour": "#CF2E1F",
       "description": "invalid issue (not related to Hertz or described in document or not enough information provided)"
-    },
-    "invalid_pr": {
-      "name": "invalid pr",
-      "colour": "#CF2E1F",
-      "description": "invalid pr (PR not submitted according to the template)"
     }
   },
   "issue": {
@@ -22,17 +17,6 @@
         {
           "type": "descriptionMatches",
           "pattern": "/^((?!Is your feature request related to a problem\\? Please describe).)*$/is"
-        }
-      ]
-    }
-  },
-  "pr": {
-    "invalid_pr": {
-      "requires": 1,
-      "conditions": [
-        {
-          "type": "descriptionMatches",
-          "pattern": "/\\[\\] The description of this PR title is user-oriented and clear enough for others to understand/"
         }
       ]
     }

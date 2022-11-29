@@ -1,7 +1,6 @@
 name: Close invalid questions issues
-on:
-  schedule:
-    - cron: "*/10 * * * *"
+
+on: [ issue ]
 
 permissions:
   contents: read

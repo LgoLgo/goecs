@@ -19,7 +19,7 @@ jobs:
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           stale-issue-message: "This issue has been marked as invalid question, please give more information by following the `issue` template. The issue will be closed in 30 days if no further activity occurs."
-          stale-issue-label: "stale"
+          stale-issue-label: "invalid issue"
           days-before-stale: 0
           days-before-close: 30
           remove-stale-when-updated: true

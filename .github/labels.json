@@ -16,7 +16,7 @@
         },
         {
           "type": "descriptionMatches",
-          "pattern": "/^((?!Is your feature request related to a problem\\? Please describe.).)*$/is"
+          "pattern": "/^((?!Is your feature request related to a problem\\? Please describe).)*$/is"
         }
       ]
     }

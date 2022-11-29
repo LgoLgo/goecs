@@ -9,7 +9,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-//1
+//12
 func HandleGRPCErrorToHTTP(err error, c *app.RequestContext) {
 	// Convert gRPC code to HTTP status code
 	if err != nil {

@@ -1,13 +1,18 @@
 {
   "labels": {
-    "invalid_question": {
+    "invalid_issue": {
       "name": "invalid issue",
       "colour": "#CF2E1F",
       "description": "invalid issue (not related to Hertz or described in document or not enough information provided)"
+    },
+    "invalid_pr": {
+      "name": "invalid pr",
+      "colour": "#CF2E1F",
+      "description": "invalid pr"
     }
   },
   "issue": {
-    "invalid_question": {
+    "invalid_issue": {
       "requires": 2,
       "conditions": [
         {
@@ -17,6 +22,21 @@
         {
           "type": "descriptionMatches",
           "pattern": "/^((?!Is your feature request related to a problem\\? Please describe).)*$/is"
+        }
+      ]
+    }
+  },
+  "pr": {
+    "invalid_pr": {
+      "requires": 2,
+      "conditions": [
+        {
+          "type": "descriptionMatches",
+          "pattern": "/\\[\\] The description of this PR title is user-oriented and clear enough for others to understand/"
+        },
+        {
+          "type": "descriptionMatches",
+          "pattern": "/\\[\\] This PR title match the format/"
         }
       ]
     }

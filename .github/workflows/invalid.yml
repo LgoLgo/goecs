@@ -1,4 +1,4 @@
-name: "Close invalid questions issues"
+name: "Close Invalid Issue"
 on:
   schedule:
     - cron: "*/10 * * * *"

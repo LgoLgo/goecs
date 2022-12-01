@@ -17,7 +17,7 @@ require (
 	github.com/satori/go.uuid v1.2.0
 	github.com/spf13/viper v1.13.0
 	github.com/uber/jaeger-client-go v2.30.0+incompatible
-	go.uber.org/zap v1.23.0
+	go.uber.org/zap v1.24.0
 	google.golang.org/grpc v1.51.0
 	google.golang.org/protobuf v1.28.1
 	gorm.io/driver/mysql v1.4.4

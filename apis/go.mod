@@ -18,7 +18,7 @@ require (
 	github.com/smartwalle/alipay/v3 v3.1.8
 	github.com/spf13/viper v1.14.0
 	github.com/uber/jaeger-client-go v2.30.0+incompatible
-	go.uber.org/zap v1.23.0
+	go.uber.org/zap v1.24.0
 	google.golang.org/grpc v1.51.0
 	google.golang.org/protobuf v1.28.1
 )

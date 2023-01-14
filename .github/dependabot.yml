@@ -1,14 +1,8 @@
 version: 2
 updates:
   - package-ecosystem: "gomod"
-    directory: "/apis"
+    directory: "/"
     labels:
       - "dependencies"
     schedule:
-      interval: "daily"
-  - package-ecosystem: "gomod"
-    directory: "/srvs"
-    labels:
-      - "dependencies"
-    schedule:
-      interval: "daily"
+      interval: "yearly"

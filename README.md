@@ -1,7 +1,6 @@
-# goecs
+![goecs](img/goecs.png)
 
 A distributed microservice e-commerce system based on Hertz and gRPC.
-
 
 ## Structure
 

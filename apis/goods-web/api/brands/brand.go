@@ -1,16 +1,15 @@
 package brands
 
 import (
+	"apis/goods-web/api"
+	"apis/goods-web/forms"
+	"apis/goods-web/global"
+	"apis/goods-web/proto/gen"
 	"context"
 	"net/http"
 	"strconv"
 
 	"github.com/cloudwego/hertz/pkg/app"
-
-	"apis/goods-web/api"
-	"apis/goods-web/forms"
-	"apis/goods-web/global"
-	"apis/goods-web/proto/gen"
 )
 
 func BrandList(c context.Context, ctx *app.RequestContext) {
@@ -23,7 +22,6 @@ func BrandList(c context.Context, ctx *app.RequestContext) {
 		Pages:       int32(pnInt),
 		PagePerNums: int32(pSizeInt),
 	})
-
 	if err != nil {
 		api.HandleGRPCErrorToHTTP(err, ctx)
 		return

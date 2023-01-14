@@ -1,6 +1,9 @@
 package main
 
 import (
+	"apis/user-web/global"
+	"apis/user-web/initialize"
+	"apis/user-web/utils/register/consul"
 	"fmt"
 	"os"
 	"os/signal"
@@ -8,10 +11,6 @@ import (
 
 	uuid "github.com/satori/go.uuid"
 	"go.uber.org/zap"
-
-	"apis/user-web/global"
-	"apis/user-web/initialize"
-	"apis/user-web/utils/register/consul"
 )
 
 func main() {

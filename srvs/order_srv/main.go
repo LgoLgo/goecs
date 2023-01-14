@@ -3,19 +3,21 @@ package main
 import (
 	"flag"
 	"fmt"
-	"github.com/apache/rocketmq-client-go/v2"
-	"github.com/apache/rocketmq-client-go/v2/consumer"
-	"github.com/grpc-ecosystem/grpc-opentracing/go/otgrpc"
-	"github.com/opentracing/opentracing-go"
-	"github.com/uber/jaeger-client-go"
+	"net"
 	"os"
 	"os/signal"
+	"srvs/order_srv/global"
+	"srvs/order_srv/handler"
 	"srvs/order_srv/initialize"
 	proto "srvs/order_srv/proto/gen"
 	"srvs/user_srv/utils"
 	"syscall"
 
-	"net"
+	"github.com/apache/rocketmq-client-go/v2"
+	"github.com/apache/rocketmq-client-go/v2/consumer"
+	"github.com/grpc-ecosystem/grpc-opentracing/go/otgrpc"
+	"github.com/opentracing/opentracing-go"
+	"github.com/uber/jaeger-client-go"
 
 	"github.com/hashicorp/consul/api"
 	uuid "github.com/satori/go.uuid"
@@ -24,9 +26,6 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/health"
 	"google.golang.org/grpc/health/grpc_health_v1"
-
-	"srvs/order_srv/global"
-	"srvs/order_srv/handler"
 )
 
 func main() {

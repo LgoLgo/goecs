@@ -1,18 +1,17 @@
 package message
 
 import (
+	"apis/userop-web/api"
+	"apis/userop-web/forms"
+	"apis/userop-web/global"
+	"apis/userop-web/models"
+	"apis/userop-web/proto/gen"
 	"context"
 	"net/http"
 
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/utils"
 	"go.uber.org/zap"
-
-	"apis/userop-web/api"
-	"apis/userop-web/forms"
-	"apis/userop-web/global"
-	"apis/userop-web/models"
-	"apis/userop-web/proto/gen"
 )
 
 func List(c context.Context, ctx *app.RequestContext) {
@@ -68,7 +67,6 @@ func New(c context.Context, ctx *app.RequestContext) {
 		Message:     messageForm.Message,
 		File:        messageForm.File,
 	})
-
 	if err != nil {
 		zap.S().Errorw("Add message failed")
 		api.HandleGRPCErrorToHTTP(err, ctx)

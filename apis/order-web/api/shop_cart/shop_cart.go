@@ -1,6 +1,10 @@
 package shop_cart
 
 import (
+	"apis/order-web/api"
+	"apis/order-web/forms"
+	"apis/order-web/global"
+	"apis/order-web/proto/gen"
 	"context"
 	"net/http"
 	"strconv"
@@ -8,11 +12,6 @@ import (
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/utils"
 	"go.uber.org/zap"
-
-	"apis/order-web/api"
-	"apis/order-web/forms"
-	"apis/order-web/global"
-	"apis/order-web/proto/gen"
 )
 
 func List(c context.Context, ctx *app.RequestContext) {
@@ -111,7 +110,6 @@ func New(c context.Context, ctx *app.RequestContext) {
 		UserId:  int32(userId.(uint)),
 		Nums:    itemForm.Nums,
 	})
-
 	if err != nil {
 		zap.S().Errorw("Add to cart failed")
 		api.HandleGRPCErrorToHTTP(err, ctx)

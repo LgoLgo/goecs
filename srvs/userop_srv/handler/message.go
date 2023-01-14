@@ -2,7 +2,6 @@ package handler
 
 import (
 	"context"
-
 	"srvs/userop_srv/global"
 	"srvs/userop_srv/model"
 	"srvs/userop_srv/proto/gen"

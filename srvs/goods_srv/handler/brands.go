@@ -2,14 +2,13 @@ package handler
 
 import (
 	"context"
+	"srvs/goods_srv/global"
+	"srvs/goods_srv/model"
+	"srvs/goods_srv/proto/gen"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
-
-	"srvs/goods_srv/global"
-	"srvs/goods_srv/model"
-	"srvs/goods_srv/proto/gen"
 )
 
 func (s *GoodsServer) BrandList(_ context.Context, req *proto.BrandFilterRequest) (*proto.BrandListResponse, error) {
@@ -36,6 +35,7 @@ func (s *GoodsServer) BrandList(_ context.Context, req *proto.BrandFilterRequest
 	brandListResponse.Data = brandResponses
 	return &brandListResponse, nil
 }
+
 func (s *GoodsServer) CreateBrand(_ context.Context, req *proto.BrandRequest) (*proto.BrandInfoResponse, error) {
 	if result := global.DB.Where("name=?", req.Name).First(&model.Brands{}); result.RowsAffected == 1 {
 		return nil, status.Errorf(codes.InvalidArgument, "brand already exists")

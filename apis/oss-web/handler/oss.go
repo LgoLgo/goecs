@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"apis/oss-web/global"
+	"apis/oss-web/utils"
 	"context"
 	"fmt"
 	"net/http"
@@ -9,9 +11,6 @@ import (
 
 	"github.com/cloudwego/hertz/pkg/app"
 	utils2 "github.com/cloudwego/hertz/pkg/common/utils"
-
-	"apis/oss-web/global"
-	"apis/oss-web/utils"
 )
 
 func Token(_ context.Context, c *app.RequestContext) {
@@ -64,7 +63,7 @@ func Request(_ context.Context, ctx *app.RequestContext) {
 		ctx.JSON(http.StatusOK, utils2.H{
 			"url": fileUrl,
 		})
-		//utils.ResponseSuccess(ctx)  // response OK : 200
+		// utils.ResponseSuccess(ctx)  // response OK : 200
 	} else {
 		utils.ResponseFailed(ctx) // response FAILED : 400
 	}

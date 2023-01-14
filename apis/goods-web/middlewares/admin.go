@@ -1,13 +1,12 @@
 package middlewares
 
 import (
+	"apis/goods-web/models"
 	"context"
 	"net/http"
 
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/utils"
-
-	"apis/goods-web/models"
 )
 
 func IsAdminAuth() app.HandlerFunc {
@@ -24,5 +23,4 @@ func IsAdminAuth() app.HandlerFunc {
 		}
 		c.Next(ctx)
 	}
-
 }

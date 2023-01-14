@@ -1,6 +1,10 @@
 package goods
 
 import (
+	"apis/goods-web/api"
+	"apis/goods-web/forms"
+	"apis/goods-web/global"
+	"apis/goods-web/proto/gen"
 	"context"
 	"net/http"
 	"strconv"
@@ -11,11 +15,6 @@ import (
 	"github.com/cloudwego/hertz/pkg/common/utils"
 	"github.com/opentracing/opentracing-go"
 	"go.uber.org/zap"
-
-	"apis/goods-web/api"
-	"apis/goods-web/forms"
-	"apis/goods-web/global"
-	"apis/goods-web/proto/gen"
 )
 
 func List(c context.Context, ctx *app.RequestContext) {

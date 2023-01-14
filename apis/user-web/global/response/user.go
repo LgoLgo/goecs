@@ -10,7 +10,7 @@ type JsonTime time.Time
 // MarshalJSON implements the Marshaller interface.
 func (j JsonTime) MarshalJSON() ([]byte, error) {
 	// custom format
-	var stamp = fmt.Sprintf("\"%s\"", time.Time(j).Format("2006-01-02"))
+	stamp := fmt.Sprintf("\"%s\"", time.Time(j).Format("2006-01-02"))
 	return []byte(stamp), nil
 }
 

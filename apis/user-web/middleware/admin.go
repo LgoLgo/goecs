@@ -1,13 +1,12 @@
 package middlewares
 
 import (
+	"apis/user-web/models"
 	"context"
 	"net/http"
 
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/utils"
-
-	"apis/user-web/models"
 )
 
 func IsAdminAuth() app.HandlerFunc {

@@ -1,11 +1,11 @@
 package router
 
 import (
-	"github.com/cloudwego/hertz/pkg/route"
-
 	"apis/order-web/api/order"
 	"apis/order-web/api/pay"
 	"apis/order-web/middlewares"
+
+	"github.com/cloudwego/hertz/pkg/route"
 )
 
 func InitOrderRouter(Router *route.RouterGroup) {

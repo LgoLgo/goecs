@@ -1,6 +1,11 @@
 package order
 
 import (
+	"apis/order-web/api"
+	"apis/order-web/forms"
+	"apis/order-web/global"
+	"apis/order-web/models"
+	"apis/order-web/proto/gen"
 	"context"
 	"net/http"
 	"strconv"
@@ -9,12 +14,6 @@ import (
 	"github.com/cloudwego/hertz/pkg/common/utils"
 	"github.com/smartwalle/alipay/v3"
 	"go.uber.org/zap"
-
-	"apis/order-web/api"
-	"apis/order-web/forms"
-	"apis/order-web/global"
-	"apis/order-web/models"
-	"apis/order-web/proto/gen"
 )
 
 func List(c context.Context, ctx *app.RequestContext) {
@@ -110,7 +109,7 @@ func New(c context.Context, ctx *app.RequestContext) {
 		return
 	}
 
-	var p = alipay.TradePagePay{}
+	p := alipay.TradePagePay{}
 	p.NotifyURL = global.ServerConfig.AliPayInfo.NotifyURL
 	p.ReturnURL = global.ServerConfig.AliPayInfo.ReturnURL
 	p.Subject = rsp.OrderSn
@@ -204,7 +203,7 @@ func Detail(c context.Context, ctx *app.RequestContext) {
 		return
 	}
 
-	var p = alipay.TradePagePay{}
+	p := alipay.TradePagePay{}
 	p.NotifyURL = global.ServerConfig.AliPayInfo.NotifyURL
 	p.ReturnURL = global.ServerConfig.AliPayInfo.ReturnURL
 	p.Subject = rsp.OrderInfo.OrderSn

@@ -1,11 +1,12 @@
 package api
 
 import (
+	"net/http"
+
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/utils"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
-	"net/http"
 )
 
 func HandleGRPCErrorToHTTP(err error, c *app.RequestContext) {

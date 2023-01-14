@@ -1,10 +1,10 @@
 package router
 
 import (
-	"github.com/cloudwego/hertz/pkg/route"
-
 	"apis/userop-web/api/message"
 	"apis/userop-web/middlewares"
+
+	"github.com/cloudwego/hertz/pkg/route"
 )
 
 func InitMessageRouter(Router *route.RouterGroup) {

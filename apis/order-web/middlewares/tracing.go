@@ -1,6 +1,7 @@
 package middlewares
 
 import (
+	"apis/order-web/global"
 	"context"
 	"fmt"
 
@@ -8,8 +9,6 @@ import (
 	"github.com/opentracing/opentracing-go"
 	"github.com/uber/jaeger-client-go"
 	jaegercfg "github.com/uber/jaeger-client-go/config"
-
-	"apis/order-web/global"
 )
 
 func Trace() app.HandlerFunc {

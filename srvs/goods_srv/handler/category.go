@@ -4,14 +4,13 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"srvs/goods_srv/global"
+	"srvs/goods_srv/model"
+	"srvs/goods_srv/proto/gen"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
-
-	"srvs/goods_srv/global"
-	"srvs/goods_srv/model"
-	"srvs/goods_srv/proto/gen"
 )
 
 func (s *GoodsServer) GetAllCategoryList() (*proto.CategoryListResponse, error) {

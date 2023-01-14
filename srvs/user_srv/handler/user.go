@@ -4,6 +4,9 @@ import (
 	"context"
 	"crypto/sha512"
 	"fmt"
+	"srvs/user_srv/global"
+	"srvs/user_srv/model"
+	"srvs/user_srv/proto/gen"
 	"strings"
 	"time"
 
@@ -12,10 +15,6 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"gorm.io/gorm"
-
-	"srvs/user_srv/global"
-	"srvs/user_srv/model"
-	"srvs/user_srv/proto/gen"
 )
 
 type UserServer struct {

@@ -1,16 +1,16 @@
 package main
 
 import (
+	"apis/oss-web/global"
+	"apis/oss-web/initialize"
 	"apis/oss-web/utils/register/consul"
 	"fmt"
-	uuid "github.com/satori/go.uuid"
-	"go.uber.org/zap"
 	"os"
 	"os/signal"
 	"syscall"
 
-	"apis/oss-web/global"
-	"apis/oss-web/initialize"
+	uuid "github.com/satori/go.uuid"
+	"go.uber.org/zap"
 )
 
 func main() {

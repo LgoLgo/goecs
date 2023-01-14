@@ -1,6 +1,9 @@
 package api
 
 import (
+	"apis/user-web/forms"
+	"apis/user-web/global"
+	"apis/user-web/validator"
 	"context"
 	"fmt"
 	"math/rand"
@@ -12,10 +15,6 @@ import (
 	"github.com/cloudwego/hertz/pkg/common/utils"
 	"github.com/go-redis/redis/v8"
 	"go.uber.org/zap"
-
-	"apis/user-web/forms"
-	"apis/user-web/global"
-	"apis/user-web/validator"
 )
 
 func GenerateSmsCode(width int) string {

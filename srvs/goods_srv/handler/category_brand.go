@@ -2,14 +2,13 @@ package handler
 
 import (
 	"context"
+	"srvs/goods_srv/global"
+	"srvs/goods_srv/model"
+	"srvs/goods_srv/proto/gen"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
-
-	"srvs/goods_srv/global"
-	"srvs/goods_srv/model"
-	"srvs/goods_srv/proto/gen"
 )
 
 func (s *GoodsServer) CategoryBrandList(ctx context.Context, req *proto.CategoryBrandFilterRequest) (*proto.CategoryBrandListResponse, error) {

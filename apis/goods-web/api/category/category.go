@@ -1,6 +1,10 @@
 package category
 
 import (
+	"apis/goods-web/api"
+	"apis/goods-web/forms"
+	"apis/goods-web/global"
+	"apis/goods-web/proto/gen"
 	"context"
 	"encoding/json"
 	"net/http"
@@ -9,11 +13,6 @@ import (
 	"github.com/cloudwego/hertz/pkg/app"
 	empty "github.com/golang/protobuf/ptypes/empty"
 	"go.uber.org/zap"
-
-	"apis/goods-web/api"
-	"apis/goods-web/forms"
-	"apis/goods-web/global"
-	"apis/goods-web/proto/gen"
 )
 
 func List(c context.Context, ctx *app.RequestContext) {

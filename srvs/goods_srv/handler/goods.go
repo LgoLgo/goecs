@@ -4,15 +4,14 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"srvs/goods_srv/global"
+	"srvs/goods_srv/model"
+	"srvs/goods_srv/proto/gen"
 
 	"github.com/olivere/elastic/v7"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
-
-	"srvs/goods_srv/global"
-	"srvs/goods_srv/model"
-	"srvs/goods_srv/proto/gen"
 )
 
 type GoodsServer struct {
@@ -158,6 +157,7 @@ func (s *GoodsServer) BatchGetGoods(_ context.Context, req *proto.BatchGoodsIdIn
 	goodsListResponse.Total = int32(result.RowsAffected)
 	return goodsListResponse, nil
 }
+
 func (s *GoodsServer) GetGoodsDetail(_ context.Context, req *proto.GoodInfoRequest) (*proto.GoodsInfoResponse, error) {
 	var goods model.Goods
 

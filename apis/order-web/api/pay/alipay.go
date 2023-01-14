@@ -1,6 +1,8 @@
 package pay
 
 import (
+	"apis/order-web/global"
+	"apis/order-web/proto/gen"
 	"context"
 	"net/http"
 
@@ -9,9 +11,6 @@ import (
 	"github.com/cloudwego/hertz/pkg/common/utils"
 	"github.com/smartwalle/alipay/v3"
 	"go.uber.org/zap"
-
-	"apis/order-web/global"
-	"apis/order-web/proto/gen"
 )
 
 func Notify(c context.Context, ctx *app.RequestContext) {

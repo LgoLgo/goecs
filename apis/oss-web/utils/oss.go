@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"apis/oss-web/global"
 	"crypto"
 	"crypto/hmac"
 	"crypto/md5"
@@ -20,14 +21,12 @@ import (
 	"time"
 
 	"github.com/cloudwego/hertz/pkg/app"
-
-	"apis/oss-web/global"
 )
 
 var expireTime int64 = 3000
 
 func getGmtIso8601(expireEnd int64) string {
-	var tokenExpire = time.Unix(expireEnd, 0).Format("2006-01-02T15:04:05Z")
+	tokenExpire := time.Unix(expireEnd, 0).Format("2006-01-02T15:04:05Z")
 	return tokenExpire
 }
 
@@ -55,9 +54,9 @@ type CallbackParam struct {
 func GetPolicyToken() string {
 	now := time.Now().Unix()
 	expireEnd := now + expireTime
-	var tokenExpire = getGmtIso8601(expireEnd)
+	tokenExpire := getGmtIso8601(expireEnd)
 
-	//create post policy json
+	// create post policy json
 	var config ConfigStruct
 	config.Expiration = tokenExpire
 	var condition []string
@@ -66,7 +65,7 @@ func GetPolicyToken() string {
 	condition = append(condition, global.ServerConfig.OssInfo.UploadDir)
 	config.Conditions = append(config.Conditions, condition)
 
-	//calculate signature
+	// calculate signature
 	result, err := json.Marshal(config)
 	debyte := base64.StdEncoding.EncodeToString(result)
 	h := hmac.New(func() hash.Hash { return sha1.New() }, []byte(global.ServerConfig.OssInfo.ApiSecret))
@@ -155,7 +154,7 @@ func GetMD5FromNewAuthString(ctx *app.RequestContext) ([]byte, string, error) {
 	fmt.Println("---body/--- \r\n " + string(body))
 
 	// fmt.Printf("r.URL.RawPath={%s}, r.URL.Query()={%s}, strCallbackBody={%s}\n", r.URL.RawPath, r.URL.Query(), strCallbackBody)
-	strURLPathDecode, errUnescape := unescapePath(string(ctx.Request.URI().Path()), encodePathSegment) //url.PathUnescape(r.URL.Path) for Golang v1.8.2+
+	strURLPathDecode, errUnescape := unescapePath(string(ctx.Request.URI().Path()), encodePathSegment) // url.PathUnescape(r.URL.Path) for Golang v1.8.2+
 	if errUnescape != nil {
 		fmt.Printf("url.PathUnescape failed : URL.Path=%s, error=%s \n", string(ctx.Request.URI().Path()), err.Error())
 		return byteMD5, "", errUnescape
@@ -178,7 +177,7 @@ func GetMD5FromNewAuthString(ctx *app.RequestContext) ([]byte, string, error) {
 	return byteMD5, strCallbackBody, nil
 }
 
-func VerifySignature(bytePublicKey []byte, byteMd5 []byte, authorization []byte) bool {
+func VerifySignature(bytePublicKey, byteMd5, authorization []byte) bool {
 	pubBlock, _ := pem.Decode(bytePublicKey)
 	if pubBlock == nil {
 		fmt.Printf("Failed to parse PEM block containing the public key")
@@ -194,9 +193,9 @@ func VerifySignature(bytePublicKey []byte, byteMd5 []byte, authorization []byte)
 	errorVerifyPKCS1v15 := rsa.VerifyPKCS1v15(pub, crypto.MD5, byteMd5, authorization)
 	if errorVerifyPKCS1v15 != nil {
 		fmt.Printf("\nSignature Verification is Failed : %s \n", errorVerifyPKCS1v15.Error())
-		//printByteArray(byteMd5, "AuthMd5(fromNewAuthString)")
-		//printByteArray(bytePublicKey, "PublicKeyBase64")
-		//printByteArray(authorization, "AuthorizationFromRequest")
+		// printByteArray(byteMd5, "AuthMd5(fromNewAuthString)")
+		// printByteArray(bytePublicKey, "PublicKeyBase64")
+		// printByteArray(authorization, "AuthorizationFromRequest")
 		return false
 	}
 

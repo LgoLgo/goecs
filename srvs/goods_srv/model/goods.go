@@ -2,11 +2,10 @@ package model
 
 import (
 	"context"
+	"srvs/goods_srv/global"
 	"strconv"
 
 	"gorm.io/gorm"
-
-	"srvs/goods_srv/global"
 )
 
 type Category struct {

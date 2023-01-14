@@ -2,17 +2,18 @@ package main
 
 import (
 	"context"
-	"github.com/olivere/elastic/v7"
-	"gorm.io/driver/mysql"
-	"gorm.io/gorm"
-	"gorm.io/gorm/logger"
-	"gorm.io/gorm/schema"
 	"log"
 	"os"
 	"srvs/goods_srv/global"
 	"srvs/goods_srv/model"
 	"strconv"
 	"time"
+
+	"github.com/olivere/elastic/v7"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
+	"gorm.io/gorm/schema"
 )
 
 func main() {

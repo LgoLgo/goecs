@@ -1,10 +1,10 @@
 package router
 
 import (
-	"github.com/cloudwego/hertz/pkg/route"
-
 	"apis/order-web/api/shop_cart"
 	"apis/order-web/middlewares"
+
+	"github.com/cloudwego/hertz/pkg/route"
 )
 
 func InitShopCartRouter(Router *route.RouterGroup) {

@@ -3,14 +3,13 @@ package main
 import (
 	"log"
 	"os"
+	"srvs/inventory_srv/model"
 	"time"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
-
-	"srvs/inventory_srv/model"
 )
 
 func main() {

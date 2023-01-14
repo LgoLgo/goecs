@@ -1,16 +1,16 @@
 package main
 
 import (
+	"apis/userop-web/global"
+	"apis/userop-web/initialize"
 	"apis/userop-web/utils/register/consul"
 	"fmt"
-	uuid "github.com/satori/go.uuid"
-	"go.uber.org/zap"
 	"os"
 	"os/signal"
 	"syscall"
 
-	"apis/userop-web/global"
-	"apis/userop-web/initialize"
+	uuid "github.com/satori/go.uuid"
+	"go.uber.org/zap"
 )
 
 func main() {

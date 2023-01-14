@@ -6,6 +6,11 @@ import (
 	"net"
 	"os"
 	"os/signal"
+	"srvs/goods_srv/global"
+	"srvs/goods_srv/handler"
+	"srvs/goods_srv/initialize"
+	"srvs/goods_srv/proto/gen"
+	"srvs/user_srv/utils"
 	"syscall"
 
 	"github.com/hashicorp/consul/api"
@@ -14,12 +19,6 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/health"
 	"google.golang.org/grpc/health/grpc_health_v1"
-
-	"srvs/goods_srv/global"
-	"srvs/goods_srv/handler"
-	"srvs/goods_srv/initialize"
-	"srvs/goods_srv/proto/gen"
-	"srvs/user_srv/utils"
 )
 
 func main() {

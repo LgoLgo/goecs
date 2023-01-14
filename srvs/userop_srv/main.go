@@ -3,14 +3,15 @@ package main
 import (
 	"flag"
 	"fmt"
+	"net"
 	"os"
 	"os/signal"
 	"srvs/user_srv/utils"
+	"srvs/userop_srv/global"
+	"srvs/userop_srv/handler"
 	"srvs/userop_srv/initialize"
 	proto "srvs/userop_srv/proto/gen"
 	"syscall"
-
-	"net"
 
 	"github.com/hashicorp/consul/api"
 	uuid "github.com/satori/go.uuid"
@@ -18,9 +19,6 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/health"
 	"google.golang.org/grpc/health/grpc_health_v1"
-
-	"srvs/userop_srv/global"
-	"srvs/userop_srv/handler"
 )
 
 func main() {

@@ -4,6 +4,7 @@ import (
 	"apis/userop-web/global"
 	proto "apis/userop-web/proto/gen"
 	"fmt"
+
 	_ "github.com/mbobakov/grpc-consul-resolver" // It's important
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
@@ -17,7 +18,6 @@ func InitSrvConn() {
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 		grpc.WithDefaultServiceConfig(`{"loadBalancingPolicy": "round_robin"}`),
 	)
-
 	if err != nil {
 		zap.S().Fatal("[InitSrvConn] connect goods service error")
 	}

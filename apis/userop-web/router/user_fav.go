@@ -1,10 +1,10 @@
 package router
 
 import (
-	"github.com/cloudwego/hertz/pkg/route"
-
 	"apis/userop-web/api/user_fav"
 	"apis/userop-web/middlewares"
+
+	"github.com/cloudwego/hertz/pkg/route"
 )
 
 func InitUserFavRouter(Router *route.RouterGroup) {

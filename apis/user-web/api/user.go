@@ -1,6 +1,11 @@
 package api
 
 import (
+	"apis/user-web/forms"
+	"apis/user-web/global"
+	"apis/user-web/global/response"
+	"apis/user-web/models"
+	"apis/user-web/validator"
 	"context"
 	"fmt"
 	"net/http"
@@ -15,13 +20,9 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"apis/user-web/forms"
-	"apis/user-web/global"
-	"apis/user-web/global/response"
 	middlewares "apis/user-web/middleware"
-	"apis/user-web/models"
+
 	proto "apis/user-web/proto/gen"
-	"apis/user-web/validator"
 )
 
 func HandleGRPCErrorToHTTP(err error, c *app.RequestContext) {

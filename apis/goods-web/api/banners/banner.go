@@ -1,17 +1,16 @@
 package banners
 
 import (
+	"apis/goods-web/api"
+	"apis/goods-web/forms"
+	"apis/goods-web/global"
+	"apis/goods-web/proto/gen"
 	"context"
 	"net/http"
 	"strconv"
 
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/golang/protobuf/ptypes/empty"
-
-	"apis/goods-web/api"
-	"apis/goods-web/forms"
-	"apis/goods-web/global"
-	"apis/goods-web/proto/gen"
 )
 
 func List(ctx context.Context, c *app.RequestContext) {

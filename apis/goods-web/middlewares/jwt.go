@@ -1,6 +1,8 @@
 package middlewares
 
 import (
+	"apis/goods-web/global"
+	"apis/goods-web/models"
 	"context"
 	"errors"
 	"net/http"
@@ -8,9 +10,6 @@ import (
 
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/dgrijalva/jwt-go"
-
-	"apis/goods-web/global"
-	"apis/goods-web/models"
 )
 
 func JWTAuth() app.HandlerFunc {
@@ -95,9 +94,7 @@ func (j *JWT) ParseToken(tokenString string) (*models.CustomClaims, error) {
 
 	} else {
 		return nil, TokenInvalid
-
 	}
-
 }
 
 // RefreshToken to refresh a token

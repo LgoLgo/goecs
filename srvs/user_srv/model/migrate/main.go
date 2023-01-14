@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"srvs/user_srv/model"
 	"time"
 
 	"github.com/anaskhan96/go-password-encoder"
@@ -12,8 +13,6 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
-
-	"srvs/user_srv/model"
 )
 
 func main() {

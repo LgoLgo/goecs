@@ -2,6 +2,8 @@ package initialize
 
 import (
 	"fmt"
+	"srvs/order_srv/global"
+	"srvs/order_srv/proto/gen"
 
 	"github.com/grpc-ecosystem/grpc-opentracing/go/otgrpc"
 	_ "github.com/mbobakov/grpc-consul-resolver" // It's important
@@ -9,9 +11,6 @@ import (
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
-
-	"srvs/order_srv/global"
-	"srvs/order_srv/proto/gen"
 )
 
 func InitSrvConn() {

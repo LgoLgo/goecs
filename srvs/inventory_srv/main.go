@@ -6,6 +6,10 @@ import (
 	"net"
 	"os"
 	"os/signal"
+	"srvs/inventory_srv/global"
+	"srvs/inventory_srv/handler"
+	"srvs/inventory_srv/initialize"
+	"srvs/user_srv/utils"
 	"syscall"
 
 	"github.com/apache/rocketmq-client-go/v2"
@@ -17,11 +21,7 @@ import (
 	"google.golang.org/grpc/health"
 	"google.golang.org/grpc/health/grpc_health_v1"
 
-	"srvs/inventory_srv/global"
-	"srvs/inventory_srv/handler"
-	"srvs/inventory_srv/initialize"
 	proto "srvs/inventory_srv/proto/gen"
-	"srvs/user_srv/utils"
 )
 
 func main() {

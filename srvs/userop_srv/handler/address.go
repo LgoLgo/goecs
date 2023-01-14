@@ -2,14 +2,13 @@ package handler
 
 import (
 	"context"
+	"srvs/userop_srv/global"
+	"srvs/userop_srv/model"
+	"srvs/userop_srv/proto/gen"
 
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
-
-	"srvs/userop_srv/global"
-	"srvs/userop_srv/model"
-	"srvs/userop_srv/proto/gen"
 )
 
 func (*UserOpServer) GetAddressList(_ context.Context, req *proto.AddressRequest) (*proto.AddressListResponse, error) {

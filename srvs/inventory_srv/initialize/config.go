@@ -3,14 +3,13 @@ package initialize
 import (
 	"encoding/json"
 	"fmt"
+	"srvs/inventory_srv/global"
 
 	"github.com/nacos-group/nacos-sdk-go/clients"
 	"github.com/nacos-group/nacos-sdk-go/common/constant"
 	"github.com/nacos-group/nacos-sdk-go/vo"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
-
-	"srvs/inventory_srv/global"
 )
 
 func InitConfig() {
@@ -35,7 +34,6 @@ func InitConfig() {
 	}
 
 	cc := constant.ClientConfig{
-
 		TimeoutMs:           5000,
 		NotLoadCacheAtStart: true,
 		LogDir:              "tmp/nacos/log",
@@ -53,8 +51,8 @@ func InitConfig() {
 
 	content, err := configClient.GetConfig(vo.ConfigParam{
 		DataId: global.NacosConfig.DataId,
-		Group:  global.NacosConfig.Group})
-
+		Group:  global.NacosConfig.Group,
+	})
 	if err != nil {
 		panic(err)
 	}
@@ -63,5 +61,4 @@ func InitConfig() {
 	if err != nil {
 		zap.S().Fatalf("nacos config failed: %s", err.Error())
 	}
-
 }

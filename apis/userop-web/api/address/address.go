@@ -1,6 +1,11 @@
 package address
 
 import (
+	"apis/userop-web/api"
+	"apis/userop-web/forms"
+	"apis/userop-web/global"
+	"apis/userop-web/models"
+	"apis/userop-web/proto/gen"
 	"context"
 	"net/http"
 	"strconv"
@@ -8,12 +13,6 @@ import (
 	"github.com/cloudwego/hertz/pkg/app"
 	"github.com/cloudwego/hertz/pkg/common/utils"
 	"go.uber.org/zap"
-
-	"apis/userop-web/api"
-	"apis/userop-web/forms"
-	"apis/userop-web/global"
-	"apis/userop-web/models"
-	"apis/userop-web/proto/gen"
 )
 
 func List(c context.Context, ctx *app.RequestContext) {
@@ -75,7 +74,6 @@ func New(c context.Context, ctx *app.RequestContext) {
 		SignerName:   addressForm.SignerName,
 		SignerMobile: addressForm.SignerMobile,
 	})
-
 	if err != nil {
 		zap.S().Errorw("Create address error")
 		api.HandleGRPCErrorToHTTP(err, ctx)

@@ -1,10 +1,9 @@
 package initialize
 
 import (
-	"fmt"
-
 	"apis/goods-web/global"
 	"apis/goods-web/proto/gen"
+	"fmt"
 
 	"github.com/grpc-ecosystem/grpc-opentracing/go/otgrpc"
 	_ "github.com/mbobakov/grpc-consul-resolver" // It's important
@@ -22,7 +21,6 @@ func InitSrvConn() {
 		grpc.WithDefaultServiceConfig(`{"loadBalancingPolicy": "round_robin"}`),
 		grpc.WithUnaryInterceptor(otgrpc.OpenTracingClientInterceptor(opentracing.GlobalTracer())),
 	)
-
 	if err != nil {
 		zap.S().Fatal("[InitSrvConn] connect goods service error")
 	}

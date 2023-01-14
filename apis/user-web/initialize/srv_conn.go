@@ -1,6 +1,7 @@
 package initialize
 
 import (
+	"apis/user-web/global"
 	"fmt"
 
 	_ "github.com/mbobakov/grpc-consul-resolver" // It's important
@@ -8,7 +9,6 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 
-	"apis/user-web/global"
 	proto "apis/user-web/proto/gen"
 )
 
@@ -19,7 +19,6 @@ func InitSrvConn() {
 		grpc.WithTransportCredentials(insecure.NewCredentials()),
 		grpc.WithDefaultServiceConfig(`{"loadBalancingPolicy": "round_robin"}`),
 	)
-
 	if err != nil {
 		zap.S().Fatal("[InitSrvConn] connect user service error")
 	}

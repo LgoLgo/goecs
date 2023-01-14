@@ -3,14 +3,13 @@ package initialize
 import (
 	"encoding/json"
 	"fmt"
+	"srvs/user_srv/global"
 
 	"github.com/nacos-group/nacos-sdk-go/clients"
 	"github.com/nacos-group/nacos-sdk-go/common/constant"
 	"github.com/nacos-group/nacos-sdk-go/vo"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
-
-	"srvs/user_srv/global"
 )
 
 func InitConfig() {
@@ -54,8 +53,8 @@ func InitConfig() {
 
 	content, err := configClient.GetConfig(vo.ConfigParam{
 		DataId: global.NacosConfig.DataId,
-		Group:  global.NacosConfig.Group})
-
+		Group:  global.NacosConfig.Group,
+	})
 	if err != nil {
 		panic(err)
 	}

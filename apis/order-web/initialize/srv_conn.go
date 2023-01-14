@@ -1,6 +1,8 @@
 package initialize
 
 import (
+	"apis/order-web/global"
+	"apis/order-web/proto/gen"
 	"fmt"
 
 	"github.com/grpc-ecosystem/grpc-opentracing/go/otgrpc"
@@ -9,9 +11,6 @@ import (
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
-
-	"apis/order-web/global"
-	"apis/order-web/proto/gen"
 )
 
 func InitSrvConn() {
@@ -22,7 +21,6 @@ func InitSrvConn() {
 		grpc.WithDefaultServiceConfig(`{"loadBalancingPolicy": "round_robin"}`),
 		grpc.WithUnaryInterceptor(otgrpc.OpenTracingClientInterceptor(opentracing.GlobalTracer())),
 	)
-
 	if err != nil {
 		zap.S().Fatal("[InitSrvConn] connect goods service error")
 	}

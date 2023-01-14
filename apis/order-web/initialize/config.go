@@ -1,6 +1,7 @@
 package initialize
 
 import (
+	"apis/order-web/global"
 	"encoding/json"
 	"fmt"
 
@@ -9,8 +10,6 @@ import (
 	"github.com/nacos-group/nacos-sdk-go/vo"
 	"github.com/spf13/viper"
 	"go.uber.org/zap"
-
-	"apis/order-web/global"
 )
 
 func InitConfig() {
@@ -54,8 +53,8 @@ func InitConfig() {
 
 	content, err := configClient.GetConfig(vo.ConfigParam{
 		DataId: global.NacosConfig.DataId,
-		Group:  global.NacosConfig.Group})
-
+		Group:  global.NacosConfig.Group,
+	})
 	if err != nil {
 		panic(err)
 	}
@@ -64,5 +63,4 @@ func InitConfig() {
 	if err != nil {
 		zap.S().Fatalf("nacos config failed: %s", err.Error())
 	}
-
 }

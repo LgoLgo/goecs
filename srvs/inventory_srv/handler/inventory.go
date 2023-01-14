@@ -4,6 +4,9 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"srvs/inventory_srv/global"
+	"srvs/inventory_srv/model"
+	"srvs/inventory_srv/proto/gen"
 
 	"github.com/apache/rocketmq-client-go/v2/consumer"
 	"github.com/apache/rocketmq-client-go/v2/primitive"
@@ -15,10 +18,6 @@ import (
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
 	"gorm.io/gorm"
-
-	"srvs/inventory_srv/global"
-	"srvs/inventory_srv/model"
-	"srvs/inventory_srv/proto/gen"
 )
 
 type InventoryServer struct {

@@ -3,14 +3,13 @@ package main
 import (
 	"log"
 	"os"
+	"srvs/userop_srv/model"
 	"time"
 
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
-
-	"srvs/userop_srv/model"
 )
 
 func main() {
@@ -37,5 +36,4 @@ func main() {
 	}
 
 	_ = db.AutoMigrate(&model.LeavingMessages{}, &model.UserFav{}, model.Address{})
-
 }

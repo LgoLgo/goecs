@@ -4,12 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"math/rand"
-	"srvs/order_srv/global"
-	"srvs/order_srv/model"
-	"srvs/order_srv/proto/gen"
-	"time"
-
 	"github.com/apache/rocketmq-client-go/v2"
 	"github.com/apache/rocketmq-client-go/v2/consumer"
 	"github.com/apache/rocketmq-client-go/v2/primitive"
@@ -19,6 +13,11 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 	"google.golang.org/protobuf/types/known/emptypb"
+	"math/rand"
+	"srvs/order_srv/global"
+	"srvs/order_srv/model"
+	"srvs/order_srv/proto/gen"
+	"time"
 )
 
 type OrderServer struct {
